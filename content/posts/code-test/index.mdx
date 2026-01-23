@@ -1,0 +1,43 @@
+---
+title: "程式碼高亮測試 (Code Test)"
+date: "2024-05-03"
+description: "測試程式碼區塊與複製按鈕。"
+tags: ["程式", "Next.js"]
+categories: ["技術"]
+featuredImage: ""
+---
+
+# 程式碼測試
+
+這是一個 TypeScript 範例：
+
+```typescript
+interface User {
+  id: number;
+  name: string;
+}
+
+const getUser = (id: number): User => {
+  return {
+    id,
+    name: "User " + id,
+  };
+};
+
+console.log(getUser(1));
+```
+
+這是一個 Python 範例：
+
+```python
+def fib(n):
+    if n <= 1:
+        return n
+    return fib(n-1) + fib(n-2)
+
+print([fib(i) for i in range(10)])
+```
+
+## 內嵌程式碼
+
+也可以使用 `console.log("hello")` 這樣的方式。
