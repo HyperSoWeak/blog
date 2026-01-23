@@ -12,16 +12,20 @@ export default async function TagsPage() {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-8 font-mono border-b border-[var(--border)] pb-4 text-white">
-        <span className="text-[var(--primary)]">/</span>root<span className="text-zinc-500">/</span>tags
+        <span className="text-[var(--primary)]">/</span>root<span className="text-zinc-500">/</span>
+        tags
       </h1>
       <div className="flex flex-wrap gap-4">
         {tags.map((tag) => (
-          <Link 
-            key={tag} 
+          <Link
+            key={tag}
             href={`/tags/${tag}`}
             className="flex items-center gap-2 px-4 py-2 border border-[var(--border)] bg-[#080808] hover:border-[var(--primary)] hover:bg-[var(--primary)]/10 transition-all group"
           >
-            <Tag size={16} className="text-zinc-500 group-hover:text-[var(--primary)] transition-colors" />
+            <Tag
+              size={16}
+              className="text-zinc-500 group-hover:text-[var(--primary)] transition-colors"
+            />
             <span className="font-mono text-zinc-300 group-hover:text-white uppercase">#{tag}</span>
           </Link>
         ))}

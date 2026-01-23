@@ -18,16 +18,17 @@ featuredImage: ""
 ## 1. 文本格式 (Typography)
 
 這是一段普通的文字。我們需要確保字體易讀，且與背景有足夠的對比。
-*斜體 (Italic)*, **粗體 (Bold)**, ***粗斜體 (Bold Italic)***, ~~刪除線 (Strikethrough)~~
+_斜體 (Italic)_, **粗體 (Bold)**, **_粗斜體 (Bold Italic)_**, ~~刪除線 (Strikethrough)~~
 
 > 引用區塊 (Blockquote):
 > "Talk is cheap. Show me the code." - Linus Torvalds
-> 
+>
 > 這是一個多行引用。
 
 ## 2. 列表 (Lists)
 
 ### 無序列表
+
 - 第一項
 - 第二項
   - 子項目 A
@@ -35,6 +36,7 @@ featuredImage: ""
 - 第三項
 
 ### 有序列表
+
 1. 初始化系統
 2. 載入核心模組
 3. 執行測試腳本
@@ -49,15 +51,15 @@ featuredImage: ""
 
 ```typescript
 interface SystemConfig {
-  env: 'development' | 'production';
+  env: "development" | "production";
   port: number;
   features: string[];
 }
 
 const config: SystemConfig = {
-  env: 'production',
+  env: "production",
   port: 8080,
-  features: ['auth', 'logging', 'rate-limiting'],
+  features: ["auth", "logging", "rate-limiting"],
 };
 
 function startSystem(cfg: SystemConfig) {
@@ -91,7 +93,7 @@ if __name__ == "__main__":
 fn main() {
     let system_status = "ONLINE";
     println!("System Status: {}", system_status);
-    
+
     let items = vec![1, 2, 3, 4, 5];
     let sum: i32 = items.iter().sum();
     println!("Sum: {}", sum);
@@ -103,6 +105,7 @@ fn main() {
 我們使用 LaTeX 來渲染數學公式。
 
 ### 行內公式
+
 著名的質能等價公式：$E = mc^2$。
 Euler's identity: $e^{i
 p i} + 1 = 0$.
@@ -136,16 +139,17 @@ $$
 
 ## 6. 表格 (Tables)
 
-| 服務名稱 | 狀態 | 延遲 (ms) |
-| :--- | :---: | ---: |
-| Auth Service | ✅ Online | 45 |
-| Database | ✅ Online | 12 |
-| Cache | ⚠️ Degrading | 120 |
-| Search | ❌ Offline | - |
+| 服務名稱     |     狀態     | 延遲 (ms) |
+| :----------- | :----------: | --------: |
+| Auth Service |  ✅ Online   |        45 |
+| Database     |  ✅ Online   |        12 |
+| Cache        | ⚠️ Degrading |       120 |
+| Search       |  ❌ Offline  |         - |
 
 ## 7. 結論
 
 系統測試完畢。所有模組應正常運作。
 
 ---
-*End of transmission.
+
+\*End of transmission.

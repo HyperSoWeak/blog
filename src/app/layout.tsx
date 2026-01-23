@@ -6,10 +6,10 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const firaMono = Fira_Mono({ 
-  subsets: ["latin"], 
+const firaMono = Fira_Mono({
+  subsets: ["latin"],
   weight: ["400", "500", "700"],
-  variable: "--font-mono"
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -24,11 +24,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-Hant" className="dark">
-      <body className={`${inter.variable} ${firaMono.variable} antialiased bg-background text-foreground min-h-screen flex flex-col`}>
+      <body
+        className={`${inter.variable} ${firaMono.variable} antialiased bg-background text-foreground min-h-screen flex flex-col`}
+      >
         <Navbar />
-        <main className="flex-grow container max-w-5xl mx-auto px-4 py-8">
-          {children}
-        </main>
+        <main className="flex-grow container max-w-5xl mx-auto px-4 py-8">{children}</main>
         <Footer />
       </body>
     </html>

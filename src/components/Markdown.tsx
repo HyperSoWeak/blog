@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
@@ -15,18 +16,13 @@ const rehypeAddRaw = () => (tree: any) => {
     if (node.tagName === "figure") {
       const pre = node.children.find((n: any) => n.tagName === "pre");
       if (pre && pre.properties) {
-        // Pass data attributes from pre to figure if needed
+        // Pass data attributes from pre to figure if needed, or handle in Pre component
       }
     }
 
     if (node.tagName === "pre") {
       const code = node.children.find((n: any) => n.tagName === "code");
-      if (
-        code &&
-        code.children &&
-        code.children[0] &&
-        code.children[0].type === "text"
-      ) {
+      if (code && code.children && code.children[0] && code.children[0].type === "text") {
         node.properties.raw = code.children[0].value;
       }
     }
@@ -38,11 +34,7 @@ const rehypeImageRewrite = (options: { slug: string }) => (tree: any) => {
   visit(tree, "element", (node: any) => {
     if (node.tagName === "img" && node.properties && node.properties.src) {
       const src = node.properties.src as string;
-      if (
-        !src.startsWith("http") &&
-        !src.startsWith("/") &&
-        !src.startsWith("data:")
-      ) {
+      if (!src.startsWith("http") && !src.startsWith("/") && !src.startsWith("data:")) {
         const cleanSrc = src.replace(/^\.\//, "");
         node.properties.src = `/images/${options.slug}/${cleanSrc}`;
       }
@@ -51,7 +43,7 @@ const rehypeImageRewrite = (options: { slug: string }) => (tree: any) => {
 };
 
 const components = {
-  pre: CodeBlock as any, // Cast to any to satisfy MDX types if needed, though usually compatible
+  pre: CodeBlock as any,
 };
 
 interface MarkdownProps {

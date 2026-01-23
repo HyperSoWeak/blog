@@ -1,5 +1,5 @@
-import GithubSlugger from 'github-slugger';
-import { format, parseISO } from 'date-fns';
+import GithubSlugger from "github-slugger";
+import { format, parseISO } from "date-fns";
 
 export type TOCItem = {
   title: string;
@@ -17,7 +17,7 @@ export function extractTOC(content: string): TOCItem[] {
     const depth = match[1].length;
     const title = match[2];
     const slug = slugger.slug(title);
-    
+
     headings.push({ title, slug, depth });
   }
 
@@ -26,8 +26,8 @@ export function extractTOC(content: string): TOCItem[] {
 
 export function formatDate(dateString: string) {
   try {
-    return format(parseISO(dateString), 'yyyy-MM-dd'); // ISO format fits the technical theme better
-  } catch (e) {
+    return format(parseISO(dateString), "yyyy-MM-dd"); // ISO format fits the technical theme better
+  } catch {
     return dateString;
   }
 }
@@ -39,9 +39,9 @@ export function formatDate(dateString: string) {
  */
 export function resolvePostImage(postSlug: string, imagePath?: string): string | null {
   if (!imagePath) return null;
-  if (imagePath.startsWith('http')) return imagePath;
-  
+  if (imagePath.startsWith("http")) return imagePath;
+
   // Remove leading ./ or /
-  const cleanPath = imagePath.replace(/^(\.\/|\/)/, '');
+  const cleanPath = imagePath.replace(/^(\.\/|\/)/, "");
   return `/images/${postSlug}/${cleanPath}`;
 }

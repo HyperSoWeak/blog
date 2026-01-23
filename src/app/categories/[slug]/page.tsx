@@ -25,7 +25,7 @@ export default async function CategoryPage({ params }: PageProps) {
   const { slug } = await params;
   const category = decodeURIComponent(slug);
   const allPosts = await getAllPosts();
-  const posts = allPosts.filter(post => post.categories.includes(category));
+  const posts = allPosts.filter((post) => post.categories.includes(category));
 
   if (posts.length === 0) {
     notFound();
@@ -34,7 +34,8 @@ export default async function CategoryPage({ params }: PageProps) {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-8 font-mono border-b border-zinc-800 pb-4">
-        <span className="text-green-500">/</span>categories<span className="text-zinc-500">/</span>{category}
+        <span className="text-green-500">/</span>categories<span className="text-zinc-500">/</span>
+        {category}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.map((post) => (

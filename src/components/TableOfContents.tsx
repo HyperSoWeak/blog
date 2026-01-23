@@ -36,14 +36,11 @@ export function TableOfContents({ toc }: TableOfContentsProps) {
   return (
     <nav className="sticky top-24 max-h-[calc(100vh-100px)] overflow-y-auto pl-4 border-l-2 border-[var(--border)]">
       <h4 className="font-mono text-xs font-bold text-[var(--primary)] uppercase mb-4 tracking-wider flex items-center gap-2">
-        <span>//</span> INDEX
+        <span>{"//"}</span> INDEX
       </h4>
       <ul className="space-y-2 text-xs font-mono">
         {toc.map((item) => (
-          <li 
-            key={item.slug}
-            style={{ paddingLeft: `${(item.depth - 1) * 0.5}rem` }}
-          >
+          <li key={item.slug} style={{ paddingLeft: `${(item.depth - 1) * 0.5}rem` }}>
             <a
               href={`#${item.slug}`}
               className={clsx(
@@ -55,7 +52,7 @@ export function TableOfContents({ toc }: TableOfContentsProps) {
               onClick={(e) => {
                 e.preventDefault();
                 document.getElementById(item.slug)?.scrollIntoView({
-                  behavior: "smooth"
+                  behavior: "smooth",
                 });
                 setActiveId(item.slug);
               }}

@@ -68,10 +68,7 @@ export function CodeBlock({
               </>
             ) : (
               <>
-                <Copy
-                  size={12}
-                  className="text-zinc-500 group-hover/btn:text-[var(--primary)]"
-                />
+                <Copy size={12} className="text-zinc-500 group-hover/btn:text-[var(--primary)]" />
                 <span className="text-[10px] text-zinc-500 group-hover/btn:text-[var(--primary)] font-mono uppercase tracking-wider">
                   CPY
                 </span>

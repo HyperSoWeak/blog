@@ -4,15 +4,15 @@
 :root {
   --background: #050505;
   --foreground: #e0e0e0;
-  
+
   /* Technical Blue Theme */
   --primary: #00f0ff; /* Electric Cyan */
   --primary-dim: #00a0aa;
   --secondary: #0033ff; /* Deep Blue */
-  
+
   --border: #333333;
   --panel: #0a0a0a;
-  
+
   --font-mono: var(--font-mono);
 }
 
@@ -39,14 +39,14 @@ body {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #000; 
+  background: #000;
 }
 ::-webkit-scrollbar-thumb {
-  background: #333; 
+  background: #333;
   border: 1px solid #000;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary); 
+  background: var(--primary);
 }
 
 /* Utilities */
@@ -93,7 +93,10 @@ body {
   border-bottom-style: solid;
 }
 
-.prose h1, .prose h2, .prose h3, .prose h4 {
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
   color: #fff;
   font-family: var(--font-mono);
   margin-top: 2em;
@@ -123,7 +126,7 @@ body {
 
 .prose ol {
   list-style-type: decimal;
-  padding-left: 1.5em; 
+  padding-left: 1.5em;
   color: var(--primary);
 }
 .prose ol > li::marker {
