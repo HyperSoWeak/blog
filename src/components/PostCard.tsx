@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { formatDate, resolvePostImage } from "@/lib/utils";
 import { Post } from "@/lib/posts";
-import { Calendar, Hash, FileText, ExternalLink } from "lucide-react";
+import { Calendar, FileText } from "lucide-react";
+import { Terminal } from "lucide-react";
 
 interface PostCardProps {
   post: Post;
@@ -38,7 +39,7 @@ export function PostCard({ post }: PostCardProps) {
       )}
 
       {/* Content Area */}
-      <div className="p-4 flex flex-col flex-grow">
+      <div className="p-4 flex flex-col flex-grow relative">
         <div className="flex gap-3 text-xs text-[var(--primary-dim)] font-mono mb-2 uppercase tracking-wide">
            <span className="flex items-center gap-1">
              <Calendar size={12} /> {formatDate(post.date)}
@@ -49,7 +50,8 @@ export function PostCard({ post }: PostCardProps) {
            </span>
         </div>
 
-        <Link href={`/posts/${post.slug}`} className="block mb-2">
+        {/* Main Link (Stretched) */}
+        <Link href={`/posts/${post.slug}`} className="block mb-2 before:absolute before:inset-0 before:z-0 focus:outline-none">
           <h2 className="text-lg font-bold text-zinc-100 group-hover:text-[var(--primary)] transition-colors leading-tight glow-text-hover">
             {post.title}
           </h2>
@@ -59,21 +61,22 @@ export function PostCard({ post }: PostCardProps) {
           &gt; {post.description}
         </p>
 
-        {/* Tags */}
-        <div className="pt-4 border-t border-[var(--border)] flex flex-wrap gap-2 mt-auto">
+        {/* Tags - Bring to front (z-10) to keep them clickable separately */}
+        <div className="pt-4 border-t border-[var(--border)] flex flex-wrap gap-2 mt-auto relative z-10">
           {post.tags.slice(0, 3).map(tag => (
-            <span key={tag} className="text-[10px] text-zinc-400 bg-zinc-900/50 px-1.5 py-0.5 border border-zinc-800 uppercase tracking-wider">
+            <Link 
+              key={tag} 
+              href={`/tags/${tag}`}
+              className="text-[10px] text-zinc-400 bg-zinc-900/50 px-1.5 py-0.5 border border-zinc-800 hover:border-[var(--primary)] hover:text-white transition-colors uppercase tracking-wider"
+            >
               #{tag}
-            </span>
+            </Link>
           ))}
         </div>
       </div>
       
       {/* Decorative Corner */}
-      <div className="absolute bottom-0 right-0 w-2 h-2 border-r border-b border-[var(--primary)] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      <div className="absolute bottom-0 right-0 w-2 h-2 border-r border-b border-[var(--primary)] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
     </div>
   );
 }
-
-// Fallback icon import fix
-import { Terminal } from "lucide-react";

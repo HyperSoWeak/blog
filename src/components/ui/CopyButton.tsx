@@ -14,6 +14,7 @@ export function CopyButton({ text, className }: CopyButtonProps) {
   const [isCopied, setIsCopied] = useState(false);
 
   const copy = async () => {
+    if (!text) return;
     await navigator.clipboard.writeText(text);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
@@ -21,15 +22,15 @@ export function CopyButton({ text, className }: CopyButtonProps) {
 
   return (
     <button
-      disabled={isCopied}
       onClick={copy}
       className={twMerge(
-        "absolute right-2 top-2 rounded-md p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100 opacity-0 group-hover:opacity-100 transition-opacity",
+        "p-2 rounded bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white transition-all z-20 absolute",
         className
       )}
       aria-label="Copy code"
+      title="Copy to clipboard"
     >
-      {isCopied ? <Check size={16} /> : <Copy size={16} />}
+      {isCopied ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
     </button>
   );
 }

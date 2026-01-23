@@ -1,0 +1,150 @@
+---
+title: "系統架構與測試 (System Architecture & Test)"
+date: "2026-01-24"
+description: "這是一篇關於系統架構的測試文章，包含了數學公式、大量的程式碼、列表以及圖片測試，用來驗證部落格的顯示效果。"
+tags: ["系統", "架構", "測試"]
+categories: ["工程"]
+featuredImage: ""
+---
+
+# 系統架構總覽
+
+歡迎來到 **Terminal Reverie** 的系統測試頁面。這裡我們將測試所有的 Markdown 渲染功能。
+
+## 目錄 (Table of Contents)
+
+測試自動生成的目錄是否正確捕捉到了這裡的標題。
+
+## 1. 文本格式 (Typography)
+
+這是一段普通的文字。我們需要確保字體易讀，且與背景有足夠的對比。
+*斜體 (Italic)*, **粗體 (Bold)**, ***粗斜體 (Bold Italic)***, ~~刪除線 (Strikethrough)~~
+
+> 引用區塊 (Blockquote):
+> "Talk is cheap. Show me the code." - Linus Torvalds
+> 
+> 這是一個多行引用。
+
+## 2. 列表 (Lists)
+
+### 無序列表
+- 第一項
+- 第二項
+  - 子項目 A
+  - 子項目 B
+- 第三項
+
+### 有序列表
+1. 初始化系統
+2. 載入核心模組
+3. 執行測試腳本
+   1. 單元測試
+   2. 整合測試
+
+## 3. 程式碼區塊 (Code Blocks)
+
+測試複製按鈕與語法高亮。
+
+### TypeScript
+
+```typescript
+interface SystemConfig {
+  env: 'development' | 'production';
+  port: number;
+  features: string[];
+}
+
+const config: SystemConfig = {
+  env: 'production',
+  port: 8080,
+  features: ['auth', 'logging', 'rate-limiting'],
+};
+
+function startSystem(cfg: SystemConfig) {
+  console.log(`Starting system on port ${cfg.port}...`);
+  // ... initialization logic
+}
+```
+
+### Python
+
+```python
+import os
+import sys
+
+def optimize_neural_net(layers):
+    """
+    Simulates a neural network optimization process.
+    """
+    print(f"Optimizing {len(layers)} layers...")
+    return [layer * 0.99 for layer in layers]
+
+if __name__ == "__main__":
+    weights = [0.5, 0.2, 0.8, 0.1]
+    new_weights = optimize_neural_net(weights)
+    print(f"New weights: {new_weights}")
+```
+
+### Rust
+
+```rust
+fn main() {
+    let system_status = "ONLINE";
+    println!("System Status: {}", system_status);
+    
+    let items = vec![1, 2, 3, 4, 5];
+    let sum: i32 = items.iter().sum();
+    println!("Sum: {}", sum);
+}
+```
+
+## 4. 數學公式 (Mathematics)
+
+我們使用 LaTeX 來渲染數學公式。
+
+### 行內公式
+著名的質能等價公式：$E = mc^2$。
+Euler's identity: $e^{i
+p i} + 1 = 0$.
+
+### 區塊公式
+
+高斯積分 (Gaussian Integral):
+
+$$
+\int_{-\infty}^{\infty} e^{-x^2} \, dx = \sqrt{\pi}
+$$
+
+矩陣運算:
+
+$$ A = \begin{pmatrix}
+ a & b \\
+ c & d
+\end{pmatrix}, \quad
+ A^{-1} = \frac{1}{ad-bc} \begin{pmatrix}
+ d & -b \\
+ -c & a
+\end{pmatrix}
+$$
+
+## 5. 圖片測試 (Images)
+
+(此處使用 placeholder，因為實際圖片需要上傳)
+
+![測試圖片](https://placehold.co/800x400/111/00f0ff?text=SYSTEM_TEST_IMAGE)
+
+## 6. 表格 (Tables)
+
+| 服務名稱 | 狀態 | 延遲 (ms) |
+| :--- | :---: | ---: |
+| Auth Service | ✅ Online | 45 |
+| Database | ✅ Online | 12 |
+| Cache | ⚠️ Degrading | 120 |
+| Search | ❌ Offline | - |
+
+## 7. 結論
+
+系統測試完畢。所有模組應正常運作。
+
+---
+*End of transmission.

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
   --background: #050505;
@@ -28,7 +29,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-mono), monospace; /* Default to mono for terminal feel */
+  font-family: var(--font-mono), monospace;
   overflow-x: hidden;
 }
 
@@ -72,11 +73,88 @@ body {
   text-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
 }
 
-.border-tech {
-  border: 1px solid var(--border);
+/* Markdown Overrides for Technical Theme */
+.prose {
+  max-width: none;
+  color: #c0c0c0;
 }
 
-.box-tech {
-  background: var(--panel);
+.prose strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+.prose a {
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--primary-dim);
+}
+.prose a:hover {
+  border-bottom-style: solid;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  color: #fff;
+  font-family: var(--font-mono);
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+.prose h2 {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5em;
+}
+
+.prose ul {
+  list-style-type: none;
+  padding-left: 1em;
+}
+.prose ul > li {
+  position: relative;
+  padding-left: 1.5em;
+}
+.prose ul > li::before {
+  content: ">";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.prose ol {
+  list-style-type: decimal;
+  padding-left: 1.5em; 
+  color: var(--primary);
+}
+.prose ol > li::marker {
+  color: var(--primary);
+}
+.prose ol > li span {
+  color: var(--foreground);
+}
+
+.prose blockquote {
+  border-left: 2px solid var(--primary);
+  background: rgba(0, 240, 255, 0.05);
+  padding: 1em;
+  font-style: italic;
+  color: #aaa;
+}
+
+.prose code {
+  color: var(--primary);
+  background: #111;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+.prose pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.prose img {
   border: 1px solid var(--border);
+  border-radius: 4px;
 }
