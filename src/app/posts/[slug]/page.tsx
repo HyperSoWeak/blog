@@ -3,7 +3,7 @@ import { Markdown } from "@/components/Markdown";
 import { TableOfContents } from "@/components/TableOfContents";
 import { extractTOC, formatDate, resolvePostImage } from "@/lib/utils";
 import { notFound } from "next/navigation";
-import { Calendar, Tag, Clock, ChevronRight, Folder } from "lucide-react";
+import { Calendar, Tag, Clock, ChevronRight, Folder, List } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 
@@ -50,7 +50,7 @@ export default async function PostPage({ params }: PageProps) {
          <span className="text-zinc-300 truncate max-w-[200px]">{post.slug}</span>
       </div>
 
-      <header className="mb-12 border border-[var(--border)] bg-[#080808] relative overflow-hidden">
+      <header className="mb-8 border border-[var(--border)] bg-[#080808] relative overflow-hidden">
         {featuredImageUrl && (
           <div className="w-full h-64 md:h-80 relative border-b border-[var(--border)]">
              <img 
@@ -97,6 +97,22 @@ export default async function PostPage({ params }: PageProps) {
           </div>
         </div>
       </header>
+      
+      {/* Mobile ToC */}
+      <div className="lg:hidden mb-8">
+        <details className="border border-[var(--border)] bg-[#080808] group">
+          <summary className="flex items-center justify-between p-4 cursor-pointer list-none text-[var(--primary)] font-mono font-bold uppercase hover:bg-[var(--primary)]/10 transition-colors">
+            <div className="flex items-center gap-2">
+              <List size={16} />
+              <span>Table of Contents</span>
+            </div>
+            <span className="group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <div className="p-4 border-t border-[var(--border)]">
+             <TableOfContents toc={toc} />
+          </div>
+        </details>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
         <div className="lg:col-span-3">
