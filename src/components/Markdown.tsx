@@ -6,8 +6,10 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import rehypeUnwrapImages from "rehype-unwrap-images";
 import { visit } from "unist-util-visit";
 import { CodeBlock } from "./CodeBlock";
+import { CustomImage } from "./CustomImage";
 import React from "react";
 
 // Plugin to add raw code to pre tag
@@ -44,6 +46,7 @@ const rehypeImageRewrite = (options: { slug: string }) => (tree: any) => {
 
 const components = {
   pre: CodeBlock as any,
+  img: CustomImage as any,
 };
 
 interface MarkdownProps {
@@ -60,6 +63,7 @@ export async function Markdown({ source, slug }: MarkdownProps) {
         mdxOptions: {
           remarkPlugins: [remarkGfm, remarkMath],
           rehypePlugins: [
+            rehypeUnwrapImages,
             rehypeAddRaw,
             [
               rehypePrettyCode,
