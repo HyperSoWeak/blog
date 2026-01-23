@@ -102,7 +102,7 @@ export async function Markdown({ source, slug }: MarkdownProps) {
             [rehypeImageRewrite, { slug }],
             rehypeSlug,
             [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-            rehypeKatex,
+            [rehypeKatex, { strict: false, trust: true }],
           ],
         },
       }}

@@ -38,8 +38,8 @@ export function PostCard({ post }: PostCardProps) {
         </div>
       )}
 
-      {/* Content Area */}
-      <div className="p-4 flex flex-col flex-grow relative">
+      {/* Content Area - Removed relative so link stretches to parent */}
+      <div className="p-4 flex flex-col flex-grow">
         <div className="flex gap-3 text-xs text-[var(--primary-dim)] font-mono mb-2 uppercase tracking-wide">
            <span className="flex items-center gap-1">
              <Calendar size={12} /> {formatDate(post.date)}
@@ -50,7 +50,7 @@ export function PostCard({ post }: PostCardProps) {
            </span>
         </div>
 
-        {/* Main Link (Stretched) */}
+        {/* Main Link (Stretched to full card) */}
         <Link href={`/posts/${post.slug}`} className="block mb-2 before:absolute before:inset-0 before:z-0 focus:outline-none">
           <h2 className="text-lg font-bold text-zinc-100 group-hover:text-[var(--primary)] transition-colors leading-tight glow-text-hover">
             {post.title}
@@ -61,13 +61,13 @@ export function PostCard({ post }: PostCardProps) {
           &gt; {post.description}
         </p>
 
-        {/* Tags - Bring to front (z-10) to keep them clickable separately */}
-        <div className="pt-4 border-t border-[var(--border)] flex flex-wrap gap-2 mt-auto relative z-10">
+        {/* Tags - Bring to front (z-10) and make relative to stay clickable */}
+        <div className="pt-4 border-t border-[var(--border)] flex flex-wrap gap-2 mt-auto relative z-10 pointer-events-none">
           {post.tags.slice(0, 3).map(tag => (
             <Link 
               key={tag} 
               href={`/tags/${tag}`}
-              className="text-[10px] text-zinc-400 bg-zinc-900/50 px-1.5 py-0.5 border border-zinc-800 hover:border-[var(--primary)] hover:text-white transition-colors uppercase tracking-wider"
+              className="pointer-events-auto text-[10px] text-zinc-400 bg-zinc-900/50 px-1.5 py-0.5 border border-zinc-800 hover:border-[var(--primary)] hover:text-white transition-colors uppercase tracking-wider"
             >
               #{tag}
             </Link>

@@ -85,6 +85,15 @@ export default async function PostPage({ params }: PageProps) {
               <Clock size={16} className="text-[var(--primary)]" />
               <span>{post.wordCount} words</span>
             </div>
+             {/* Moved Tags Here */}
+            <div className="flex items-center gap-2 ml-auto">
+              {post.tags.map(tag => (
+                 <Link key={tag} href={`/tags/${tag}`} className="flex items-center gap-1 text-xs font-mono bg-zinc-900 hover:bg-[var(--primary)] hover:text-black border border-zinc-800 px-2 py-1 transition-colors uppercase">
+                   <Tag size={12} />
+                   {tag}
+                 </Link>
+               ))}
+            </div>
           </div>
         </div>
       </header>
@@ -100,17 +109,6 @@ export default async function PostPage({ params }: PageProps) {
                 prose-img:rounded prose-img:border prose-img:border-[var(--border)]
                 ">
              <Markdown source={post.content} slug={post.slug} />
-           </div>
-           
-           <div className="mt-16 pt-8 border-t border-[var(--border)]">
-             <div className="flex flex-wrap gap-2">
-               {post.tags.map(tag => (
-                 <Link key={tag} href={`/tags/${tag}`} className="flex items-center gap-1 text-xs font-mono bg-zinc-900 hover:bg-[var(--primary)] hover:text-black border border-zinc-800 px-3 py-1 transition-colors uppercase">
-                   <Tag size={12} />
-                   {tag}
-                 </Link>
-               ))}
-             </div>
            </div>
         </div>
         

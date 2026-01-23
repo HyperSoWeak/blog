@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="zh-Hant" className="dark">
       <body className={`${inter.variable} ${firaMono.variable} antialiased bg-background text-foreground min-h-screen flex flex-col`}>
         <Navbar />
-        <main className="flex-grow container mx-auto px-4 py-8">
+        <main className="flex-grow container max-w-5xl mx-auto px-4 py-8">
           {children}
         </main>
         <Footer />
