@@ -11,6 +11,8 @@ import { visit } from "unist-util-visit";
 import { CodeBlock } from "./CodeBlock";
 import { CustomImage } from "./CustomImage";
 import { Grid } from "./Grid";
+import { Details } from "./Details";
+import React from "react";
 
 // Plugin to add raw code to pre tag
 const rehypeAddRaw = () => (tree: any) => {
@@ -48,6 +50,8 @@ const components = {
   pre: CodeBlock as any,
   img: CustomImage as any,
   Grid: Grid as any,
+  Details: Details as any,
+  details: Details as any,
 };
 
 interface MarkdownProps {

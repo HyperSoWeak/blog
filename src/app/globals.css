@@ -153,6 +153,14 @@ body {
   color: #a6adc8;
 }
 
+/* Remove default quotes from blockquotes */
+.prose blockquote p:first-of-type::before {
+  content: none;
+}
+.prose blockquote p:last-of-type::after {
+  content: none;
+}
+
 .prose code {
   color: var(--foreground);
   background: rgba(110, 118, 129, 0.4);
@@ -182,17 +190,8 @@ body {
   padding: 0;
 }
 
-.prose img {
-  border: 1px solid var(--border);
-  border-radius: 6px;
-}
-
-.prose :where(img):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.prose :where(figure):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  margin-top: 0;
-  margin-bottom: 0;
+/* Reduce default figure margin in prose */
+.prose figure {
+  margin-top: 1em;
+  margin-bottom: 1em;
 }

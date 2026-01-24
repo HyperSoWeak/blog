@@ -12,8 +12,7 @@ featuredImage: "./image.png"
 
 [Problem Link](https://play.picoctf.org/practice/challenge/492?originalEvent=74&page=1)
 
-<details>
-<summary>Solution</summary>
+<Details summary="Solution">
 
 打開是個簡陋的網頁，根據題目名稱 SSTI，我們試試輸入 `{{7*7}}`，結果網頁回傳 `49`，表示有 Server-Side Template Injection 的漏洞
 
@@ -42,14 +41,13 @@ featuredImage: "./image.png"
 - [iT 邦幫忙::一起幫忙解決難題，拯救 IT 人的一天](https://ithelp.ithome.com.tw/m/articles/10272749)
 - [What SSTI | Server-Side Template Injection Attacks | Imperva](https://www.imperva.com/learn/application-security/server-side-template-injection-ssti/)
 
-</details>
+</Details>
 
 ### Cookie Monster Secret Recipe
 
 [Problem Link](https://play.picoctf.org/practice/challenge/469?originalEvent=74&page=1)
 
-<details>
-<summary>Solution</summary>
+<Details summary="Solution">
 
 打開網頁隨便亂輸入帳密，跳出這個
 
@@ -63,14 +61,13 @@ featuredImage: "./image.png"
 
 > **Flag**: `picoCTF{c00k1e_m0nster_l0ves_c00kies_E634DFBB}`
 
-</details>
+</Details>
 
 ### Rust fixme 1
 
 [Problem Link](https://play.picoctf.org/practice/challenge/461?originalEvent=74&page=1)
 
-<details>
-<summary>Solution</summary>
+<Details summary="Solution">
 
 ```
 ❯ cargo run
@@ -139,7 +136,7 @@ println!(
 
 > **Flag**: `picoCTF{4r3_y0u_4_ru$t4c30n_n0w?}`
 
-</details>
+</Details>
 
 ## Medium
 
@@ -147,8 +144,7 @@ println!(
 
 [Problem Link](https://play.picoctf.org/practice/challenge/487?originalEvent=74&page=2)
 
-<details>
-<summary>Solution</summary>
+<Details summary="Solution">
 
 直接執行 `flaghasher` 他給我們的是 MD5 hash 過後的值，我們顯然不可能從這個值回推原本的 flag
 
@@ -185,4 +181,4 @@ picoCTF{sy5teM_b!n@riEs_4r3_5c@red_0f_yoU_ae1d8678}
 
 > **Flag**: `picoCTF{sy5teM_b!n@riEs_4r3_5c@red_0f_yoU_ae1d8678}`
 
-</details>
+</Details>
