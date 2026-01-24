@@ -4,6 +4,7 @@ import "./globals.css";
 import "katex/dist/katex.min.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { HotReload } from "@/components/HotReload";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const firaMono = Fira_Mono({
@@ -28,8 +29,11 @@ export default function RootLayout({
         className={`${inter.variable} ${firaMono.variable} antialiased bg-background text-foreground min-h-screen flex flex-col`}
       >
         <Navbar />
-        <main className="flex-grow container max-w-5xl mx-auto px-4 py-8">{children}</main>
+        <main className="flex-grow container max-w-5xl mx-auto px-4 py-8">
+          {children}
+        </main>
         <Footer />
+        {process.env.NODE_ENV === "development" && <HotReload />}
       </body>
     </html>
   );
