@@ -1,6 +1,5 @@
 import React from "react";
 import { clsx } from "clsx";
-import { ChevronRight } from "lucide-react";
 
 interface DetailsProps {
   summary: string;
@@ -13,21 +12,17 @@ export function Details({ summary, children, open, className }: DetailsProps) {
   return (
     <details
       className={clsx(
-        "group my-4 rounded-lg border border-border bg-panel overflow-hidden",
+        "group my-6 border border-border bg-panel/30 transition-all duration-200",
         className
       )}
       open={open}
     >
-      <summary className="flex cursor-pointer items-center justify-between bg-panel p-4 font-mono font-bold text-primary transition-colors hover:bg-background/50 select-none list-none [&::-webkit-details-marker]:hidden">
-        <div className="flex items-center gap-2">
-          <ChevronRight
-            size={16}
-            className="transition-transform duration-200 group-open:rotate-90"
-          />
-          <span>{summary}</span>
-        </div>
+      <summary className="flex cursor-pointer items-center bg-panel px-4 py-3 font-mono text-sm font-bold text-primary transition-colors hover:bg-primary/5 select-none list-none [&::-webkit-details-marker]:hidden border-b border-border group-open:border-primary/30">
+        <span className="mr-3 font-mono text-zinc-500 group-open:hidden">[+]</span>
+        <span className="mr-3 font-mono text-primary hidden group-open:inline">[-]</span>
+        <span className="uppercase tracking-widest">{summary}</span>
       </summary>
-      <div className="border-t border-border bg-background p-4 text-sm text-zinc-300">
+      <div className="bg-background/50 p-6 text-sm text-zinc-300 font-mono leading-relaxed prose-code:bg-panel prose-code:text-primary">
         {children}
       </div>
     </details>
