@@ -1,8 +1,9 @@
 import { getAllPosts } from "@/lib/posts";
 import { PostCard } from "@/components/PostCard";
 import { Archive } from "lucide-react";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Archive | Terminal Reverie",
 };
 

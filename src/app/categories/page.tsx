@@ -1,8 +1,9 @@
 import { getAllCategoriesWithCounts } from "@/lib/posts";
 import Link from "next/link";
 import { Folder } from "lucide-react";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Categories | Terminal Reverie",
 };
 
