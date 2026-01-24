@@ -1,0 +1,684 @@
+---
+title: "Atcoder Educational DP 題解"
+date: "2024-08-07"
+tags: ["AtCoder", "DP", "Algorithm"]
+categories: ["題解", "演算法"]
+---
+
+尚未完成，有時間就會補個題目。
+
+## Problem A - Frog 1
+
+[A - Frog 1](https://atcoder.jp/contests/dp/tasks/dp_a)
+
+定義 $f_i$ 為走到第 $i$ 個石頭時的最小成本。由於要走到第 $i$ 階只能從第 $i-1$ 或 $i-2$ 階，因此轉移式如下
+
+$$
+f_i = \min (f_{i-1} + |h_i-h_{i-1}|, f_{i-2} + |h_i-h_{i-2}|)
+$$
+
+```cpp
+void hyper() {
+    int n;
+    cin >> n;
+    vi h(n+1);
+    rep1(i,1,n) cin >> h[i];
+    vi dp(n+1);
+    dp[1] = 0;
+    dp[2] = abs(h[2] - h[1]);
+    rep1(i,3,n) {
+        dp[i] = min(dp[i-2] + abs(h[i] - h[i-2]),
+                    dp[i-1] + abs(h[i] - h[i-1]));
+    }
+    cout << dp[n] << '\n';
+}
+```
+
+## Problem B - Frog 2
+
+[B - Frog 2](https://atcoder.jp/contests/dp/tasks/dp_b)
+
+定義 $f_i$ 為走到第 $i$ 個石頭時的最小成本。轉移式如下
+
+$$
+f_i = \min_{j \in [1,k]} \{ f_{i-j} + |h_i-h_{i-j}| \}
+$$
+
+因為有 $k$ 種可能，直接跑迴圈轉移即可。
+
+```cpp
+void hyper() {
+    int n, k;
+    cin >> n >> k;
+    vi h(n+1);
+    rep1(i,1,n) cin >> h[i];
+    vi dp(n+1);
+    dp[1] = 0;
+    rep1(i,2,n) {
+        int mn = INF;
+        for(int j = 1; j <= k && i-j >= 1; j++) {
+            mn = min(mn, dp[i-j] + abs(h[i] - h[i-j]));
+        }
+        dp[i] = mn;
+    }
+    cout << dp[n] << '\n';
+}
+```
+
+## Problem C - Vacation
+
+[C - Vacation](https://atcoder.jp/contests/dp/tasks/dp_c)
+
+定義一個二維 dp，$f_{i,j}$ 代表考慮第 $1$ 到 $j$ 天，且第 $j$ 天選擇的是活動 $i \in \{0,1,2\}$。轉移式如下
+
+$$
+f_{0,j} = \max (f_{1,j-1} + b_j, f_{2,j-1} + c_j)
+$$
+
+以此類推。
+
+```cpp
+void hyper() {
+    int n;
+    cin >> n;
+    vvi a(n+1, vi(3));
+    rep1(i,1,n) rep(j,0,3) cin >> a[i][j];
+    vvi dp(n+1, vi(3));
+    rep1(i,1,n) rep(j,0,3) {
+        int mx = -INF;
+        rep(k,0,3) if(k != j) {
+            mx = max(mx, dp[i-1][k] + a[i][j]);
+        }
+        dp[i][j] = mx;
+    }
+    cout << max({dp[n][0], dp[n][1], dp[n][2]}) << '\n';
+}
+```
+
+## Problem D - Knapsack 1
+
+[D - Knapsack 1](https://atcoder.jp/contests/dp/tasks/dp_d)
+
+沒有任何變化的 01 背包問題，就不寫題解了嘻嘻。
+
+```cpp
+void hyper() {
+    int n, W;
+    cin >> n >> W;
+    vi w(n+1), v(n+1);
+    rep1(i,1,n) cin >> w[i] >> v[i];
+    vvi dp(n+1, vi(W+1));
+    rep1(i,1,n) rep1(j,0,W) {
+        dp[i][j] = dp[i-1][j];
+        if(j-w[i] >= 0) dp[i][j] = max(dp[i][j], dp[i-1][j-w[i]] + v[i]);
+    }
+    cout << dp[n][W] << '\n';
+}
+```
+
+## Problem E - Knapsack 2
+
+[E - Knapsack 2](https://atcoder.jp/contests/dp/tasks/dp_e)
+
+01 背包問題，但 $W$ 太大了，所以換個方法定義，$f_i$ 表示要裝總價值 $i$ 的物品所需的最小容量，然後從價值大到小的開始找答案。
+
+```cpp
+void hyper() {
+    int n, W;
+    cin >> n >> W;
+    vi w(n+1), v(n+1);
+    rep1(i,1,n) cin >> w[i] >> v[i];
+    int sm = 0;
+    rep1(i,1,n) sm += v[i];
+    vvi dp(n+1, vi(sm+1, INF));
+    dp[0][0] = 0;
+    rep1(i,1,n) rep1(j,0,sm) {
+        dp[i][j] = dp[i-1][j];
+        if(j-v[i] >= 0) dp[i][j] = min(dp[i][j], dp[i-1][j-v[i]] + w[i]);
+    }
+    per1(j,sm,0) {
+        if(dp[n][j] <= W) {
+            cout << j << '\n';
+            return;
+        }
+    }
+}
+```
+
+## Problem F - LCS
+
+[F - LCS](https://atcoder.jp/contests/dp/tasks/dp_f)
+
+LCS 板子題。dp 時記一下是從誰轉移過來，最後找答案就沿路回推。
+
+```cpp
+void hyper() {
+    string s, t;
+    cin >> s >> t;
+    int n = s.size(), m = t.size();
+    vvi dp(n+1, vi(m+1));
+    vvi pr(n+1, vi(m+1));
+    rep1(i,1,n) rep1(j,1,m) {
+        if(s[i-1] == t[j-1]) {
+            dp[i][j] = dp[i-1][j-1] + 1;
+            pr[i][j] = 1;
+        } else if(dp[i][j-1] >= dp[i-1][j]) {
+            dp[i][j] = dp[i][j-1];
+            pr[i][j] = 2;
+        } else {
+            dp[i][j] = dp[i-1][j];
+            pr[i][j] = 3;
+        }
+    }
+    string ans = "";
+    for(int i=n, j=m; i>0 && j>0;) {
+        if(pr[i][j] == 1) {
+            ans.push_back(s[i-1]);
+            i--, j--;
+        }
+        else if(pr[i][j] == 2) j--;
+        else if(pr[i][j] == 3) i--;
+    }
+    reverse(all(ans));
+    cout << ans << '\n';
+}
+```
+
+## Problem G - Longest Path
+
+[G - Longest Path](https://atcoder.jp/contests/dp/tasks/dp_g)
+
+定義 $f_i$ 表示以 $i$ 為結尾的最長路徑長，並依照拓樸順序遍歷節點 $u$，如果存在邊 $u \to v$，就更新
+
+$$
+f_v \leftarrow \max \{ f_v, f_u + 1 \}
+$$
+
+最後答案為 $\max_{i \in V} f_i$
+
+```cpp
+void hyper() {
+    int n, m;
+    cin >> n >> m;
+    vvi g(n+1);
+    vi in(n+1);
+    rep(i,0,m) {
+        int u, v;
+        cin >> u >> v;
+        g[u].push_back(v);
+        in[v]++;
+    }
+    queue<int> q;
+    vi dp(n+1);
+    rep1(i,1,n) if(!in[i]) q.push(i);
+    while(q.size()) {
+        int u = q.front(); q.pop();
+        for(int v: g[u]) {
+            chmax(dp[v], dp[u]+1);
+            if(!--in[v]) q.push(v);
+        }
+    }
+    int mx = 0;
+    rep1(i,1,n) chmax(mx, dp[i]);
+    cout << mx << '\n';
+}
+```
+
+## Problem H - Grid 1
+
+[H - Grid 1](https://atcoder.jp/contests/dp/tasks/dp_h)
+
+經典排組題。走到某一格的方法數就是走到他上面的方法數 + 走到他左邊的方法數， 而不能走的格子方法數顯然是 $0$。定義 $f_{i,j}$ 是走到座標 $(i,j)$ 格子的方法數，轉移式如下
+
+$$
+f_{i,j} =
+\begin{cases}
+    0, & (i,j)\text{ is wall} \\
+    f_{i-1,j}+f_{i,j-1}, & \text{else}
+\end{cases}
+$$
+
+```cpp
+void hyper() {
+    int h, w;
+    cin >> h >> w;
+    vector<string> a(h+1);
+    rep1(i,1,h) {
+        cin >> a[i];
+        a[i] = ' ' + a[i];
+    }
+    vvi dp(h+1, vi(w+1));
+    dp[1][1] = 1;
+    rep1(i,1,h) rep1(j,1,w) {
+        if(i == 1 && j == 1) continue;
+        if(a[i][j] == '#') dp[i][j] = 0;
+        else dp[i][j] = (dp[i-1][j] + dp[i][j-1]) % MOD;
+    }
+    cout << dp[h][w] << '\n';
+}
+```
+
+## Problem I - Coins
+
+[I - Coins](https://atcoder.jp/contests/dp/tasks/dp_i)
+
+機率 dp，跟高中數學題差不多。假設 $f_{i, j}$ 表示有 $i$ 個硬幣，其中 $j$ 個是 head 的機率，那麼它可以從 $i-1$ 個硬幣推得：
+
+$$
+f_{i, j} = f_{i-1, j-1} \times p_i + f_{i-1, j} \times (1 - p_i)
+$$
+
+也就是考慮第 $i$ 個是正面還是反面。注意處理邊界就好，時間複雜度是 $O(n^2)$。
+
+```cpp
+int n;
+double p[MAXN], dp[MAXN][MAXN];
+
+signed main() {
+    hyper;
+    cin >> n;
+    rep1(i,1,n) cin >> p[i];
+    dp[0][0] = 1;
+    rep1(i,1,n) {
+        dp[i][0] = dp[i-1][0]*(1-p[i]);
+        rep1(j,1,i) dp[i][j] = dp[i-1][j-1]*p[i] + dp[i-1][j]*(1-p[i]);
+    }
+    double sum = 0;
+    for(int i=n; i>n-i; --i) sum += dp[n][i];
+    cout << fixed << setprecision(10) << sum;
+}
+```
+
+## Problem J - Sushi
+
+[J - Sushi](https://atcoder.jp/contests/dp/tasks/dp_j)
+
+關鍵是盤子裡最多只會有 3 個壽司，而且因為隨機均勻分布，盤子的順序並不重要， 所以我們可以用三個維度 $x, y, z$ 分別表示剩餘 $1, 2, 3$ 個壽司的盤子數量，空盤子數就是 $n - x - y - z$。令 $f(x,y,z)$ 是盤子在此狀態下時的答案（吃光所需次數的期望值），不難推出：
+
+$$
+f(x,y,z) = \frac{1}{x+y+z} \left( n + x f(x-1,y,z) + y f(x+1,y-1,z) + z f(x,y+1,z-1) \right)
+$$
+
+這邊使用遞迴 + 記憶化搜尋來寫（我也不知道為什麼當初這樣寫，不過這樣不用考慮 計算順序），總之複雜度是 $O(n^3)$ 稍微有點緊。
+
+```cpp
+int n, cnt[4];
+double dp[MAXN][MAXN][MAXN];
+
+double sol(int x, int y, int z) {
+    if(x<0 || y<0 || z<0) return 0;
+    if(dp[x][y][z] >= 0) return dp[x][y][z];
+    return dp[x][y][z] = (n+x*sol(x-1,y,z)+y*sol(x+1,y-1,z)+z*sol(x,y+1,z-1))/(x+y+z);
+}
+
+signed main() {
+    hyper;
+    cin >> n;
+    rep1(i,1,n) {
+        int x;
+        cin >> x;
+        cnt[x]++;
+    }
+    rep1(i,0,n) rep1(j,0,n) rep1(k,0,n) dp[i][j][k] = -1;
+    dp[0][0][0] = 0;
+    cout << fixed << setprecision(10) << sol(cnt[1],cnt[2],cnt[3]);
+}
+```
+
+## Problem K - Stones
+
+[K - Stones](https://atcoder.jp/contests/dp/tasks/dp_k)
+
+一定必勝或必敗，定義 $f_i$ 代表目前只有 $i$ 顆石頭的情況下，先手是否獲勝。只要拿走任一種數量的石頭使得對手接下來必敗就贏了，否則就是輸。轉移式如下
+
+$$
+f_i =
+\begin{cases}
+    1, & \exists \, a_i : f_{i-a_i} = 0 \\
+    0, & else
+\end{cases}
+$$
+
+```cpp
+int n, k, a[105];
+bool dp[100005];
+
+signed main() {
+    hyper;
+    cin >> n >> k;
+    rep(i,0,n) cin >> a[i];
+    rep1(i,1,k) rep(j,0,n) {
+        if(i-a[j] >= 0 && !dp[i-a[j]]) dp[i] = 1;
+    }
+    cout << (dp[k] ? "First" : "Second");
+}
+```
+
+## Problem L - Deque
+
+[L - Deque](https://atcoder.jp/contests/dp/tasks/dp_l)
+
+又是賽局的題目，因為兩邊都可以拿東西，所以變成區間 dp。可以看出兩邊都是想讓 自己分數越高越好，假設 $f(l, r)$ 是 $[l, r]$ 區間中先手減後手的分數 最大值（不一定是 $X-Y$ 或 $Y-X$），轉移時 $X, Y$ 會互換，所以變 成要找最小值，也就是加負號，得到：
+
+$$
+f(l, r) = \max \{ a_l - f(l+1, r), a_r - f(l, r-1) \}
+$$
+
+前者表示拿 $l$，後者表示拿 $r$，注意 $l$ 跟 $r$ 的計算方向是相反的，答案是整個區間，也就是 $f(1, n)$。
+
+```cpp
+int n, a[MAXN], dp[MAXN][MAXN];
+
+signed main() {
+    hyper;
+    cin >> n;
+    rep1(i,1,n) {
+        cin >> a[i];
+        dp[i][i] = a[i];
+    }
+    for(int l=n; l>=1; --l) {
+        rep1(r,l+1,n) {
+            dp[l][r] = max(a[l] - dp[l+1][r], a[r] - dp[l][r-1]);
+        }
+    }
+    cout << dp[1][n];
+}
+```
+
+## Problem M - Candies
+
+[M - Candies](https://atcoder.jp/contests/dp/tasks/dp_m)
+
+設 $f(i, j)$ 是考慮到第 $i$ 個小孩，用掉 $j$ 個糖果時的方法數， 則：
+
+$$
+f(i, j) = \sum_{k = j - a_{i}}^{j} f(i-1, k)
+$$
+
+但這樣時間會炸，很容易發現可以用前綴和處理連續區間和，就可以把時間降到 $O(nk)$。然後可以用滾動 dp 進一步變成一維空間，好耶。
+
+```cpp
+int n, k, a[MAXN], dp[MAXK], ps[MAXK];
+
+signed main() {
+    hyper;
+    cin >> n >> k;
+    rep1(i,1,n) cin >> a[i];
+    rep1(j,0,k) {
+        dp[j] = (j <= a[1]);
+        ps[j+1] = ps[j] + dp[j];
+    }
+    rep1(i,2,n) {
+        rep1(j,0,k) dp[j] = (ps[j+1] - ps[max(0,j-a[i])]) % MOD;
+        rep1(j,0,k) ps[j+1] = ps[j] + dp[j];
+    }
+    cout << dp[k];
+}
+```
+
+## Problem N - Slimes
+
+[N - Slimes](https://atcoder.jp/contests/dp/tasks/dp_n)
+
+典型區間 dp。定義 $f_{i,j}$ 為合併第 $i$ 到第 $j$ 隻史萊姆的最小成本。則轉移式如下
+
+$$
+f_{i,j} = \min_{i \le k \le j} \left\{ f_{i,k} + f_{k+1,j} + \sum_{n=i}^{j} a_n \right\}
+$$
+
+其中 $\sum_{n=i}^{j} a_n$ 可以用前綴和 $O(1)$ 處理掉，總複雜度 $O(N^3)$。
+
+```cpp
+int n, a[MAXN], dp[MAXN][MAXN], ps[MAXN];
+
+signed main() {
+    hyper;
+    cin >> n;
+    rep1(i,1,n) {
+        cin >> a[i];
+        dp[i][i] = 0;
+        ps[i] = ps[i-1] + a[i];
+    }
+    rep1(len,2,n) rep1(i,1,n-len+1) {
+        int j = i + len - 1;
+        dp[i][j] = INF;
+        rep(k,i,j) dp[i][j] = min(dp[i][j], dp[i][k]+dp[k+1][j]+ps[j]-ps[i-1]);
+    }
+    cout << dp[1][n];
+}
+```
+
+## Problem O - Matching
+
+[O - Matching](https://atcoder.jp/contests/dp/tasks/dp_o)
+
+本質上是二分圖完美匹配數量，用狀壓 dp 可以做。考慮 $f_{i, S}$ 是前 $i$ 個男生跟女生子集合 $S$ 的匹配數，如果 $a_{i,j} = 1$，代表我可以把 $j$ 加入 $S$ 轉移過去，轉移變成：
+
+$$
+f_{i+1, S} = \sum_{j \in S, a_{i,j} = 1} f_{i, S \setminus \{j\}}
+$$
+
+答案是 $f_{N, \{0, 1, \dots, N-1\}}$，時間複雜度是 $O(2^N \cdot N)$。
+
+可以參考 [k 染色问题、二分图完美匹配数、k 路径问题](https://www.cnblogs.com/Neal-lee/p/16851228.html)
+
+```cpp
+int n, dp[22][1<<21];
+bool a[21][21];
+
+signed main() {
+    hyper;
+    cin >> n;
+    rep(i,0,n) rep(j,0,n) cin >> a[i][j];
+    dp[0][0] = 1;
+    rep(i,0,n) rep(t,0,1<<n) {
+        if(dp[i][t] == 0) continue;
+        rep(j,0,n) if(!(t&(1<<j)) && a[i][j]) {
+            dp[i+1][t|(1<<j)] = (dp[i+1][t|(1<<j)] + dp[i][t]) % MOD;
+        }
+    }
+    cout << dp[n][(1<<n)-1];
+}
+```
+
+## Problem P - Independent Set
+
+[P - Independent Set](https://atcoder.jp/contests/dp/tasks/dp_p)
+
+樹上 dp 題，把節點是黑或白的方法數分開討論，定義 $f_{u, c}, c \in \{0, 1\}$ 表示節點顏色，是根為 $u$ 的子樹在 $u$ 顏色是 $c$ 時的答案，轉移時就可以分顏色討論，在 dfs 時順便把小孩的答案乘上去，複雜度 $O(N)$。
+
+```cpp
+int n, dp[MN][2];
+vector<int> e[MN];
+
+void dfs(int u, int p) {
+    dp[u][0] = dp[u][1] = 1;
+    if(u != 1 && e[u].size() == 1) return;
+    for(int v: e[u]) {
+        if(v == p) continue;
+        dfs(v, u);
+        dp[u][0] = (dp[u][0] * (dp[v][0] + dp[v][1])) % MOD;
+        dp[u][1] = (dp[u][1] * dp[v][0]) % MOD;
+    }
+}
+
+signed main() {
+    hyper;
+    cin >> n;
+    rep(i,0,n-1) {
+        int x, y;
+        cin >> x >> y;
+        e[x].push_back(y);
+        e[y].push_back(x);
+    }
+    dfs(1, 0);
+    cout << (dp[1][0] + dp[1][1]) % MOD;
+}
+```
+
+## Problem Q - Flowers
+
+[Q - Flowers](https://atcoder.jp/contests/dp/tasks/dp_q)
+
+看起來是帶權重的 LIS，定義 $f_i$ 是選擇的最後一朵是第 $i$ 朵花的答案，因此只能從高度比目前小的轉移過來，轉移式是：
+
+$$
+f_i = \max_{t < i, h_t < h_i} f_t + a_i
+$$
+
+而答案是 $\sum f_i$，但這樣複雜度會變 $O(N^2)$ 不會過。我們把高度排 序當作 index，就變成單點查詢、區間最大值的問題，簡單用個 BIT（或線段樹）加速就過了，時間複雜度變成 $O(N \log N)$，好耶。
+
+```cpp
+struct Fenwick {
+    vector<int> v;
+    int sz;
+    Fenwick(int n) {
+        v.resize(n+1, 0);
+        sz = n;
+    }
+    int lowbit(int x) { return x&-x; }
+    void modify(int p, int x) {
+        for(int i=p; i<=sz; i+=lowbit(i)) v[i] = max(v[i], x);
+    }
+    int query(int p) {
+        int mx = -INF;
+        for(int i=p; i>0; i-=lowbit(i)) mx = max(mx, v[i]);
+        return mx;
+    }
+};
+
+Fenwick bit(MN);
+
+signed main() {
+    hyper;
+    int n;
+    vi h(MN), a(MN);
+    cin >> n;
+    rep1(i,1,n) cin >> h[i];
+    rep1(i,1,n) cin >> a[i];
+
+    vi tmp(h), idx(MN);
+    sort(tmp.begin()+1, tmp.begin()+1+n);
+    rep1(i,1,n) idx[tmp[i]] = i;
+
+    int ans = -INF;
+    rep1(i,1,n) {
+        int t = max(bit.query(idx[h[i]]-1), 0) + a[i];
+        bit.modify(idx[h[i]], t);
+        ans = max(ans, t);
+    }
+    cout << ans << '\n';
+}
+```
+
+## Problem R - Walk
+
+[R - Walk](https://atcoder.jp/contests/dp/tasks/dp_r)
+
+這題完全在考矩陣乘法，設 $f(u, v, t)$ 表示從 $u$ 到 $v$ 走 $t$ 步的方法數，則 $f(u, v, 2t) = \sum_{k \in V} f(u, k, t) \times f(k, v, t)$，所以用矩陣快速冪算出 $a^K$ 然後把所有 entries 相加就是答案ㄌ。時間複雜度是 $O(N^3 \log K)$。
+
+```cpp
+mat operator*(const mat &a, const mat &b) {
+    int n = a.size();
+    mat c(n, vi(n, 0));
+    rep(i,0,n) rep(j,0,n) rep(k,0,n)
+        c[i][j] = (c[i][j] + a[i][k] * b[k][j]) % MOD;
+    return c;
+}
+
+mat operator^(mat a, int k) {
+    int n = a.size();
+    mat b(n, vi(n, 0));
+    rep(i,0,n) b[i][i] = 1;
+    while(k) {
+        if(k & 1) b = b * a;
+        a = a * a;
+        k >>= 1;
+    }
+    return b;
+}
+
+signed main() {
+    hyper;
+    int n, k;
+    cin >> n >> k;
+    mat a(n, vi(n));
+    rep(i,0,n) rep(j,0,n) cin >> a[i][j];
+    mat b = a ^ k;
+    int sum = 0;
+    rep(i,0,n) rep(j,0,n) sum = (sum + b[i][j]) % MOD;
+    cout << sum << '\n';
+}
+```
+
+## Problem S - Digit Sum
+
+[S - Digit Sum](https://atcoder.jp/contests/dp/tasks/dp_s)
+
+數位 dp 是我之前沒有碰過的題型，所以看 [OI Wiki](https://oi-wiki.org/dp/number/) 研究了一下。
+
+要記錄三個東西，目前位數、總和（取模）、以及前面所有位數是否達到上限（`lim`）。`lim` 是一個布林值，舉例來說，$k$ 是 $54321$，假設我考慮了前三位是 $543$，那此時 `lim` 是 true，表示第四位只能填 $0 \sim 2$；否則假 設前三位是 $522$ 沒有達到上限，那 `lim` 就是 false，第四位可以隨便填。
+
+轉移的部分看 code 應該就很清楚了，數位 dp 轉移關係比較複雜，用記憶化搜索比較好寫。記得最後答案要減一因為會把 0 也算進去。
+
+```cpp
+string k;
+int d, n;
+int dp[10005][105][2];
+
+int sol(int pos, int sum, int lim) {
+    if(pos == n) return sum == 0;
+    int& ret = dp[pos][sum][lim];
+    if(~ret) return ret;
+    ret = 0;
+    int up = lim ? k[pos] - '0' : 9;
+    rep1(i,0,up) ret += sol(pos+1, (sum+i)%d, lim&&(i==up));
+    return ret %= MOD;
+}
+
+signed main() {
+    hyper;
+    rr(dp, -1);
+    cin >> k >> d;
+    n = k.size();
+    cout << (sol(0, 0, 1) - 1 + MOD) % MOD << '\n';
+}
+```
+
+## Problem T - Permutation
+
+[T - Permutation](https://atcoder.jp/contests/dp/tasks/dp_t)
+
+這題我覺得有點 tricky，首先最直接想到的是目前處理到的位置跟最後一位數字，這 兩個是要記錄的狀態。因此我們定義 $f(i, j)$ 是長度 $i$ 且最後一位為 $j$ 的方法數（用 $1 \sim i$ 的正整數排列）。關鍵在於我們可以從 $i-1$ 轉移過來，因為我們可以調整數字，只要不影響大小順序。例如原先是 $(1, 3, 2)$ 而第四位想要是 $2$ 的話，只要把前三位數都 $+1$ 就可以了，也就是變成 $(1, 4, 3, 2)$。考慮 $>$ 或 $<$ 能讓上一個數字是多少，我 們可以得到轉移式：
+
+$$
+f(i, j) =
+\begin{cases}
+\sum_{k=1}^{j} f(i-1, k), \quad (<) \\
+\sum_{k=j}^{i-1} f(i-1, k), \quad (>)
+\end{cases}
+$$
+
+然後簡單用前綴和處理，記得取模。
+
+```cpp
+signed main() {
+    hyper;
+    int n;
+    string s;
+    cin >> n >> s;
+    mat dp(n+1, vi(n+1, 0));
+    dp[1][1] = 1;
+    rep1(i,2,n) {
+        vi ps(i+1, 0);
+        rep1(j,1,i-1) ps[j] = (ps[j-1] + dp[i-1][j]) % MOD;
+        rep1(j,1,i) {
+            if(s[i-2] == '<') dp[i][j] = ps[j-1];
+            else dp[i][j] = (ps[i-1] - ps[j-1] + MOD) % MOD;
+        }
+    }
+    int ans = 0;
+    rep1(i,1,n) ans = (ans + dp[n][i]) % MOD;
+    cout << ans << '\n';
+}
+```

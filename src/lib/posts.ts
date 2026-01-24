@@ -23,6 +23,21 @@ export async function getPostSlugs() {
   });
 }
 
+function getSnippet(content: string, length = 160): string {
+  return (
+    content
+      .replace(/---[\s\S]*?---/, "") // Remove frontmatter just in case
+      .replace(/```[\s\S]*?```/g, "") // Remove code blocks
+      .replace(/\$\$[\s\S]*?\$\$/g, "") // Remove block math
+      .replace(/\$[^$\n]+\$/g, "") // Remove inline math
+      .replace(/#+\s+/g, "") // Remove headers
+      .replace(/!?\[\[?.*?\].*?\]?\]?\(.*\)/g, "") // Remove images and links
+      .replace(/\s+/g, " ") // Normalize whitespace
+      .trim()
+      .slice(0, length) + "..."
+  );
+}
+
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   const realSlug = slug.replace(/\.mdx$/, "");
   const postDir = path.join(POSTS_DIR, realSlug);
@@ -43,7 +58,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     slug: realSlug,
     title: data.title,
     date: data.date,
-    description: data.description,
+    description: data.description || getSnippet(content),
     tags: data.tags || [],
     categories: data.categories || [],
     featuredImage: data.featuredImage || null,
