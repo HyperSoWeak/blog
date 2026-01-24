@@ -95,7 +95,7 @@ export default function AboutPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-500">STATUS:</span>
-                <span className="text-success">ONLINE</span>
+                <span className="text-success">{siteConfig.profile.status}</span>
               </div>
             </div>
           </div>

@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
       const sendUpdate = () => {
         try {
           controller.enqueue(encoder.encode("data: update\n\n"));
-        } catch (e) {
+        } catch {
           // Stream likely closed
         }
       };
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
       const interval = setInterval(() => {
         try {
           controller.enqueue(encoder.encode(": keepalive\n\n"));
-        } catch (e) {
+        } catch {
           clearInterval(interval);
           watcher.close();
         }

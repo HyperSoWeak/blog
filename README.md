@@ -82,6 +82,7 @@ export const siteConfig = {
     name: "Your Name",
     alias: "youralias",
     location: "Your Location",
+    status: "ONLINE",
     email: "you@example.com",
   },
   social: {

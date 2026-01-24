@@ -4,6 +4,7 @@ export const siteConfig = {
     name: "Hyper Hu",
     alias: "hypersoweak",
     location: "Taiwan, NTU",
+    status: "ONLINE",
     email: "hypersoweak@gmail.com",
   },
   social: {
