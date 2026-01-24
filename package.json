@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "create-post": "node scripts/create-post.js",
     "copy-assets": "node scripts/copy-assets.js",
     "build": "npm run copy-assets && next build",
     "start": "next start",
