@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
   const stream = new ReadableStream({
     start(controller) {
       const encoder = new TextEncoder();
+      let debounceTimer: NodeJS.Timeout | null = null;
 
       const sendUpdate = () => {
         try {
@@ -25,12 +26,18 @@ export async function GET(request: NextRequest) {
 
       // Watch content directory recursively
       const watcher = fs.watch(contentDir, { recursive: true }, (eventType, filename) => {
-        // Debounce or just send? Next.js router.refresh() handles quick calls well enough usually.
-        // We'll just send.
         // Ignore dotfiles to avoid noise
         if (filename && !filename.startsWith(".")) {
-          console.log(`[HotReload] Change detected: ${filename}`);
-          sendUpdate();
+          // Debounce: clear existing timer and set a new one
+          if (debounceTimer) {
+            clearTimeout(debounceTimer);
+          }
+
+          debounceTimer = setTimeout(() => {
+            console.log(`[HotReload] Change detected: ${filename} (debounced)`);
+            sendUpdate();
+            debounceTimer = null;
+          }, 200); // Wait 200ms for further changes
         }
       });
 
@@ -47,6 +54,7 @@ export async function GET(request: NextRequest) {
       request.signal.addEventListener("abort", () => {
         clearInterval(interval);
         watcher.close();
+        if (debounceTimer) clearTimeout(debounceTimer);
       });
     },
   });
