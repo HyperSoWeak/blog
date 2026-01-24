@@ -24,18 +24,17 @@ export async function getPostSlugs() {
 }
 
 function getSnippet(content: string, length = 160): string {
-  return (
-    content
-      .replace(/---[\s\S]*?---/, "") // Remove frontmatter just in case
-      .replace(/```[\s\S]*?```/g, "") // Remove code blocks
-      .replace(/\$\$[\s\S]*?\$\$/g, "") // Remove block math
-      .replace(/\$[^$\n]+\$/g, "") // Remove inline math
-      .replace(/#+\s+/g, "") // Remove headers
-      .replace(/!?\[\[?.*?\].*?\]?\]?\(.*\)/g, "") // Remove images and links
-      .replace(/\s+/g, " ") // Normalize whitespace
-      .trim()
-      .slice(0, length) + "..."
-  );
+  const plainText = content
+    .replace(/---[\s\S]*?---/, "") // Remove frontmatter just in case
+    .replace(/```[\s\S]*?```/g, "") // Remove code blocks
+    .replace(/\$\$[\s\S]*?\$\$/g, "") // Remove block math
+    .replace(/\$[^$\n]+\$/g, "") // Remove inline math
+    .replace(/#+\s+/g, "") // Remove headers
+    .replace(/!?\[\[?.*?\]\]?\(.*?\)/g, "") // Remove images and links
+    .replace(/\s+/g, " ") // Normalize whitespace
+    .trim();
+
+  return Array.from(plainText).slice(0, length).join("") + "...";
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {

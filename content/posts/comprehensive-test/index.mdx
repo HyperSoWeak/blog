@@ -1,123 +1,190 @@
 ---
-title: "架構與測試 (Architecture & Test)"
+title: "系統架構與功能測試 (System Architecture & Features Test)"
 date: "2026-01-24"
-description: "這是一篇測試文章，包含了數學公式、大量的程式碼、列表以及圖片測試，用來驗證部落格的顯示效果。"
-tags: ["Owo"]
-categories: ["隨筆"]
-featuredImage: "image.png"
+description: "這是一篇關於系統架構的完整測試文章，涵蓋了數學公式、多語言程式碼區塊、排版格式、圖片展示以及表格樣式，用以驗證 Terminal Reverie 部落格主題的各項渲染能力。"
+tags: ["System", "Test", "Markdown"]
+categories: ["工程", "測試"]
+featuredImage: "./image.png"
 ---
 
-歡迎來到 **Terminal Reverie** 的系統測試頁面。這裡我們將測試所有的 Markdown 渲染功能。
+> "Theory is when you know everything but nothing works. Practice is when everything works but no one knows why. In our lab, theory and practice are combined: nothing works and no one knows why." — Albert Einstein (attributed)
 
-## 目錄 (Table of Contents)
+歡迎來到 **Terminal Reverie** 的系統測試頁面。本文旨在全面測試本部落格主題對於各種 Markdown 語法及擴充功能的渲染支援度，確保在不同裝置與情境下皆能提供最佳的閱讀體驗。
 
-測試自動生成的目錄是否正確捕捉到了這裡的標題。
+## 1. 排版與文字格式 (Typography)
 
-## 1. 文本格式 (Typography)
+文字是傳遞訊息的核心。我們需要確保各種強調語法清晰易讀，且與背景維持足夠的對比度。
 
-這是一段普通的文字。我們需要確保字體易讀，且與背景有足夠的對比。
-_斜體 (Italic)_, **粗體 (Bold)**, **_粗斜體 (Bold Italic)_**, ~~刪除線 (Strikethrough)~~
+- **粗體 (Bold)**：用於強調關鍵字，例如 **System Online**。
+- _斜體 (Italic)_：用於專有名詞或強調語氣，例如 _NullPointer_。
+- **_粗斜體 (Bold Italic)_**：極少使用，但需確保渲染正確。
+- ~~刪除線 (Strikethrough)~~：用於表示已過時或錯誤的資訊。
+- `行內程式碼 (Inline Code)`：用於標示變數、指令或路徑，例如 `npm install`。
+- [超連結 (Link)](https://github.com/Hypersoweak)：連結應有明顯的 hover 效果。
 
-> 引用區塊 (Blockquote):
-> "Talk is cheap. Show me the code." - Linus Torvalds
+### 引用區塊 (Blockquotes)
+
+單行引用：
+
+> 程式碼就像幽默感，如果需要解釋，那就不好笑了。
+
+巢狀引用：
+
+> 第一層引用
 >
-> 這是一個多行引用。
+> > 第二層引用：深入探討問題的核心。
+> >
+> > > 第三層引用：直至遞迴的盡頭。
 
 ## 2. 列表 (Lists)
 
-### 無序列表
+### 無序列表 (Unordered List)
 
-- 第一項
-- 第二項
-  - 子項目 A
-  - 子項目 B
-- 第三項
+- 前端技術
+  - React
+  - Next.js
+  - Tailwind CSS
+- 後端技術
+  - Node.js
+  - Python (FastAPI)
+  - Go (Gin)
 
-### 有序列表
+### 有序列表 (Ordered List)
 
-1. 初始化系統
-2. 載入核心模組
-3. 執行測試腳本
-   1. 單元測試
-   2. 整合測試
+1. **需求分析**：確認系統功能邊界。
+2. **系統設計**：
+   1. 資料庫 schema 設計。
+   2. API 介面定義。
+3. **實作與測試**：
+   1. 單元測試 (Unit Test)。
+   2. 整合測試 (Integration Test)。
+   3. 壓力測試 (Stress Test)。
+4. **部署上線**：CI/CD 流程自動化。
 
 ## 3. 程式碼區塊 (Code Blocks)
 
-inline `code` test。
+本主題採用 Catppuccin Mocha 配色，支援多種語言的語法高亮，並具備複製按鈕與語言標籤。
 
-測試複製按鈕與語法高亮。
+### TypeScript (React Component)
 
-### TypeScript
+```tsx
+import React, { useState } from "react";
 
-```typescript
-interface SystemConfig {
-  env: "development" | "production";
-  port: number;
-  features: string[];
+interface CounterProps {
+  initialValue?: number;
 }
 
-const config: SystemConfig = {
-  env: "production",
-  port: 8080,
-  features: ["auth", "logging", "rate-limiting"],
+export const Counter: React.FC<CounterProps> = ({ initialValue = 0 }) => {
+  const [count, setCount] = useState(initialValue);
+
+  return (
+    <div className="p-4 border rounded">
+      <p className="text-lg mb-2">Current Count: {count}</p>
+      <button
+        onClick={() => setCount((prev) => prev + 1)}
+        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Increment
+      </button>
+    </div>
+  );
 };
-
-function startSystem(cfg: SystemConfig) {
-  console.log(`Starting system on port ${cfg.port}...`);
-  // ... initialization logic
-}
 ```
 
-### Python
+### Python (Data Science)
 
 ```python
-import os
-import sys
+import numpy as np
+import pandas as pd
 
-def optimize_neural_net(layers):
+def analyze_data(file_path: str) -> pd.DataFrame:
     """
-    Simulates a neural network optimization process.
+    Reads a CSV file and performs basic analysis.
     """
-    print(f"Optimizing {len(layers)} layers...")
-    return [layer * 0.99 for layer in layers]
+    try:
+        df = pd.read_csv(file_path)
+        print(f"Data shape: {df.shape}")
+
+        # Calculate summary statistics
+        summary = df.describe()
+        return summary
+    except FileNotFoundError:
+        print(f"Error: File not found at {file_path}")
+        return pd.DataFrame()
 
 if __name__ == "__main__":
-    weights = [0.5, 0.2, 0.8, 0.1]
-    new_weights = optimize_neural_net(weights)
-    print(f"New weights: {new_weights}")
+    result = analyze_data("data/metrics.csv")
+    print(result)
 ```
 
-### Rust
+### Rust (System Programming)
 
 ```rust
-fn main() {
-    let system_status = "ONLINE";
-    println!("System Status: {}", system_status);
+use std::fs::File;
+use std::io::{self, BufRead};
+use std::path::Path;
 
-    let items = vec![1, 2, 3, 4, 5];
-    let sum: i32 = items.iter().sum();
-    println!("Sum: {}", sum);
+fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
+where
+    P: AsRef<Path>,
+{
+    let file = File::open(filename)?;
+    Ok(io::BufReader::new(file).lines())
 }
+
+fn main() {
+    if let Ok(lines) = read_lines("./hosts.txt") {
+        for line in lines {
+            if let Ok(ip) = line {
+                println!("Connecting to {}", ip);
+            }
+        }
+    }
+}
+```
+
+### Shell (Terminal Commands)
+
+```bash
+# Update system packages
+sudo apt update && sudo apt upgrade -y
+
+# Install dependencies
+pnpm install
+
+# Start development server with turbo
+pnpm dev --turbo
 ```
 
 ## 4. 數學公式 (Mathematics)
 
-我們使用 LaTeX 來渲染數學公式。
+本站支援 LaTeX 語法渲染數學公式，適合展示演算法分析與物理模型。
 
-### 行內公式
+### 行內公式 (Inline)
 
-著名的質能等價公式：$E = mc^2$。
-Euler's identity: $e^{i \pi} + 1 = 0$.
+著名的歐拉恆等式：$e^{i\pi} + 1 = 0$。
+質能等價公式：$E = mc^2$。
 
-### 區塊公式
+### 區塊公式 (Block)
 
-高斯積分 (Gaussian Integral):
+高斯積分 (Gaussian Integral)，在機率論與統計學中極為重要：
 
 $$
 \int_{-\infty}^{\infty} e^{-x^2} \, dx = \sqrt{\pi}
 $$
 
-矩陣運算:
+馬克士威方程組 (Maxwell's Equations) 描述了電場、磁場與電荷密度、電流密度之間的關係：
+
+$$
+\begin{aligned}
+\nabla \cdot \mathbf{E} &= \frac{\rho}{\varepsilon_0} \\
+\nabla \cdot \mathbf{B} &= 0 \\
+\nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+\nabla \times \mathbf{B} &= \mu_0(\mathbf{J} + \varepsilon_0 \frac{\partial \mathbf{E}}{\partial t})
+\end{aligned}
+$$
+
+矩陣運算展示：
 
 $$
 A = \begin{pmatrix}
@@ -130,55 +197,66 @@ d & -b \\
 \end{pmatrix}
 $$
 
-Maxwell's Equations:
+## 5. 圖片展示 (Images)
 
-$$
-\begin{aligned}
-\nabla \cdot \mathbf{E} &= \frac{\rho}{\varepsilon_0} \\
-\nabla \cdot \mathbf{B} &= 0 \\
-\nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
-\nabla \times \mathbf{B} &= \mu_0(\mathbf{J} + \varepsilon_0 \frac{\partial \mathbf{E}}{\partial t})
-\end{aligned}
-$$
+支援圖片說明 (Caption) 與自定義 Grid 排版。
 
-## 5. 圖片測試 (Images)
+### 單張圖片
 
-### 本地圖片 (Local Image)
+這是一張本地圖片，展示了主題的預設圖片樣式。
 
-這是一張放在文章資料夾內的圖片 `local.png`。
+![Terminal Reverie Theme Preview](./image.png "Terminal Reverie 預設主題預覽")
 
-![Local Image Test](./local.png "這是一張本地圖片的說明文字 (This is a caption)")
+### Grid 排版 (Side by Side)
 
-### 無說明的圖片
+使用 `<Grid>` 元件將圖片並排顯示，適合展示對比圖或相簿。
 
-這張圖片沒有設定 Title 屬性，所以應該不會顯示 Caption。
-
-![No Caption](./local.png)
-
-### 遠端圖片
-
-測試遠端圖片是否也能正常運作。
-
-![Remote Image](https://placehold.co/600x200/111/fff?text=REMOTE "這是遠端圖片的說明")
-(此處使用 placeholder，因為實際圖片需要上傳)
-
-### 並排圖片測試
-
-![測試圖片](https://placehold.co/800x400/111/00f0ff?text=SYSTEM_TEST_IMAGE)
+<Grid cols={2}>
+  ![Placeholder 1](https://placehold.co/800x600/1e1e2e/89b4fa?text=Grid+Item+1 "Grid Layout - Item
+  1") ![Placeholder 2](https://placehold.co/800x600/1e1e2e/a6e3a1?text=Grid+Item+2 "Grid Layout -
+  Item 2")
+</Grid>
 
 ## 6. 表格 (Tables)
 
-| 服務名稱     |     狀態     | 延遲 (ms) |
-| :----------- | :----------: | --------: |
-| Auth Service |  ✅ Online   |        45 |
-| Database     |  ✅ Online   |        12 |
-| Cache        | ⚠️ Degrading |       120 |
-| Search       |  ❌ Offline  |         - |
+表格樣式應簡潔明瞭，支援標頭與內容的對齊。
 
-## 7. 結論
+| 服務名稱 (Service) |                   狀態 (Status)                    | 延遲 (Latency) | 負責人 (Owner) |
+| :----------------- | :------------------------------------------------: | -------------: | :------------- |
+| **Auth Service**   |   <span className="text-green-500">Online</span>   |           45ms | @backend_team  |
+| **Database**       |   <span className="text-green-500">Online</span>   |           12ms | @dba_admin     |
+| **Cache Cluster**  | <span className="text-yellow-500">Degrading</span> |          120ms | @sre_team      |
+| **Search Engine**  |   <span className="text-red-500">Offline</span>    |              - | @search_ops    |
 
-系統測試完畢。所有模組應正常運作。
+## 7. 其他元素
+
+### 分隔線 (Horizontal Rule)
 
 ---
 
-\*End of transmission.
+### 細節摺疊 (Details)
+
+<details>
+<summary>點擊展開查看詳細系統日誌</summary>
+
+```log
+[INFO] 2026-01-24 10:00:00 - System initialization started.
+[INFO] 2026-01-24 10:00:01 - Loading configuration from /etc/config.yaml.
+[WARN] 2026-01-24 10:00:02 - Cache server connection slow (150ms).
+[INFO] 2026-01-24 10:00:03 - Database connected successfully.
+[INFO] 2026-01-24 10:00:05 - System ready. Listening on port 8080.
+```
+
+</details>
+
+### 任務列表 (Task List)
+
+- [x] 完成基礎架構搭建
+- [x] 實作 Markdown 渲染引擎
+- [x] 整合 LaTeX 數學公式支援
+- [ ] 增加全站搜尋功能
+- [ ] 實作留言評論系統
+
+---
+
+_End of System Test. Transmission Terminated._
