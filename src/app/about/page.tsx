@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Instagram, Mail } from "lucide-react";
+import { siteConfig } from "@/lib/config";
 
 export const metadata = {
   title: "About Me | Terminal Reverie",
@@ -38,7 +39,7 @@ export default function AboutPage() {
             <div className="group relative flex w-32 md:w-full aspect-square items-center justify-center overflow-hidden border border-border bg-zinc-950 shrink-0">
               <img
                 src="/images/about/avatar.png"
-                alt="Hyper Hu"
+                alt={siteConfig.profile.name}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
             </div>
@@ -50,15 +51,15 @@ export default function AboutPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-500">ID:</span>
-                <span className="text-foreground">Hyper Hu</span>
+                <span className="text-foreground">{siteConfig.profile.name}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-500">ALIAS:</span>
-                <span className="text-zinc-300">hypersoweak</span>
+                <span className="text-zinc-300">{siteConfig.profile.alias}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-500">LOC:</span>
-                <span className="text-zinc-300">Taiwan, NTU</span>
+                <span className="text-zinc-300">{siteConfig.profile.location}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-500">STATUS:</span>
@@ -67,22 +68,34 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="flex justify-center md:justify-start gap-4">
+          <div className="grid grid-cols-4 md:grid-cols-2 gap-4">
             <a
-              href="https://github.com/HyperSoWeak"
-              className="flex-1 md:flex-none flex justify-center border border-border bg-zinc-950 p-2 transition-all hover:border-primary hover:bg-primary hover:text-black rounded-sm"
+              href={siteConfig.social.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex justify-center border border-border bg-zinc-950 p-2 transition-all hover:border-primary hover:bg-primary hover:text-black rounded-sm"
             >
               <Github size={20} />
             </a>
             <a
-              href="https://linkedin.com"
-              className="flex-1 md:flex-none flex justify-center border border-border bg-zinc-950 p-2 transition-all hover:border-primary hover:bg-primary hover:text-black rounded-sm"
+              href={siteConfig.social.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex justify-center border border-border bg-zinc-950 p-2 transition-all hover:border-primary hover:bg-primary hover:text-black rounded-sm"
             >
               <Linkedin size={20} />
             </a>
             <a
-              href="mailto:hyperhu@example.com"
-              className="flex-1 md:flex-none flex justify-center border border-border bg-zinc-950 p-2 transition-all hover:border-primary hover:bg-primary hover:text-black rounded-sm"
+              href={siteConfig.social.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex justify-center border border-border bg-zinc-950 p-2 transition-all hover:border-primary hover:bg-primary hover:text-black rounded-sm"
+            >
+              <Instagram size={20} />
+            </a>
+            <a
+              href={`mailto:${siteConfig.profile.email}`}
+              className="flex justify-center border border-border bg-zinc-950 p-2 transition-all hover:border-primary hover:bg-primary hover:text-black rounded-sm"
             >
               <Mail size={20} />
             </a>
@@ -92,7 +105,7 @@ export default function AboutPage() {
         {/* Main Content */}
         <div className="w-full md:w-3/4 space-y-8 font-mono leading-relaxed text-zinc-300 text-sm">
           {/* Lead */}
-          <div className="border-l-4 border-primary pl-6 py-2 bg-primary/5 text-md text-foreground">
+          <div className="border-l-4 border-primary pl-4 py-2 bg-primary/5 text-md text-foreground">
             <p>Terminal Reverie: Even 1s and 0s crave dreams.</p>
           </div>
 
@@ -101,12 +114,14 @@ export default function AboutPage() {
               <span className="text-primary">#</span> 關於作者
             </h2>
             <p>
-              我是 <strong className="text-foreground">Hyper Hu</strong>
+              我是 <strong className="text-foreground">{siteConfig.profile.name}</strong>
               ，來自台灣，畢業於高雄中學，目前就讀台大資工。網路上常見的 ID 是{" "}
               <code className="bg-zinc-800 px-1 py-0.5 rounded text-primary">
                 HyperSoWeak
               </code> 或{" "}
-              <code className="bg-zinc-800 px-1 py-0.5 rounded text-primary">hypersoweak</code>
+              <code className="bg-zinc-800 px-1 py-0.5 rounded text-primary">
+                {siteConfig.profile.alias}
+              </code>
               ，一點自嘲，也是一種提醒，別忘了保持謙遜與幽默。
             </p>
             <p>

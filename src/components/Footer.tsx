@@ -1,4 +1,5 @@
-import { Github, Linkedin, Terminal } from "lucide-react";
+import { Github, Linkedin, Instagram, Terminal } from "lucide-react";
+import { siteConfig } from "@/lib/config";
 
 export function Footer() {
   return (
@@ -7,12 +8,15 @@ export function Footer() {
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="flex items-center gap-3 text-zinc-500">
             <Terminal size={14} className="text-primary" />
-            <span>&copy; {new Date().getFullYear()} HYPER HU. ALL RIGHTS RESERVED.</span>
+            <span>
+              &copy; {new Date().getFullYear()} {siteConfig.profile.name.toUpperCase()}. ALL RIGHTS
+              RESERVED.
+            </span>
           </div>
 
           <div className="flex items-center gap-6">
             <a
-              href="https://github.com"
+              href={siteConfig.social.github}
               target="_blank"
               rel="noopener noreferrer"
               className="text-zinc-500 transition-colors hover:text-primary"
@@ -20,12 +24,20 @@ export function Footer() {
               <Github size={16} />
             </a>
             <a
-              href="https://linkedin.com"
+              href={siteConfig.social.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               className="text-zinc-500 transition-colors hover:text-primary"
             >
               <Linkedin size={16} />
+            </a>
+            <a
+              href={siteConfig.social.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-zinc-500 transition-colors hover:text-primary"
+            >
+              <Instagram size={16} />
             </a>
           </div>
         </div>

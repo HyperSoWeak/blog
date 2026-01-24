@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Github, Linkedin, Menu, X } from "lucide-react";
+import { Github, Linkedin, Instagram, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { clsx } from "clsx";
+import { siteConfig } from "@/lib/config";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,7 +56,7 @@ export function Navbar() {
 
         <div className="hidden items-center gap-4 text-zinc-500 md:flex">
           <a
-            href="https://github.com"
+            href={siteConfig.social.github}
             target="_blank"
             rel="noopener noreferrer"
             className="transition-colors hover:text-primary"
@@ -63,12 +64,20 @@ export function Navbar() {
             <Github size={18} />
           </a>
           <a
-            href="https://linkedin.com"
+            href={siteConfig.social.linkedin}
             target="_blank"
             rel="noopener noreferrer"
             className="transition-colors hover:text-primary"
           >
             <Linkedin size={18} />
+          </a>
+          <a
+            href={siteConfig.social.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-primary"
+          >
+            <Instagram size={18} />
           </a>
         </div>
 
@@ -119,7 +128,7 @@ export function Navbar() {
 
         <div className="mt-8 flex gap-6">
           <a
-            href="https://github.com"
+            href={siteConfig.social.github}
             target="_blank"
             rel="noopener noreferrer"
             className="transition-colors hover:text-primary"
@@ -127,12 +136,20 @@ export function Navbar() {
             <Github size={24} />
           </a>
           <a
-            href="https://linkedin.com"
+            href={siteConfig.social.linkedin}
             target="_blank"
             rel="noopener noreferrer"
             className="transition-colors hover:text-primary"
           >
             <Linkedin size={24} />
+          </a>
+          <a
+            href={siteConfig.social.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-primary"
+          >
+            <Instagram size={24} />
           </a>
         </div>
       </div>
