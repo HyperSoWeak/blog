@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Github, Linkedin, Menu, X, Terminal } from "lucide-react";
+import { Github, Linkedin, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { clsx } from "clsx";
 
@@ -9,55 +9,56 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="border-b border-border bg-background sticky top-0 z-50 font-mono text-sm uppercase tracking-wider">
-      <div className="container max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 border-b border-border bg-background font-mono text-sm uppercase tracking-wider">
+      <div className="container mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
         <div className="flex items-center gap-4">
           <Link
             href="/"
-            className="flex items-center gap-2 text-primary hover:text-white transition-colors group z-50"
+            className="group z-50 flex items-center gap-2 text-primary transition-colors hover:text-white"
           >
-            <Terminal size={20} className="stroke-[2.5]" />
+            {/* Use the favicon as the logo */}
+            <img src="/favicon.svg" alt="Terminal Reverie Logo" className="h-6 w-6" />
             <span className="text-lg font-bold tracking-tight">TERM_REVERIE</span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-6 ml-6">
+          <div className="ml-6 hidden items-center gap-6 md:flex">
             <Link
               href="/archive"
-              className="hover:text-primary transition-colors text-zinc-400 relative group"
+              className="group relative text-zinc-400 transition-colors hover:text-primary"
             >
               /ARCHIVE
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary transition-all group-hover:w-full"></span>
             </Link>
             <Link
               href="/categories"
-              className="hover:text-primary transition-colors text-zinc-400 relative group"
+              className="group relative text-zinc-400 transition-colors hover:text-primary"
             >
               /CATS
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary transition-all group-hover:w-full"></span>
             </Link>
             <Link
               href="/tags"
-              className="hover:text-primary transition-colors text-zinc-400 relative group"
+              className="group relative text-zinc-400 transition-colors hover:text-primary"
             >
               /TAGS
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary transition-all group-hover:w-full"></span>
             </Link>
             <Link
               href="/about"
-              className="hover:text-primary transition-colors text-zinc-400 relative group"
+              className="group relative text-zinc-400 transition-colors hover:text-primary"
             >
               /SYS_INFO
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary transition-all group-hover:w-full"></span>
             </Link>
           </div>
         </div>
 
-        <div className="hidden md:flex items-center gap-4 text-zinc-500">
+        <div className="hidden items-center gap-4 text-zinc-500 md:flex">
           <a
             href="https://github.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-primary transition-colors"
+            className="transition-colors hover:text-primary"
           >
             <Github size={18} />
           </a>
@@ -65,7 +66,7 @@ export function Navbar() {
             href="https://linkedin.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-primary transition-colors"
+            className="transition-colors hover:text-primary"
           >
             <Linkedin size={18} />
           </a>
@@ -73,7 +74,7 @@ export function Navbar() {
 
         {/* Mobile Toggle */}
         <button
-          className="md:hidden text-zinc-400 hover:text-white z-50"
+          className="z-50 text-zinc-400 hover:text-white md:hidden"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -83,7 +84,7 @@ export function Navbar() {
       {/* Mobile Menu Overlay */}
       <div
         className={clsx(
-          "fixed inset-0 bg-background/95 backdrop-blur-sm z-40 flex flex-col items-center justify-center gap-8 transition-transform duration-300 md:hidden border-l border-border",
+          "fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 border-l border-border bg-background/95 backdrop-blur-sm transition-transform duration-300 md:hidden",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
@@ -116,12 +117,12 @@ export function Navbar() {
           /SYS_INFO
         </Link>
 
-        <div className="flex gap-6 mt-8">
+        <div className="mt-8 flex gap-6">
           <a
             href="https://github.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-primary transition-colors"
+            className="transition-colors hover:text-primary"
           >
             <Github size={24} />
           </a>
@@ -129,7 +130,7 @@ export function Navbar() {
             href="https://linkedin.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-primary transition-colors"
+            className="transition-colors hover:text-primary"
           >
             <Linkedin size={24} />
           </a>
