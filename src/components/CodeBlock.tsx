@@ -17,7 +17,7 @@ export function CodeBlock({
   ...props
 }: CodeBlockProps) {
   const preRef = useRef<HTMLPreElement>(null);
-  const [isCopied, setIsCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<string | null>(null);
 
   const handleCopy = async () => {
     let textToCopy = raw;
@@ -30,8 +30,12 @@ export function CodeBlock({
 
     try {
       await navigator.clipboard.writeText(textToCopy);
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
+
+      // Easter egg: 5% chance to show "HACKED!" instead of "OK"
+      const isHacked = Math.random() < 0.05;
+      setCopyStatus(isHacked ? "HACKED!" : "OK");
+
+      setTimeout(() => setCopyStatus(null), 2000);
     } catch (err) {
       console.error("Failed to copy:", err);
     }
@@ -59,17 +63,25 @@ export function CodeBlock({
             aria-label="Copy code"
             title="Copy to clipboard"
           >
-            {isCopied ? (
+            {copyStatus ? (
               <>
-                <Check size={12} className="text-success" />
-                <span className="text-[10px] text-success font-mono uppercase tracking-wider">
-                  OK
+                <Check
+                  size={12}
+                  className={copyStatus === "HACKED!" ? "text-red-500" : "text-success"}
+                />
+                <span
+                  className={clsx(
+                    "text-[10px] font-mono uppercase tracking-wider",
+                    copyStatus === "HACKED!" ? "text-red-500 font-bold" : "text-success"
+                  )}
+                >
+                  {copyStatus}
                 </span>
               </>
             ) : (
               <>
                 <Copy size={12} className="text-zinc-500 group-hover/btn:text-primary" />
-                <span className="text-[10px] text-zinc-500 group-hover/btn:text-primary font-mono uppercase tracking-wider">
+                <span className="text-[10px] text-zinc-500 group-hover/btn:text-primary font-mono uppercase tracking-wider cursor-pointer">
                   CPY
                 </span>
               </>

@@ -2,12 +2,20 @@
 
 import Link from "next/link";
 import { Github, Linkedin, Instagram, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { clsx } from "clsx";
 import { siteConfig } from "@/lib/config";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [catText, setCatText] = useState("/CATS");
+
+  const logCat = () => {
+    console.log(
+      "%c /\\_/\\\n( o.o )\n > ^ <  Meow!",
+      "font-family: monospace; font-weight: bold; font-size: 14px; color: #89b4fa;"
+    );
+  };
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-background font-mono text-sm uppercase tracking-wider">
@@ -37,8 +45,11 @@ export function Navbar() {
             <Link
               href="/categories"
               className="group relative text-zinc-400 transition-colors hover:text-primary"
+              onMouseEnter={() => setCatText("/MEOW")}
+              onMouseLeave={() => setCatText("/CATS")}
+              onClick={logCat}
             >
-              /CATS
+              {catText}
               <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary transition-all group-hover:w-full"></span>
             </Link>
             <Link
