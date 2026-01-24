@@ -25,7 +25,7 @@ export default function AboutPage() {
         />
         <div className="absolute inset-0 bg-linear-to-t from-[#0d1117] via-transparent to-transparent"></div>
         {/* Scanline overlay */}
-        <div 
+        <div
           className="absolute inset-0 opacity-10 pointer-events-none"
           style={{ backgroundImage: `url('${basePath}/scanline.png')` }}
         ></div>
@@ -68,7 +68,7 @@ export default function AboutPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-500">STATUS:</span>
-                <span className="text-success">{siteConfig.profile.status}</span>
+                <span className="text-success">ONLINE</span>
               </div>
             </div>
           </div>
@@ -124,7 +124,9 @@ export default function AboutPage() {
               <code className="bg-zinc-800 px-1 py-0.5 rounded text-primary">
                 HyperSoWeak
               </code> 或{" "}
-              <code className="bg-zinc-800 px-1 py-0.5 rounded text-primary">{siteConfig.profile.alias}</code>
+              <code className="bg-zinc-800 px-1 py-0.5 rounded text-primary">
+                {siteConfig.profile.alias}
+              </code>
               ，一點自嘲，也是一種提醒，別忘了保持謙遜與幽默。
             </p>
             <p>

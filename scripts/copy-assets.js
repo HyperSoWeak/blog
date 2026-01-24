@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const POSTS_DIR = path.join(process.cwd(), 'content/posts');
-const PUBLIC_IMAGES_DIR = path.join(process.cwd(), 'public/images');
+const POSTS_DIR = path.join(process.cwd(), "content/posts");
+const PUBLIC_IMAGES_DIR = path.join(process.cwd(), "public/images");
 
 function copyDir(src, dest) {
   if (!fs.existsSync(dest)) {
@@ -43,4 +43,4 @@ if (fs.existsSync(POSTS_DIR)) {
   }
 }
 
-console.log('Asset copy complete.');
+console.log("Asset copy complete.");
