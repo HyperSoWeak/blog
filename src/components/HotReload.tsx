@@ -9,23 +9,41 @@ export function HotReload() {
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") return;
 
-    console.log("[HotReload] Connecting...");
-    const eventSource = new EventSource("/api/hot-reload");
+    let eventSource: EventSource | null = null;
+    let retryTimeout: NodeJS.Timeout;
 
-    eventSource.onmessage = (event) => {
-      if (event.data === "update") {
-        console.log("[HotReload] Content changed, refreshing...");
-        router.refresh();
-      }
+    const connect = () => {
+      eventSource = new EventSource("/api/hot-reload");
+
+      eventSource.onopen = () => {
+        // console.log("[HotReload] Connected");
+      };
+
+      eventSource.onmessage = (event) => {
+        if (event.data === "update") {
+          console.log("[HotReload] Content changed, refreshing...");
+          router.refresh();
+        }
+      };
+
+      eventSource.onerror = () => {
+        // console.warn("[HotReload] Connection lost, retrying...");
+        if (eventSource) {
+          eventSource.close();
+          eventSource = null;
+        }
+        // Retry connection after 2 seconds
+        retryTimeout = setTimeout(connect, 2000);
+      };
     };
 
-    eventSource.onerror = (error) => {
-      console.error("[HotReload] Connection error:", error);
-      eventSource.close();
-    };
+    connect();
 
     return () => {
-      eventSource.close();
+      if (eventSource) {
+        eventSource.close();
+      }
+      clearTimeout(retryTimeout);
     };
   }, [router]);
 
