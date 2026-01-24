@@ -17,7 +17,7 @@ export default async function CategoriesPage() {
         categories
       </h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-6">
         {categories.map((cat) => {
           const percentage = (cat.count / maxCount) * 100;
 
@@ -28,7 +28,7 @@ export default async function CategoriesPage() {
               className="group relative block p-6 border border-border bg-zinc-950/50 hover:border-primary transition-all hover:bg-zinc-900 overflow-hidden"
             >
               {/* Corner accent */}
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[20px] border-r-[20px] border-t-zinc-800 border-r-transparent group-hover:border-t-primary transition-colors"></div>
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-20 border-l-20 border-t-zinc-800 border-l-transparent group-hover:border-t-primary transition-colors"></div>
 
               <div className="flex flex-col gap-4">
                 <div className="flex items-start justify-between">
