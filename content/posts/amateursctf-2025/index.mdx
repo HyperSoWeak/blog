@@ -543,17 +543,21 @@ while True:
     print(f'{c = }')
 ```
 
-又是個 server 題，加密邏輯是 flag 先被左移 256 bits 叫做 $F$，然後產生 100000 個隨機數 $r_i$，組成 $cs_i = F + r_i$。接著使用者可以輸入一個 值 $S$，程式會計算 $ms_i = (cs_i + S) unc n$，然後從這些 $ms_i$ 中隨機選一個 $m$ 進行 RSA 加密，輸出密文 $c = m^e unc n$，其中 $e = 3$。
+又是個 server 題，加密邏輯是 flag 先被左移 256 bits 叫做 $F$，然後產生 100000 個隨機數 $r_i$，組成 $cs_i = F + r_i$。接著使用者可以輸入一個 值 $S$，程式會計算 $ms_i = (cs_i + S) \mod n$，然後從這些 $ms_i$ 中隨機選一個 $m$ 進行 RSA 加密，輸出密文 $c = m^e \mod n$，其中 $e = 3$。
 
 雖然 $r_i$ 未知，但因為 $r_i$ 是 256 bits，但 $n$ 是 2048 bits，所以
 
-$$ m_i = F + r_i + S \approx F + S $$
+$$
+m_i = F + r_i + S \approx F + S
+$$
 
 問多次一點就很有機會抽到同一個 $cs_i$ 被不同 $S$ 加密的結果。抽到的 話他們就存在線性關係，這時可以用 Franklin-Reiter Related-Message Attack 來解出 $m$，接著就能算出 $F$，最後右移 256 bits 就是 flag 了。
 
 因為有 100000 個不同的 $cs_i$，根據生日悖論，$N$ 選 $Q$ 存在重複的機率約為
 
-$$ P(N, Q) \approx 1 - e^{-(Q^2)/(2N)} $$
+$$
+P(N, Q) \approx 1 - e^{-(Q^2)/(2N)}
+$$
 
 所以我選擇抽 $Q = 600$ 次，帶入公式得到機率約為 $P \approx 83.5\%$，然後再爆搜 $O(Q^2)$ 次組合來找重複的 $cs_i$ 就解掉這題了。（蒐集 600 次跑好久...）
 
@@ -664,15 +668,21 @@ for _ in range(6):
 
 題目實作了一個非標準的 LCG，跟典型 LCG 的差別是迭代次數會逐漸增加，呼應題目 名稱 triangulate，也就是：
 
-$$ s*n = f^n (s*{n-1}) \mod m $$
+$$
+s_n = f^n (s_{n-1}) \mod m
+$$
 
 其中 $f(x) = a x + c \mod m$，所以可以表示為
 
-$$ f^n (x) = a^n x + c \cdot \frac{a^n - 1}{a - 1} \mod m $$
+$$
+f^n (x) = a^n x + c \cdot \frac{a^n - 1}{a - 1} \mod m
+$$
 
 由於我們已知 $s_1, s_2, ..., s_6$，但不知道 $a, c, m$，所以我們先想 辦法把 $c$ 消掉。對於任意兩組連續狀態，我們透過交叉相乘
 
-$$ (s*n - a^n s*{n-1}) (a^{n+1} - 1) \equiv (s\_{n+1} - a^{n+1} s_n) (a^n - 1) \mod m $$
+$$
+(s_n - a^n s_{n-1}) (a^{n+1} - 1) \equiv (s_{n+1} - a^{n+1} s_n) (a^n - 1) \mod m
+$$
 
 將他們整理成關於 $a$ 的多項式 $P(x) \equiv 0 \mod m$，他們都有共同根 $a$。若 $P, Q$ 在模 $m$ 下有共同根 $a$，那他們的 resultant 會滿足 $\mathrm{res}(P, Q) \equiv 0 \mod m$。因此我們可以計算出多組多項式的 resultant，並且對這些 resultant 做 gcd，就能得到 $m$ 的倍數，實際上就等於 $m$ 了。
 
