@@ -10,11 +10,11 @@ export async function GET(request: NextRequest) {
   }
 
   const contentDir = path.join(process.cwd(), "content");
-  
+
   const stream = new ReadableStream({
     start(controller) {
       const encoder = new TextEncoder();
-      
+
       const sendUpdate = () => {
         try {
           controller.enqueue(encoder.encode("data: update\n\n"));
@@ -29,8 +29,8 @@ export async function GET(request: NextRequest) {
         // We'll just send.
         // Ignore dotfiles to avoid noise
         if (filename && !filename.startsWith(".")) {
-           console.log(`[HotReload] Change detected: ${filename}`);
-           sendUpdate();
+          console.log(`[HotReload] Change detected: ${filename}`);
+          sendUpdate();
         }
       });
 
@@ -39,8 +39,8 @@ export async function GET(request: NextRequest) {
         try {
           controller.enqueue(encoder.encode(": keepalive\n\n"));
         } catch (e) {
-             clearInterval(interval);
-             watcher.close();
+          clearInterval(interval);
+          watcher.close();
         }
       }, 15000);
 
@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
     headers: {
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",
-      "Connection": "keep-alive",
+      Connection: "keep-alive",
     },
   });
 }

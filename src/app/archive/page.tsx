@@ -11,9 +11,9 @@ export default async function ArchivePage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-8 font-mono border-b border-[var(--border)] pb-4 flex items-center gap-2 text-white">
-        <Archive className="text-[var(--primary)]" />
-        <span className="text-[var(--primary)]">/</span>root<span className="text-zinc-500">/</span>
+      <h1 className="text-3xl font-bold mb-8 font-mono border-b border-border pb-4 flex items-center gap-2 text-white">
+        <Archive className="text-primary" />
+        <span className="text-primary">/</span>root<span className="text-zinc-500">/</span>
         archive
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

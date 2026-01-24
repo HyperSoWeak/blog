@@ -10,12 +10,12 @@ export default async function Home() {
   return (
     <div className="space-y-12">
       {/* Hero / Terminal Buffer */}
-      <section className="border border-[var(--border)] bg-[#080808] p-6 md:p-10 font-mono text-sm md:text-base relative overflow-hidden shadow-2xl">
-        <div className="absolute top-0 left-0 w-full h-1 bg-[var(--primary)] opacity-50"></div>
+      <section className="border border-border bg-[#080808] p-6 md:p-10 font-mono text-sm md:text-base relative overflow-hidden shadow-2xl">
+        <div className="absolute top-0 left-0 w-full h-1 bg-primary opacity-50"></div>
 
         <div className="space-y-2 text-zinc-400">
           <p>
-            <span className="text-[var(--primary)]">sysadmin@terminal-reverie</span>:
+            <span className="text-primary">sysadmin@terminal-reverie</span>:
             <span className="text-blue-500">~</span>$ ./init_sequence.sh
           </p>
           <p className="pl-4 text-zinc-500">Loading modules...</p>
@@ -34,14 +34,14 @@ export default async function Home() {
 
       {/* Recent Posts Grid */}
       <section>
-        <div className="flex items-end justify-between mb-6 border-b border-[var(--border)] pb-2">
-          <h2 className="text-xl font-bold text-[var(--primary)] flex items-center gap-2">
+        <div className="flex items-end justify-between mb-6 border-b border-border pb-2">
+          <h2 className="text-xl font-bold text-primary flex items-center gap-2">
             <Terminal size={20} />
             LATEST_LOGS
           </h2>
           <Link
             href="/archive"
-            className="text-xs font-mono text-zinc-500 hover:text-[var(--primary)] flex items-center gap-1 transition-colors group"
+            className="text-xs font-mono text-zinc-500 hover:text-primary flex items-center gap-1 transition-colors group"
           >
             [VIEW_ALL_LOGS]{" "}
             <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />

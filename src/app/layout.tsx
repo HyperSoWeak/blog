@@ -29,9 +29,7 @@ export default function RootLayout({
         className={`${inter.variable} ${firaMono.variable} antialiased bg-background text-foreground min-h-screen flex flex-col`}
       >
         <Navbar />
-        <main className="flex-grow container max-w-5xl mx-auto px-4 py-8">
-          {children}
-        </main>
+        <main className="grow container max-w-5xl mx-auto px-4 py-8">{children}</main>
         <Footer />
         {process.env.NODE_ENV === "development" && <HotReload />}
       </body>

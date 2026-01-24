@@ -34,8 +34,8 @@ export function TableOfContents({ toc }: TableOfContentsProps) {
   if (toc.length === 0) return null;
 
   return (
-    <nav className="sticky top-24 max-h-[calc(100vh-100px)] overflow-y-auto pl-4 border-l-2 border-[var(--border)]">
-      <h4 className="font-mono text-xs font-bold text-[var(--primary)] uppercase mb-4 tracking-wider flex items-center gap-2">
+    <nav className="sticky top-24 max-h-[calc(100vh-100px)] overflow-y-auto pl-4 border-l-2 border-border">
+      <h4 className="font-mono text-xs font-bold text-primary uppercase mb-4 tracking-wider flex items-center gap-2">
         <span>{"//"}</span> INDEX
       </h4>
       <ul className="space-y-2 text-xs font-mono">
@@ -44,9 +44,9 @@ export function TableOfContents({ toc }: TableOfContentsProps) {
             <a
               href={`#${item.slug}`}
               className={clsx(
-                "block transition-colors border-l-2 pl-2 -ml-[calc(1rem+2px)]",
+                "block transition-colors border-l-2 pl-2 -ml-4.5",
                 activeId === item.slug
-                  ? "border-[var(--primary)] text-[var(--primary)] font-bold bg-[var(--primary)]/5"
+                  ? "border-primary text-primary font-bold bg-primary/5"
                   : "border-transparent text-zinc-500 hover:text-zinc-300 hover:border-zinc-700"
               )}
               onClick={(e) => {

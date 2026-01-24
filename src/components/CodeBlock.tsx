@@ -38,12 +38,12 @@ export function CodeBlock({
   };
 
   return (
-    <div className="relative group my-8 border border-[var(--border)] bg-[#050505] shadow-[0_0_15px_rgba(0,0,0,0.3)]">
+    <div className="relative group my-8 border border-border bg-[#050505] shadow-[0_0_15px_rgba(0,0,0,0.3)]">
       {/* Header - Tech Style */}
-      <div className="flex items-center justify-between px-3 py-1.5 bg-[#0a0a0a] border-b border-[var(--border)]">
+      <div className="flex items-center justify-between px-3 py-1.5 bg-[#0a0a0a] border-b border-border">
         <div className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 bg-[var(--primary)] rounded-none animate-pulse"></div>
-          <span className="text-xs font-mono text-[var(--primary)] uppercase tracking-wider select-none flex items-center gap-1.5">
+          <div className="w-1.5 h-1.5 bg-primary rounded-none animate-pulse"></div>
+          <span className="text-xs font-mono text-primary uppercase tracking-wider select-none flex items-center gap-1.5">
             <Terminal size={12} className="inline-block" />
             {lang}
           </span>
@@ -55,7 +55,7 @@ export function CodeBlock({
           </span>
           <button
             onClick={handleCopy}
-            className="group/btn flex items-center gap-1.5 px-2 py-0.5 border border-zinc-800 bg-black hover:border-[var(--primary)] hover:bg-[var(--primary)]/10 transition-all"
+            className="group/btn flex items-center gap-1.5 px-2 py-0.5 border border-zinc-800 bg-black hover:border-primary hover:bg-primary/10 transition-all"
             aria-label="Copy code"
             title="Copy to clipboard"
           >
@@ -68,8 +68,8 @@ export function CodeBlock({
               </>
             ) : (
               <>
-                <Copy size={12} className="text-zinc-500 group-hover/btn:text-[var(--primary)]" />
-                <span className="text-[10px] text-zinc-500 group-hover/btn:text-[var(--primary)] font-mono uppercase tracking-wider">
+                <Copy size={12} className="text-zinc-500 group-hover/btn:text-primary" />
+                <span className="text-[10px] text-zinc-500 group-hover/btn:text-primary font-mono uppercase tracking-wider">
                   CPY
                 </span>
               </>
