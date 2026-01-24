@@ -1,11 +1,11 @@
 export const siteConfig = {
-  basePath: process.env.NODE_ENV === "production" ? "/blog" : "",
+  basePath: process.env.EXPORT_MODE === "true" ? "/blog" : "",
   profile: {
     name: "Hyper Hu",
     alias: "hypersoweak",
     location: "Taiwan, NTU",
     status: "ONLINE",
-    email: "hyperhu@example.com",
+    email: "hypersoweak@gmail.com",
   },
   social: {
     github: "https://github.com/HyperSoWeak",
