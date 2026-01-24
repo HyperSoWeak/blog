@@ -1,0 +1,108 @@
+---
+title: "使用 VS Code 撰寫 Python 程式"
+date: "2024-04-21"
+categories: ["學習筆記"]
+tags: ["VSCode", "Python"]
+featuredImage: "./featured.jpeg"
+---
+
+本文適用於 Windows 環境。
+
+## 下載並安裝 Python
+
+到 Python 官網[下載](https://www.python.org/downloads/)安裝檔，安裝最新版本 。
+
+安裝時勾選 Add python.exe to PATH，讓 Python 自動加入 Windows 環境變數。
+![](./python-installation.png)
+
+完成後打開 terminal，輸入 `python`，跳出版本資訊就是安裝成功了~
+![](./terminal.png)
+
+## 安裝 Visual Studio Code 與 Python 擴充套件
+
+到 Visual Studio Code 官網[下載](https://code.visualstudio.com/)安裝檔。
+
+安裝完成後創建一個資料夾並拖到 VS Code 圖示上開啟。(或者打開 VS Code，選擇 `File > Open Folder`)
+
+在左邊的 Extensions 分頁搜尋 python，安裝這個擴充套件。
+![](./image.png)
+
+按左上角的 New File 圖示新增一個 .py 檔案
+![](./image-1.png)
+
+在 Terminal 輸入 `python <filename>.py` 就執行成功了！  
+如果 Terminal 沒有出現可以用 `` Ctrl+` `` 或 `View > Terminal` 開啟
+![](./image-2.png)
+
+## 一鍵執行程式
+
+每次執行程式都要打一串指令很麻煩，我們可以安裝 Code Runner 擴充套件來一鍵執 行程式！
+
+一樣在 Extensions 搜尋 code runner，安裝這個擴充套件。
+![](./image-3.png)
+
+安裝完成後按齒輪開啟 Extension Settings。
+![](./image-4.png)
+
+推薦把這三個設定打開，預設在 Terminal 執行(輸入 input 較方便)，且在執行程式 前自動存檔。
+![](./image-5.png)
+
+回到 Python 檔案，按下右上角的三角形或快捷鍵 `Ctrl+Alt+N` 就成功在 Terminal 執行了！
+![](./image-6.png)
+
+Code Runner 會自動偵測語言而產生不同的指令，所以其他語言也可以一鍵執行！
+
+## 多檔案的執行
+
+如果專案有很多檔案，但不想每次跑程式都還要開啟 `main.py`，可以用 Code Runner 的 Custom Command 功能。
+
+由於上面的做法是設定 Global Extension Settings，也就是所有專案的設定都會改變，因此我們這邊採用另一種方法，只改變目前專案的設定。
+
+在專案資料夾新增 `.vscode/settings.json` 檔案
+![](./image-7.png)
+
+在裡面打上
+
+```json
+{
+  "code-runner.customCommand": "python -u main.py"
+}
+```
+
+之後在任何地方按下快捷鍵 `Ctrl+Alt+K` 都可以執行 `main.py` 了！
+![](./image-8.png)
+
+此外，VS Code 還有許多好用的快捷鍵，可以參考 [常用 VS Code 快捷鍵](/posts/vscode-shortcuts/)
+
+## Python 虛擬環境
+
+### 什麼是虛擬環境？
+
+虛擬環境是一個獨立的開發環境，用來隔離不同專案的依賴關係，每個虛擬環境都有自己的 Python 版本和 Packages，不同的應用程式可以使用不同的虛擬環境，在同一台 電腦上運作就不會互相影響。
+
+### 建立虛擬環境
+
+首先按快捷鍵 `Ctrl+Shift+P` 搜尋 `Python: Create Environment...` 並執行
+![](./image-10.png)
+
+然後選擇 `venv > 你的Python版本`，完成後會看到專案裡多了一個 `.venv` 的資料 夾，而底下則會出現如圖的文字。
+![](./Picture1.png)
+
+這時候打開 terminal 輸入
+
+```shell
+pip list
+```
+
+就可以發現套件已經被清空了，這時候再使用
+
+```shell
+pip install
+```
+
+就會安裝在虛擬環境裡了，不會影響到其他專案。
+
+## 延伸閱讀
+
+[Python in Visual Studio Code](https://code.visualstudio.com/docs/languages/python)  
+[Python Docs - 虛擬環境與套件](https://docs.python.org/zh-tw/3/tutorial/venv.html)

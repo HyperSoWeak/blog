@@ -1,0 +1,39 @@
+---
+title: "使用 GitHub Pages 部署 Next.js 應用程式時 js 與 css 資源無法載入"
+date: "2025-01-04"
+categories: ["學習筆記"]
+tags: ["Web", "Next.js"]
+---
+
+最近把我的整個主頁面 [Hyper Hu](https://hypersoweak.github.io/) 重寫了。本來是用原生的 React 加上手刻 CSS 寫了一個看起來很 Cyberpunk 風的 Portfolio，但 最近比較喜歡極簡風（而且比較好寫），所以乾脆用 Next.js + Tailwind CSS 全部砍掉重練，也是對我設計能力的考驗 ww
+
+結果部署到 GitHub 後 js 跟 css 都炸了，網站直接變超醜，但回去看原始碼明明檔案都在正確的位置，試了很多方法都沒用，直到看到 Stack Overflow 的 [這篇](https://stackoverflow.com/questions/61450307/js-and-css-not-loading-when-hosting-next-application-on-github-pages) 文章救了我。
+
+原因是 Next.js 會把 build 好的資源存在 `_next` 資料夾裡面，好死不死 GitHub Pages 預設是基於 Jekyll，而 Jekyll 這個東西建置的網站都是存在底線開頭的資料夾，例如`_layout`，並且會忽略所有其他底線開頭的資料夾，所以我的 `_next` 就被忽略了 QQ
+
+解決方法很簡單，只要在根目錄建一個叫做 `.nojekyll` 的檔案，告訴 GitHub 我的 網站不是基於 Jekyll 就可以了。那因為每次都要加檔案很麻煩，所以直接改 npm 指 令：
+
+```json
+"scripts": {
+  "build": "next build && touch ./out/.nojekyll"
+}
+```
+
+> **更新**：
+> gh-pages 其實有提供 `--nojekyll` 參數，這樣就不需要自己 `touch` 了，直接在 deploy 的時候加上 `--nojekyll` 參數就可以了：
+>
+> ```json
+> "scripts": {
+>   "deploy": "gh-pages -d out --nojekyll"
+> }
+> ```
+
+希望之後不要再有人踩雷，但其實這篇是寫給我自己看的，因為很久以前我就有遇過一模一樣的問題，那時候也試很多方法才解決。這雷我踩了兩次，點點點。
+
+> 後記： 推銷一下我的新網站 https://hypersoweak.github.io/，我覺得挺好看的（
+
+## 參考資料
+
+- [6 steps to deploy your React Next.js app with Github pages - DEV Community](https://dev.to/daviidy/6-steps-to-deploy-your-react-nextjs-app-with-github-pages-33ck)
+- [Getting 404 on static resources in production · vercel/next.js · Discussion #33751](https://github.com/vercel/next.js/discussions/33751)
+- [jekyll - js and css not loading when hosting next application on GitHub pages - Stack Overflow](https://stackoverflow.com/questions/61450307/js-and-css-not-loading-when-hosting-next-application-on-github-pages)

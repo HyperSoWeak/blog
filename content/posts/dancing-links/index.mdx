@@ -1,0 +1,218 @@
+---
+title: "使用 Dancing Links (DLX) 解決精確覆蓋問題"
+date: "2024-09-13"
+categories: ["學習筆記", "演算法"]
+tags: ["NTU"]
+featuredImage: "./featured.png"
+---
+
+> 此文章尚未完成
+
+這學期的 ADA 第一週作業就出了這題，甚至還沒開始上演算法，非常可怕。雖然助教 說爆搜剪枝瘋狂優化會過，但我還是覺得寫 DLX 比較好玩，所以就順便紀錄一下。
+
+## 精確覆蓋問題
+
+### 定義
+
+引用維基百科的說明：
+
+> 在一個全集 $X$ 中若干子集的集合為 $S$，精確覆蓋是指，$S$ 的子 集 $S^∗$，滿足 $X$ 中的每一個元素在 $S^∗$ 中恰好出現一次。
+> --- 維基百科 - Exact cover
+
+精確覆蓋問題（Exact cover）指找出一組解或證明其不存在，是一個 NP-完全問題。
+
+### 範例
+
+$$
+\begin{align*}
+X   &= \{1, 2, 4, 6, 8, 9, 13 \} \\
+S   &= \{S_1, S_2, S_3, S_4, S_5, S_6 \} \\
+S_1 &= \{1, 2, 9 \} \\
+S_2 &= \{1, 4, 6 \} \\
+S_3 &= \{2, 4, 8, 13 \} \\
+S_4 &= \{8, 13 \} \\
+S_5 &= \{2, 9 \} \\
+S_6 &= \{2, 4, 6, 9, 13 \} \\
+\end{align*}
+$$
+
+\{S_2, S_4, S_5\} 是一組合法的解，因為 $S_2 \cup S_4 \cup S_5 = X$ 且 $S_2 \cap S_4 = S_2 \cap S_5 = S_4 \cap S_5 = \varnothing$
+
+### 樸素做法
+
+直接枚舉 $S$ 的所有子集再檢查這個子集是否合法。每個元素都可以選或不選， 時間複雜度 $O(2^n)$；每次檢查是否合法需要 $O(nm)$，總時間複雜度為 $O(nm \cdot 2^n)$，其中 $n=|S|$ 也就是選擇數，$m=|X|$ 是總共需要覆蓋的點的數量。複雜度顯然不夠好，下面我們介紹比較好的演算法。
+
+## Knuth's Algorithm X
+
+> 💡**Hint**：文章的行指的是橫排（row），列指的是縱排（column）。
+
+### 核心概念
+
+X 演算法的核心概念其實非常簡單：在枚舉答案時，假設我選取了 $S_i$，那麼接下來我可以直接忽略 $S_i$ 所覆蓋的所有範圍，並且也可以排除任何與 $S_i$ 覆蓋區域有重疊的其他選擇。這些選擇都不能再被選取，因為在精確覆蓋問題中，每個點只能被覆蓋一次。這樣可以大幅度地剪枝，從而優化時間複雜度。
+
+### 演算法內容
+
+我們將剛剛的範例搬下來再用一次，首先將資料離散化得到一個關聯矩陣 $A$，以上述為例可化為：
+
+$$
+A = \begin{bmatrix}
+1 & 1 & 0 & 0 & 0 & 1 & 0 \\
+1 & 0 & 1 & 1 & 0 & 0 & 0 \\
+0 & 1 & 1 & 0 & 1 & 0 & 1 \\
+0 & 0 & 0 & 0 & 1 & 0 & 1 \\
+0 & 1 & 0 & 0 & 0 & 1 & 0 \\
+0 & 1 & 1 & 1 & 0 & 1 & 1 \\
+\end{bmatrix}
+$$
+
+注意此時每一行代表一種選擇，列代表這種選擇覆蓋的區域。X 演算法的步驟如下：
+
+1. 如果目前矩陣 $A$ 是空的，代表目前局部解是一個合法的解，直接回傳，演算法停止。
+2. 如果有某一列沒有 1 則失敗，回朔到上一層。有的話則選擇 1 數量最少的列 $c$。
+3. 選擇其中一行 $r$ 使得 $A_{r,c} = 1$。
+4. 將第 $r$ 列加入目前局部解。
+5. 對於所有 $j$ 使得 $A_{r, j} = 1$，刪除所有使 $A_{i, j} = 1$ 的行 $i$，再刪除第 $j$ 列。
+6. 對新得到的小矩陣 $A$ 遞迴執行演算法。
+
+[OI Wiki](https://oi-wiki.org/search/dlx/#x-%E7%AE%97%E6%B3%95) 給出了詳細的步驟說明跟範例，這裡就不贅述了。
+
+### 優化
+
+X 演算法需要不斷地刪除、恢復（回朔時）矩陣的行列，並且矩陣中的 1 其實是很稀 疏的，直接開二維陣列的話空間複雜度也會炸掉。
+
+## 使用 Dancing Links 優化 Algorithm X
+
+### 實現
+
+```cpp
+#include <bits/stdc++.h>
+#define rep(i,a,b) for(int i=a; i<b; ++i)
+#define rep1(i,a,b) for(int i=a; i<=b; ++i)
+using namespace std;
+
+int ans[1000], ac;
+
+struct DLX {
+    static const int MS = 1e5+10;
+    int n, m, tot, first[MS+10], siz[MS+10];
+    int L[MS+10], R[MS+10], U[MS+10], D[MS+10];
+    int col[MS+10], row[MS+10];
+
+    void build(const int &r, const int &c) {
+        n = r, m = c;
+        for(int i=0; i<=c; ++i) {
+            L[i] = i-1, R[i] = i+1;
+            U[i] = D[i] = i;
+        }
+        L[0] = c, R[c] = 0, tot = c;
+        memset(first, 0, sizeof(first));
+        memset(siz, 0, sizeof(siz));
+    }
+
+    void insert(const int &r, const int &c) {
+        col[++tot] = c, row[tot] = r, ++siz[c];
+        D[tot] = D[c], U[D[c]] = tot, U[tot] = c, D[c] = tot;
+        if(!first[r]) first[r] = L[tot] = R[tot] = tot;
+        else {
+            R[tot] = R[first[r]], L[R[first[r]]] = tot;
+            L[tot] = first[r], R[first[r]] = tot;
+        }
+    }
+
+    void remove(const int &c) {
+        int i, j;
+        L[R[c]] = L[c], R[L[c]] = R[c];
+        for(i=D[c]; i!=c; i=D[i])
+            for(j=R[i]; j!=i; j=R[j])
+                U[D[j]] = U[j], D[U[j]] = D[j], --siz[col[j]];
+    }
+
+    void recover(const int &c) {
+        int i, j;
+        for(i=U[c]; i!=c; i=U[i])
+            for(j=L[i]; j!=i; j=L[j])
+                U[D[j]] = D[U[j]] = j, ++siz[col[j]];
+        L[R[c]] = R[L[c]] = c;
+    }
+
+    bool dance(int dpt) {
+        if(!R[0]) {
+            ac = dpt;
+            return 1;
+        }
+        int i, j, c = R[0];
+        for(i=R[0]; i!=0; i=R[i]) {
+            if(siz[i] < siz[c]) c = i;
+        }
+        remove(c);
+        for(i=D[c]; i!=c; i=D[i]) {
+            ans[dpt] = row[i];
+            for(j=R[i]; j!=i; j=R[j]) remove(col[j]);
+            if(dance(dpt+1)) return 1;
+            for(j=L[i]; j!=i; j=L[j]) recover(col[j]);
+        }
+        recover(c);
+        return 0;
+    }
+} solver;
+
+signed main() {
+    int n, m;
+    cin >> n >> m;
+    solver.build(n, m);
+    rep1(i,1,n) rep1(j,1,m) {
+        int x;
+        cin >> x;
+        if(x) solver.insert(i, j);
+    }
+    if(solver.dance(1)) {
+        cout << "YES\n";
+        rep(i,1,ac) cout << ans[i] << " \n"[i==ac-1];
+    } else cout << "NO\n";
+}
+```
+
+範例輸入 1
+
+```text
+6 7
+1 1 0 0 0 1 0
+1 0 1 1 0 0 0
+0 1 1 0 1 0 1
+0 0 0 0 1 0 1
+0 1 0 0 0 1 0
+0 1 1 1 0 1 1
+```
+
+範例輸出 1
+
+```text
+YES
+2 5 4
+```
+
+範例輸入 2
+
+```text
+6 7
+1 1 0 0 0 1 0
+1 0 1 1 0 0 0
+0 1 1 0 1 0 1
+0 0 1 0 1 0 1
+0 1 0 0 0 1 0
+0 1 1 1 0 1 1
+```
+
+範例輸出 2
+
+```text
+NO
+```
+
+## 實際應用
+
+其實前面的內容都不算難，此類問題最大的難點在於要如何把原始問題轉化為精確覆蓋問題，從而使用 DLX 解決，所以以下我們就來看看幾個範例吧。
+
+### A-Puzzle-A-Day
+
+### 數獨

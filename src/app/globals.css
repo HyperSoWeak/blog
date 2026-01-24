@@ -148,7 +148,7 @@ body {
 .prose blockquote {
   border-left: 3px solid var(--primary);
   background: rgba(137, 180, 250, 0.05);
-  padding: 1em;
+  padding: 0.2em 1em;
   font-style: italic;
   color: #a6adc8;
 }

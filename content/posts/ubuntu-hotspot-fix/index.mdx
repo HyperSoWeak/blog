@@ -1,0 +1,112 @@
+---
+title: "解決 Ubuntu 無法使用 Wi-Fi 熱點（Hotspot）：關於 UFW 防火牆的設定"
+date: "2025-04-12"
+categories: ["學習筆記"]
+tags: ["Linux", "Ubuntu", "UFW"]
+featuredImage: "./featured.png"
+---
+
+在 Ubuntu 系統上啟用 Wi-Fi 熱點（Hotspot）時，有時會遇到裝置雖然可以連線，但卻無法正常上網的情況。這個問題經常與防火牆（UFW）的設定有關，而不是網卡或 NetworkManager 本身的問題。
+
+本篇文章將說明如何判斷問題是否出在防火牆，並提供完整的 UFW 設定方式來解決此 問題。
+
+筆者使用的是 Ubuntu 24.04.2 LTS，並且已經安裝了 `ufw` 防火牆。
+
+## 初步測試：停用防火牆確認是否為問題根源
+
+在終端機輸入以下指令暫時停用防火牆：
+
+```bash
+$ sudo ufw disable
+```
+
+接著重新啟用 Wi-Fi 熱點，讓其他裝置嘗試連線與上網。如果此時一切正常，代表問 題確實出在防火牆的規則上。
+
+## 查看封包是否被防火牆擋住
+
+UFW 的封包日誌儲存在 `/var/log/ufw.log`。你可以使用以下指令持續監看日誌：
+
+```bash
+$ sudo tail -f /var/log/ufw.log
+```
+
+當你連接熱點並開啟網頁時，若有封包被擋住，會看到類似以下的訊息：
+
+```
+[UFW BLOCK] IN=wlo1 OUT=eno2 ...
+```
+
+這表示：
+
+- 封包是從 `wlo1`（Wi-Fi）進來
+- 想從 `eno2` 出去，卻被擋下來了
+
+此時，你可以根據實際介面設定對應的 `allow in` 與 `route allow out` 規則，使 封包可以正常轉送。
+
+## 正確的 UFW 設定方式
+
+### 1. 重新啟用防火牆：
+
+```bash
+$ sudo ufw enable
+```
+
+### 2. 設定允許的網路介面：
+
+以下範例中，我們假設：
+
+- `wlo1` 是 Wi-Fi（作為熱點的輸入介面）
+- `eno2` 是有線網路（作為熱點的輸出介面）
+
+請根據實際情況調整介面名稱。
+
+```bash
+$ sudo ufw allow in on wlo1
+$ sudo ufw route allow out on eno2
+```
+
+## 確認防火牆規則是否正確
+
+使用以下指令檢查目前的防火牆規則：
+
+```bash
+$ sudo ufw status numbered
+```
+
+你應該會看到類似以下的規則：
+
+```
+[ 1] Anywhere on wlo1           ALLOW IN    Anywhere
+[ 2] Anywhere on eno2           ALLOW FWD   Anywhere                   (out)
+```
+
+通常只需要這兩條規則即可使熱點正常運作。
+
+## 如何確認網路流向（IN/OUT 介面）
+
+若不確定輸入（IN）與輸出（OUT）介面是哪一個，可以使用以下指令查看網卡狀態：
+
+```bash
+$ ifconfig
+```
+
+尋找 `inet` 欄位中的 IP 以及各介面是否顯示為 `RUNNING`，即可判斷哪一個是連外網路的（例如 eno2）與 Wi-Fi 熱點的來源（例如 wlo1）。
+
+你可以使用以下指令安裝 `ifconfig`：
+
+```bash
+$ sudo apt install net-tools
+```
+
+## 總結
+
+當 Ubuntu 上的 Wi-Fi 熱點無法正常使用時，請務必檢查防火牆的設定。透過正確的 UFW 規則設定，我們可以有效解決封包轉送被阻擋的問題，讓熱點功能恢復正常。
+
+這是簡單卻常被忽略的細節，希望這篇文章能幫助你快速解決問題，並理解其中的原理。
+
+## 參考資料 & 延伸閱讀
+
+- `man ufw`
+- `/etc/ufw/before.rules`（進階 NAT 設定）
+- NetworkManager 的 Hotspot 模式
+- [networking - Can't connect to ubuntu 22.04 hotspot - Ask Ubuntu](https://askubuntu.com/questions/1406149/cant-connect-to-ubuntu-22-04-hotspot)

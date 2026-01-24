@@ -70,7 +70,7 @@ export function PostCard({ post }: PostCardProps) {
           </h2>
         </Link>
 
-        <p className="text-zinc-500 text-sm line-clamp-3 font-mono leading-relaxed mb-4 grow">
+        <p className="text-zinc-500 text-sm line-clamp-3 leading-relaxed mb-4 grow">
           &gt; {post.description}
         </p>
 

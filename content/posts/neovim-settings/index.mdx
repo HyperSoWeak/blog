@@ -1,0 +1,100 @@
+---
+title: "Neovim + LazyVim 基本設定調整"
+date: "2025-12-18"
+categories: ["學習筆記"]
+tags: ["Neovim"]
+---
+
+## 安裝 LazyVim
+
+因為 LazyVim 需要較新的 Neovim 版本，apt 等 package manager 可能還停留在舊版，所以可以直接去 [Releases · neovim/neovim](https://github.com/neovim/neovim/releases) 下載 AppImage。
+
+裝好 Neovim 後，就可以參考官方文件來安裝 LazyVim：[🛠️ Installation | LazyVim](https://www.lazyvim.org/installation)。裝好 LazyVim 後理論上就可以直接使用 了，非常方便，不過可以稍微調整一些設定來符合自己的需求。
+
+## 透明背景
+
+預設 LazyVim 主題是有背景色的 Tokyo Night，如果想要透明背景，可以新增一個檔 案 `~/.config/nvim/lua/plugins/colorscheme.lua` 裡面加入以下設定：
+
+```lua
+return {
+  {
+    "folke/tokyonight.nvim",
+    opts = {
+      transparent = true,
+      styles = {
+        sidebars = "transparent",
+        floats = "transparent",
+      },
+    },
+  },
+}
+```
+
+這樣就會讓 Tokyo Night 主題變成透明背景。
+
+## 複製貼上到系統剪貼簿
+
+可以在 `~/.config/nvim/lua/config/options.lua` 裡面加入以下設定，讓 Neovim 預設使用系統剪貼簿：
+
+```lua
+vim.opt.clipboard:append("unnamedplus")
+```
+
+如此一來就可以直接使用 `y`、`d`、`p` 等指令來複製貼上到系統剪貼簿，而不用加 上 register 前綴 `"+` 或 `"*`。如果在工作站上使用還可加入以下設定，支援透過 OSC 52 協定來複製貼上，可以跨 SSH 使用剪貼簿：
+
+```lua
+vim.g.clipboard = {
+  name = "OSC 52",
+  copy = {
+    ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+    ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+  },
+  paste = {
+    ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+    ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+  },
+}
+```
+
+## tab 與空格設定
+
+我習慣的縮排大小會根據語言有所不同，例如 C++ 會用 4 個空格，而 LazyVim 預設 都是 2 個空格，可以在 `~/.config/nvim/lua/config/autocmds.lua` 裡面加入以下 設定調整不同語言的 tab 與空格設定：
+
+```lua
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "c", "cpp" },
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true
+  end,
+})
+
+```
+
+## 關閉拼字檢查
+
+這是我最討厭的 LazyVim 預設功能，因為平常會使用不少專有名詞，拼字檢查就會一 直嗆我，很煩。在 `~/.config/nvim/lua/config/autocmds.lua` 裡面加入以下設定來關閉拼字檢查：
+
+```lua
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "*",
+  callback = function()
+    vim.opt_local.spell = false
+  end,
+})
+```
+
+## 自訂指令
+
+因為我把系統剪貼簿設定成預設行為，但有時會想要把檔案清空再貼上系統剪貼簿的內容，這時候就不能用 `:%d` 清掉再貼上，因為會把系統剪貼簿的內容蓋掉。可以在 `~/.config/nvim/lua/config/options.lua` 裡面加入以下設定，新增一個 `:D` 指令來達成這個功能（注意自訂指令的首字母一定要大寫）：
+
+```lua
+vim.api.nvim_create_user_command("D", function()
+  vim.cmd('normal! gg"_dG')
+end, { desc = "Clear buffer without affecting clipboard" })
+```
+
+## 結語
+
+以上就是我目前對 LazyVim 的一些基本設定調整，讓它更符合我的使用習慣。LazyVim 本身已經很強大了，但透過這些小調整，可以讓使用體驗更順暢。LazyVim 真的是個 很棒的 Neovim 配置框架 (ﾉ&gt;ω&lt;)ﾉ

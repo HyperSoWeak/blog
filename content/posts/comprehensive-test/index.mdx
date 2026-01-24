@@ -1,10 +1,10 @@
 ---
-title: "系統架構與測試 (System Architecture & Test)"
+title: "架構與測試 (Architecture & Test)"
 date: "2026-01-24"
-description: "這是一篇關於系統架構的測試文章，包含了數學公式、大量的程式碼、列表以及圖片測試，用來驗證部落格的顯示效果。"
-tags: ["系統", "架構", "測試"]
-categories: ["工程"]
-featuredImage: ""
+description: "這是一篇測試文章，包含了數學公式、大量的程式碼、列表以及圖片測試，用來驗證部落格的顯示效果。"
+tags: ["Owo"]
+categories: ["隨筆"]
+featuredImage: "image.png"
 ---
 
 歡迎來到 **Terminal Reverie** 的系統測試頁面。這裡我們將測試所有的 Markdown 渲染功能。
@@ -42,6 +42,8 @@ _斜體 (Italic)_, **粗體 (Bold)**, **_粗斜體 (Bold Italic)_**, ~~刪除線
    2. 整合測試
 
 ## 3. 程式碼區塊 (Code Blocks)
+
+inline `code` test。
 
 測試複製按鈕與語法高亮。
 
@@ -128,9 +130,39 @@ d & -b \\
 \end{pmatrix}
 $$
 
+Maxwell's Equations:
+
+$$
+\begin{aligned}
+\nabla \cdot \mathbf{E} &= \frac{\rho}{\varepsilon_0} \\
+\nabla \cdot \mathbf{B} &= 0 \\
+\nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t} \\
+\nabla \times \mathbf{B} &= \mu_0(\mathbf{J} + \varepsilon_0 \frac{\partial \mathbf{E}}{\partial t})
+\end{aligned}
+$$
+
 ## 5. 圖片測試 (Images)
 
+### 本地圖片 (Local Image)
+
+這是一張放在文章資料夾內的圖片 `local.png`。
+
+![Local Image Test](./local.png "這是一張本地圖片的說明文字 (This is a caption)")
+
+### 無說明的圖片
+
+這張圖片沒有設定 Title 屬性，所以應該不會顯示 Caption。
+
+![No Caption](./local.png)
+
+### 遠端圖片
+
+測試遠端圖片是否也能正常運作。
+
+![Remote Image](https://placehold.co/600x200/111/fff?text=REMOTE "這是遠端圖片的說明")
 (此處使用 placeholder，因為實際圖片需要上傳)
+
+### 並排圖片測試
 
 ![測試圖片](https://placehold.co/800x400/111/00f0ff?text=SYSTEM_TEST_IMAGE)
 

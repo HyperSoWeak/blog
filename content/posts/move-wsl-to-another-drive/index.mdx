@@ -1,0 +1,76 @@
+---
+title: "將 WSL 移動到另一個磁碟"
+date: "2024-10-18"
+categories: ["學習筆記"]
+tags: ["WSL", "Linux", "Windows"]
+---
+
+> 啊啊啊 WSL 把我 C 槽炸了
+
+以前裝完 WSL 就直接用了，最近在 WSL 上訓練模型才發現一個問題，預設的 WSL 位 置是在 C 槽，所以我存了大量的資料在 C 槽導致空間快炸了，查了下資料發現要把 WSL 移走非常容易。
+
+## 使用 WSL command line tool
+
+步驟如下：
+
+1.  匯出 distribution
+
+    ```bash
+    wsl.exe --export <DistroName> <Tar-FileName>
+    ```
+
+    以我為例是
+
+    ```bash
+    wsl.exe --export Ubuntu-22.04 E:\WSL\export\Ubuntu-22.04.tar
+    ```
+
+2.  刪除舊的安裝檔
+
+    ```bash
+    wsl.exe --unregister <OldDistroName>
+    ```
+
+    > 💡**Hint**：先確認新的 distro 可以跑再把舊的刪掉比較安全
+
+3.  把 distribution 匯入到指定的資料夾
+
+    ```bash
+    wsl.exe --import <DistroName> <Folder-To-Install> <Tar-FileName>
+    ```
+
+    以我為例是
+
+    ```bash
+    wsl.exe --import Ubuntu-22.04 E:\WSL\Ubuntu-22.04 E:\WSL\export\Ubuntu-22.04.tar
+    ```
+
+4.  執行新的 distro
+    ```bash
+    wsl.exe -d <NewDistributionName>
+    ```
+
+## 設定預設使用者
+
+移完之後發現開機是 root，所以要設定預設使用者，直接到 `/etc/wsl.conf` 設定：
+
+```text
+[user]
+default=username
+```
+
+然後跑 `wsl --terminate <distroname>` 把 WSL 關機，再重新打開就可以了。
+
+## 後記
+
+好耶之後可以在 WSL 亂塞檔案ㄌ
+
+### 後後記
+
+不推 WSL，所以我直接換成 Linux ㄌ  
+--- 2025-07-23
+
+## Reference
+
+- [How to set default user for manually installed WSL distro?](https://superuser.com/questions/1566022/how-to-set-default-user-for-manually-installed-wsl-distro)
+- [Move WSL to another drive](https://medium.com/@rahmanazhar/move-wsl-to-another-drive-ab8002152cf2)

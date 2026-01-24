@@ -1,0 +1,64 @@
+---
+title: "I/O 優化模板 (C++)"
+date: "2025-04-21"
+categories: ["演算法"]
+tags: ["C++", "模板"]
+featuredImage: "./cover.png"
+---
+
+理論上可以再更快，但就沒有顯著差異，用 fread / fwrite 就足夠快了。
+
+## 模板
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+/* --- fast io --- */
+#define MAXSIZE (1 << 20)
+char buf[MAXSIZE], *p1 = buf, *p2 = buf;
+char pbuf[MAXSIZE], *pp = pbuf;
+
+static inline char gc() {
+    if (p1 == p2 && (p2 = (p1 = buf) + fread(buf, 1, MAXSIZE, stdin)) == buf) return EOF;
+    return *p1++;
+}
+
+static inline int read_int() {
+    int x = 0;
+    char c = gc(), neg = 0;
+    while ((c > '9' || c < '0') && c != '-' && c != EOF) c = gc();
+    if (c == '-') neg = 1, c = gc();
+    while (c >= '0' && c <= '9') {
+        x = (x << 3) + (x << 1) + (c - '0');
+        c = gc();
+    }
+    return neg ? ~x + 1 : x;
+}
+
+static inline void pc(const char c) {
+    if (pp - pbuf == MAXSIZE) fwrite(pbuf, 1, MAXSIZE, stdout), pp = pbuf;
+    *pp++ = c;
+}
+
+static inline void write_int(int x) {
+    static char ch[20];
+    static int idx = 0;
+    if (x < 0) x = ~x + 1, pc('-');
+    if (x == 0) ch[++idx] = 0;
+    while (x > 0) ch[++idx] = x % 10, x /= 10;
+    while (idx) pc(ch[idx--] + 48);
+}
+
+static inline void clean_up() { fwrite(pbuf, 1, pp - pbuf, stdout); }
+/* --------------- */
+
+int main() {
+    int x = read_int();
+    int y = read_int();
+    write_int(x + y);
+    pc('\n');
+    clean_up();
+    return 0;
+}
+```

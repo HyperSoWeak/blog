@@ -10,6 +10,8 @@ import rehypeUnwrapImages from "rehype-unwrap-images";
 import { visit } from "unist-util-visit";
 import { CodeBlock } from "./CodeBlock";
 import { CustomImage } from "./CustomImage";
+import { Grid } from "./Grid";
+import React from "react";
 
 // Plugin to add raw code to pre tag
 const rehypeAddRaw = () => (tree: any) => {
@@ -46,6 +48,7 @@ const rehypeImageRewrite = (options: { slug: string }) => (tree: any) => {
 const components = {
   pre: CodeBlock as any,
   img: CustomImage as any,
+  Grid: Grid as any,
 };
 
 interface MarkdownProps {
