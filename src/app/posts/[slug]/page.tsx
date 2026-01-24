@@ -55,7 +55,7 @@ export default async function PostPage({ params }: PageProps) {
         <span className="text-zinc-300 truncate max-w-50">{post.slug}</span>
       </div>
 
-      <header className="mb-8 border border-border bg-[#080808] relative overflow-hidden">
+      <header className="mb-8 border border-border bg-zinc-950 relative overflow-hidden">
         {featuredImageUrl && (
           <div className="w-full h-64 md:h-80 relative border-b border-border">
             <img
@@ -115,7 +115,7 @@ export default async function PostPage({ params }: PageProps) {
 
       {/* Mobile ToC */}
       <div className="lg:hidden mb-8">
-        <details className="border border-border bg-[#080808] group">
+        <details className="border border-border bg-zinc-950 group">
           <summary className="flex items-center justify-between p-4 cursor-pointer list-none text-primary font-mono font-bold uppercase hover:bg-primary/10 transition-colors">
             <div className="flex items-center gap-2">
               <List size={16} />

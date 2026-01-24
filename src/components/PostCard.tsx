@@ -15,7 +15,7 @@ export function PostCard({ post }: PostCardProps) {
   return (
     <div className="group border border-border bg-panel hover:border-primary transition-colors relative overflow-hidden flex flex-col h-full">
       {/* Header Bar */}
-      <div className="flex items-center justify-between px-3 py-1 bg-[#111] border-b border-border text-xs font-mono text-zinc-500">
+      <div className="flex items-center justify-between px-3 py-1 bg-background border-b border-border text-xs font-mono text-zinc-500">
         <span className="truncate">FILE: {post.slug}.mdx</span>
         <div className="flex gap-1">
           <div className="w-2 h-2 rounded-full bg-zinc-700 group-hover:bg-primary transition-colors"></div>
@@ -33,7 +33,7 @@ export function PostCard({ post }: PostCardProps) {
           <div className="absolute inset-0 bg-primary mix-blend-overlay opacity-0 group-hover:opacity-10 pointer-events-none"></div>
         </div>
       ) : (
-        <div className="aspect-video w-full border-b border-border bg-[#050505] flex items-center justify-center relative overflow-hidden group-hover:bg-[#080808] transition-colors">
+        <div className="aspect-video w-full border-b border-border bg-background flex items-center justify-center relative overflow-hidden group-hover:bg-[#0f131a] transition-colors">
           <div
             className="absolute inset-0 opacity-20"
             style={{
@@ -65,7 +65,7 @@ export function PostCard({ post }: PostCardProps) {
           href={`/posts/${post.slug}`}
           className="block mb-2 before:absolute before:inset-0 before:z-0 focus:outline-none"
         >
-          <h2 className="text-lg font-bold text-zinc-100 group-hover:text-primary transition-colors leading-tight glow-text-hover">
+          <h2 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-tight glow-text-hover">
             {post.title}
           </h2>
         </Link>
@@ -80,7 +80,7 @@ export function PostCard({ post }: PostCardProps) {
             <Link
               key={tag}
               href={`/tags/${tag}`}
-              className="pointer-events-auto text-[10px] text-zinc-400 bg-zinc-900/50 px-1.5 py-0.5 border border-zinc-800 hover:border-primary hover:text-white transition-colors uppercase tracking-wider"
+              className="pointer-events-auto text-[10px] text-zinc-400 bg-background px-1.5 py-0.5 border border-border hover:border-primary hover:text-white transition-colors uppercase tracking-wider"
             >
               #{tag}
             </Link>

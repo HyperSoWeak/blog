@@ -14,12 +14,12 @@ export default function AboutPage() {
 
       <div className="flex flex-col md:flex-row gap-8 items-start">
         <div className="w-full md:w-1/3">
-          <div className="group relative flex aspect-square items-center justify-center overflow-hidden border border-border bg-[#080808]">
+          <div className="group relative flex aspect-square items-center justify-center overflow-hidden border border-border bg-zinc-950">
             <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(0,240,255,0.05)_50%,transparent_75%,transparent_100%)] bg-[length:250%_250%,100%_100%] bg-[position:-100%_0,0_0] bg-no-repeat transition-[background-position_0s_ease] duration-1000 group-hover:bg-[position:200%_0,0_0]"></div>
             <Terminal size={80} className="text-primary" />
           </div>
 
-          <div className="mt-4 space-y-2 border border-border bg-[#080808] p-4 font-mono text-xs">
+          <div className="mt-4 space-y-2 border border-border bg-zinc-950 p-4 font-mono text-xs">
             <div className="flex justify-between">
               <span className="text-zinc-500">STATUS:</span>
               <span className="text-green-500">ONLINE</span>
@@ -55,7 +55,7 @@ export default function AboutPage() {
               TECH_STACK
             </h2>
             <div className="grid grid-cols-2 gap-4">
-              <div className="border border-border bg-[#080808] p-3">
+              <div className="border border-border bg-zinc-950 p-3">
                 <h3 className="mb-2 text-xs font-bold uppercase text-primary">Frontend</h3>
                 <ul className="list-none space-y-1 text-zinc-400">
                   <li>React / Next.js</li>
@@ -64,7 +64,7 @@ export default function AboutPage() {
                   <li>WebGL / Three.js</li>
                 </ul>
               </div>
-              <div className="border border-border bg-[#080808] p-3">
+              <div className="border border-border bg-zinc-950 p-3">
                 <h3 className="mb-2 text-xs font-bold uppercase text-primary">Backend</h3>
                 <ul className="list-none space-y-1 text-zinc-400">
                   <li>Node.js / Deno</li>
@@ -79,19 +79,19 @@ export default function AboutPage() {
           <div className="flex gap-4 pt-8">
             <a
               href="https://github.com"
-              className="border border-border bg-[#080808] p-2 transition-all hover:border-primary hover:bg-primary hover:text-black"
+              className="border border-border bg-zinc-950 p-2 transition-all hover:border-primary hover:bg-primary hover:text-black"
             >
               <Github size={20} />
             </a>
             <a
               href="https://linkedin.com"
-              className="border border-border bg-[#080808] p-2 transition-all hover:border-primary hover:bg-primary hover:text-black"
+              className="border border-border bg-zinc-950 p-2 transition-all hover:border-primary hover:bg-primary hover:text-black"
             >
               <Linkedin size={20} />
             </a>
             <a
               href="mailto:hello@example.com"
-              className="border border-border bg-[#080808] p-2 transition-all hover:border-primary hover:bg-primary hover:text-black"
+              className="border border-border bg-zinc-950 p-2 transition-all hover:border-primary hover:bg-primary hover:text-black"
             >
               <Mail size={20} />
             </a>

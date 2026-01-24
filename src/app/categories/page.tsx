@@ -20,7 +20,7 @@ export default async function CategoriesPage() {
           <Link
             key={category}
             href={`/categories/${category}`}
-            className="flex items-center gap-3 p-4 border border-border bg-[#080808] hover:border-primary hover:bg-primary/10 transition-all group"
+            className="flex items-center gap-3 p-4 border border-border bg-zinc-950 hover:border-primary hover:bg-primary/10 transition-all group"
           >
             <Folder className="text-zinc-500 group-hover:text-primary transition-colors" />
             <span className="font-mono text-lg text-zinc-300 group-hover:text-white">

@@ -10,7 +10,7 @@ export default async function Home() {
   return (
     <div className="space-y-12">
       {/* Hero / Terminal Buffer */}
-      <section className="border border-border bg-[#080808] p-6 md:p-10 font-mono text-sm md:text-base relative overflow-hidden shadow-2xl">
+      <section className="border border-border bg-zinc-950 p-6 md:p-10 font-mono text-sm md:text-base relative overflow-hidden shadow-2xl">
         <div className="absolute top-0 left-0 w-full h-1 bg-primary opacity-50"></div>
 
         <div className="space-y-2 text-zinc-400">

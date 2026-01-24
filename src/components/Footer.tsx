@@ -2,7 +2,7 @@ import { Github, Linkedin, Terminal } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="mt-20 border-t border-border bg-[#050505] py-8 font-mono text-xs uppercase tracking-widest">
+    <footer className="mt-20 border-t border-border bg-panel py-8 font-mono text-xs uppercase tracking-widest">
       <div className="container mx-auto max-w-5xl px-4">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="flex items-center gap-3 text-zinc-500">

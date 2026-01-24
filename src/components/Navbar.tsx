@@ -83,7 +83,7 @@ export function Navbar() {
       {/* Mobile Menu Overlay */}
       <div
         className={clsx(
-          "fixed inset-0 bg-[#050505]/95 backdrop-blur-sm z-40 flex flex-col items-center justify-center gap-8 transition-transform duration-300 md:hidden border-l border-border",
+          "fixed inset-0 bg-background/95 backdrop-blur-sm z-40 flex flex-col items-center justify-center gap-8 transition-transform duration-300 md:hidden border-l border-border",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
