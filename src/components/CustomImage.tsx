@@ -13,7 +13,7 @@ export function CustomImage({ src, alt, title, ...props }: CustomImageProps) {
       src={src}
       alt={alt || ""}
       title={title}
-      className="rounded-lg border border-[var(--border)] max-w-full h-auto mx-auto"
+      className="rounded-lg border border-border max-w-full h-auto mx-auto"
       {...props}
     />
   );
@@ -22,7 +22,7 @@ export function CustomImage({ src, alt, title, ...props }: CustomImageProps) {
     return (
       <figure className="my-8 flex flex-col items-center">
         {image}
-        <figcaption className="mt-3 text-sm text-zinc-500 font-mono text-center italic border-b border-[var(--primary-dim)] pb-1 inline-block">
+        <figcaption className="mt-3 text-sm text-zinc-500 font-mono text-center italic border-b border-primary-dim pb-1 inline-block">
           {title}
         </figcaption>
       </figure>
