@@ -34,7 +34,7 @@ export default async function TagPage({ params }: PageProps) {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-8 font-mono border-b border-zinc-800 pb-4">
-        <span className="text-green-500">/</span>tags<span className="text-zinc-500">/</span>
+        <span className="text-primary">/</span>tags<span className="text-zinc-500">/</span>
         {tag}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

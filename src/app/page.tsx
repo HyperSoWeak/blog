@@ -20,7 +20,7 @@ export default async function Home() {
           </p>
           <p className="pl-4 text-zinc-500">Loading modules...</p>
           <p className="pl-4 text-zinc-500">Connecting to neural interface...</p>
-          <p className="pl-4 text-green-500">Access Granted.</p>
+          <p className="pl-4 text-success">Access Granted.</p>
           <br />
           <h1 className="text-3xl md:text-5xl font-bold text-white tracking-tight mb-2">
             TERMINAL REVERIE

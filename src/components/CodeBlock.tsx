@@ -61,8 +61,8 @@ export function CodeBlock({
           >
             {isCopied ? (
               <>
-                <Check size={12} className="text-green-500" />
-                <span className="text-[10px] text-green-500 font-mono uppercase tracking-wider">
+                <Check size={12} className="text-success" />
+                <span className="text-[10px] text-success font-mono uppercase tracking-wider">
                   OK
                 </span>
               </>
@@ -83,7 +83,7 @@ export function CodeBlock({
         <pre
           ref={preRef}
           {...props}
-          className={clsx("text-[15px] leading-relaxed font-mono", className)}
+          className={clsx("text-[16px] leading-relaxed font-mono", className)}
         >
           {children}
         </pre>

@@ -3,13 +3,14 @@
 
 :root {
   /* Lighter Dark Theme (GitHub Dark Dimmed inspired) */
-  --background: #0d1117;
-  --foreground: #e6edf3;
+  --background: #0b0f15;
+  --foreground: #e6edf3; /* Catppuccin Text */
 
-  /* Technical Blue Theme */
-  --primary: #00f0ff; /* Electric Cyan */
-  --primary-dim: #00a0aa;
-  --secondary: #0033ff; /* Deep Blue */
+  /* Catppuccin Mocha Inspired Theme */
+  --primary: #89b4fa; /* Catppuccin Blue */
+  --primary-dim: #b4befe; /* Catppuccin Lavender */
+  --secondary: #89dceb; /* Catppuccin Sky */
+  --success: #a6e3a1; /* Catppuccin Green */
 
   --border: #30363d;
   --panel: #161b22;
@@ -22,6 +23,8 @@
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-primary-dim: var(--primary-dim);
+  --color-secondary: var(--secondary);
+  --color-success: var(--success);
   --color-border: var(--border);
   --color-panel: var(--panel);
   --font-mono: var(--font-mono);
@@ -72,13 +75,12 @@ body {
 }
 
 .glow-text {
-  text-shadow: 0 0 5px rgba(47, 129, 247, 0.4);
+  text-shadow: 0 0 5px rgba(137, 180, 250, 0.4);
 }
 
 /* Markdown Overrides for Technical Theme */
 .prose {
   max-width: none;
-  color: #8b949e; /* Muted text */
 }
 
 .prose strong {
@@ -145,10 +147,10 @@ body {
 
 .prose blockquote {
   border-left: 3px solid var(--primary);
-  background: rgba(47, 129, 247, 0.1);
+  background: rgba(137, 180, 250, 0.05);
   padding: 1em;
   font-style: italic;
-  color: #8b949e;
+  color: #a6adc8;
 }
 
 .prose code {

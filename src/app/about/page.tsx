@@ -22,7 +22,7 @@ export default function AboutPage() {
           <div className="mt-4 space-y-2 border border-border bg-zinc-950 p-4 font-mono text-xs">
             <div className="flex justify-between">
               <span className="text-zinc-500">STATUS:</span>
-              <span className="text-green-500">ONLINE</span>
+              <span className="text-success">ONLINE</span>
             </div>
             <div className="flex justify-between">
               <span className="text-zinc-500">UPTIME:</span>

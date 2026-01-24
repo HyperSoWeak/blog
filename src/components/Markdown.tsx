@@ -67,7 +67,7 @@ export async function Markdown({ source, slug }: MarkdownProps) {
             [
               rehypePrettyCode,
               {
-                theme: "github-dark",
+                theme: "one-dark-pro",
                 keepBackground: false,
               },
             ],
