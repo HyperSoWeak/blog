@@ -39,9 +39,8 @@ export default function AboutPage() {
               <img
                 src="/images/about/avatar.png"
                 alt="Hyper Hu"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-primary mix-blend-overlay opacity-0 group-hover:opacity-20 transition-opacity pointer-events-none"></div>
             </div>
 
             {/* Info Card */}
@@ -55,7 +54,7 @@ export default function AboutPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-500">ALIAS:</span>
-                <span className="text-zinc-300">HyperSoWeak</span>
+                <span className="text-zinc-300">hypersoweak</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-500">LOC:</span>

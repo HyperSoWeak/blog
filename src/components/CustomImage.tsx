@@ -18,14 +18,14 @@ export function CustomImage({ src, alt, title, className, ...props }: CustomImag
 
   const imageElement = (
     <div
-      className={twMerge("relative group cursor-zoom-in rounded-lg overflow-hidden", className)}
+      className={twMerge("relative group cursor-zoom-in overflow-hidden", className)}
       onClick={toggleZoom}
     >
       <img
         src={src}
         alt={alt || ""}
         title={title}
-        className="max-w-full h-auto mx-auto rounded-lg border border-border"
+        className="max-w-full h-auto mx-auto border border-border"
         {...props}
       />
       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
@@ -62,7 +62,7 @@ export function CustomImage({ src, alt, title, className, ...props }: CustomImag
           <img
             src={src}
             alt={alt || ""}
-            className="max-w-full max-h-full rounded-md shadow-2xl object-contain"
+            className="max-w-full max-h-full shadow-2xl object-contain"
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the image itself
           />
           {title && (
