@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "format": "prettier --write ."
+    "format": "prettier --write --list-different . --ignore-path .gitignore"
   },
   "dependencies": {
     "@types/mime": "^3.0.4",

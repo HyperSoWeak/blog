@@ -1,0 +1,169 @@
+---
+title: APCS 2021-09 題解
+date: "2025-01-03"
+categories:
+  - 題解
+  - 演算法
+tags:
+  - APCS
+---
+
+## p1. 七言對聯
+
+[題目連結](https://zerojudge.tw/ShowProblem?problemid=g275)
+
+### Solution
+
+乖乖照條件一個一個判斷，寫迴圈反而會更麻煩。
+
+**AC code**
+
+```cpp
+signed main() {
+    hyper;
+    int n;
+    cin >> n;
+    while(n--) {
+        int a[2][8];
+        rep(i,0,2) rep1(j,1,7) cin >> a[i][j];
+        bool f = 0;
+        if(a[0][2] == a[0][4] || a[0][2] != a[0][6] ||
+           a[1][2] == a[1][4] || a[1][2] != a[1][6]) {
+            f = 1;
+            cout << 'A';
+        }
+        if(a[0][7] == 0 || a[1][7] == 1) {
+            f = 1;
+            cout << 'B';
+        }
+        if(a[0][2] == a[1][2] || a[0][4] == a[1][4] || a[0][6] == a[1][6]) {
+            f = 1;
+            cout << 'C';
+        }
+        if(!f) cout << "None";
+        cout << '\n';
+    }
+}
+```
+
+## p2. 魔王迷宮
+
+[題目連結](https://zerojudge.tw/ShowProblem?problemid=g276)
+
+### Solution
+
+也是一個有趣的模擬題，注意不能把魔王跟炸彈直接抵銷，因為一個炸彈可能會炸到很多個魔王。
+
+**AC code**
+
+```cpp
+struct Player {
+    int x, y, s, t, die;
+};
+
+signed main() {
+    hyper;
+    int n, m, k, a[MN][MN];
+    vector<Player> ps;
+    cin >> n >> m >> k;
+    rep(i,0,k) {
+        int x, y, s, t;
+        cin >> x >> y >> s >> t;
+        ps.push_back({x,y,s,t,0});
+    }
+    rr(a,0);
+    bool game = 1;
+    while(game) {
+        // bomb
+        for(auto &p: ps) if(!p.die) a[p.x][p.y] = 1;
+        // move
+        for(auto &p: ps) if(!p.die) {
+            p.x += p.s, p.y += p.t;
+            if(p.x < 0 || p.x >= n || p.y < 0 || p.y >= m) p.die = 1;
+            else if(a[p.x][p.y]) {
+                p.die = 1;
+                a[p.x][p.y] = 2;
+            }
+        }
+        // remove bomb
+        rep(i,0,n) rep(j,0,m) if(a[i][j] == 2) a[i][j] = 0;
+        // check
+        game = 0;
+        for(auto &p: ps) if(!p.die) game = 1;
+    }
+    int cnt = 0;
+    rep(i,0,n) rep(j,0,m) if(a[i][j]) ++cnt;
+    cout << cnt << '\n';
+}
+```
+
+## p3. 幸運數字
+
+[題目連結](https://zerojudge.tw/ShowProblem?problemid=g277)
+
+### Solution
+
+遞迴的部分很簡單，難點是要找區間最小值。原本第一個想法是稀疏表或其他支援區間最值的結構（例如線段樹或 BIT），但後來發現區間只會越縮越小，區間外的最小值不會再使用到，可以直接丟掉。所以直接紀錄一個 index 陣列，以原陣列遞增排序，發現不在區間內就可以丟掉換下一個當最小值。剩下的部分就很簡單了，時間複雜度 $O(n \log n)$ （排序）。
+
+**AC code**
+
+```cpp
+signed main() {
+    hyper;
+    int n, a[MN], ps[MN];
+    int idx[MN], ii = 1;
+    cin >> n;
+    rep1(i,1,n) {
+        cin >> a[i];
+        ps[i] = ps[i-1] + a[i];
+        idx[i] = i;
+    }
+    sort(idx+1, idx+1+n, [&](int i, int j) {
+        return a[i] < a[j];
+    });
+    int l = 1, r = n;
+    while(l < r) {
+        while(idx[ii] < l || idx[ii] > r) ++ii;
+        int m = idx[ii];
+        if(ps[m-1] - ps[l-1] <= ps[r] - ps[m]) l = m+1;
+        else r = m-1;
+    }
+    cout << a[l] << '\n';
+}
+```
+
+## p4. 美食博覽會
+
+[題目連結](https://zerojudge.tw/ShowProblem?problemid=g278)
+
+### Solution
+
+先預處理一個陣列 $len$ ，其中 $len[i]$ 表示以 $i$ 為結尾的最長不重複子序列長度，也就是一個試吃員以 $i$ 攤位為結尾，最多可以往前吃幾個攤位。那我們就可以定義 $dp[i][j]$ 表示有 $i$ 個試吃員，只考慮前 $j$ 個攤位時，最多總共可以吃到幾攤。轉移跟背包問題很類似：
+
+$$
+dp[i][j] = \max \{dp[i][j-1], dp[i-1][j-len[j]]+len[j]\}
+$$
+
+其中 $dp[i][j-1]$ 代表第 $i$ 個試吃員不要吃第 $j$ 個攤位，所以沿用 $j-1$ 的答案；$dp[i-1][j-len[j]]+len[j]$ 則表示他最後是吃第 $j$ 個攤位，所以就是前 $i-1$ 個試吃員吃 $1 \sim j-len[j]$ ，加上這個試吃員的攤位數 $len[j]$ 。時間複雜度 $O(nk)$ 。
+
+**AC code**
+
+```cpp
+int n, k, a[MN], dp[25][MN];
+int len[MN], last[MN], l = 1;
+
+signed main() {
+    hyper;
+    cin >> n >> k;
+    rep1(i,1,n) cin >> a[i];
+    rep1(i,1,n) {
+        l = max(l, last[a[i]]+1);
+        len[i] = i-l+1;
+        last[a[i]] = i;
+    }
+    rep1(i,1,k) rep1(j,1,n) {
+        dp[i][j] = max(dp[i][j-1], dp[i-1][j-len[j]]+len[j]);
+    }
+    cout << dp[k][n] << '\n';
+}
+```

@@ -1,0 +1,209 @@
+---
+title: APCS 2020-10 題解
+date: "2024-10-20"
+categories:
+  - 題解
+  - 演算法
+tags:
+  - APCS
+---
+
+## p1. 人力分配
+
+[題目連結](https://zerojudge.tw/ShowProblem?problemid=f312)
+
+### Solution
+
+直接枚舉工廠一員工數量 $0 \sim n$ ，挑出最大收益的。時間複雜度 $O(n)$ 。
+
+**AC code**
+
+```cpp
+int f(int a, int b, int c, int x) {
+    return a*x*x + b*x + c;
+}
+
+signed main() {
+    hyper;
+    int a1, b1, c1, a2, b2, c2, n;
+    cin >> a1 >> b1 >> c1 >> a2 >> b2 >> c2 >> n;
+    int ans = -INF;
+    rep1(i,0,n) {
+        int j = n-i;
+        ans = max(ans, f(a1,b1,c1,i) + f(a2,b2,c2,j));
+    }
+    cout << ans << '\n';
+}
+```
+
+## p2. 人口遷移
+
+[題目連結](https://zerojudge.tw/ShowProblem?problemid=f313)
+
+### Solution
+
+就...直接模擬，注意人口遷移的時候不能直接在同一個陣列上面做，先把每個城市移入移出人數都算好再一起加回原本陣列就好。時間複雜度 $O(mRC)$ 。
+
+**AC code**
+
+```cpp
+int r, c, k, m;
+int a[55][55];
+int dx[] = {0,1,0,-1};
+int dy[] = {1,0,-1,0};
+
+signed main() {
+    hyper;
+    cin >> r >> c >> k >> m;
+    rr(a, -1);
+    rep1(i,1,r) rep1(j,1,c) cin >> a[i][j];
+    while(m--) {
+        int b[55][55] = {0};
+        rep1(i,1,r) rep1(j,1,c) {
+            int s = a[i][j] / k;
+            rep(t,0,4) {
+                int x = i+dx[t], y = j+dy[t];
+                if(a[x][y] == -1) continue;
+                b[x][y] += s, a[i][j] -= s;
+            }
+        }
+        rep1(i,1,r) rep1(j,1,c) a[i][j] += b[i][j];
+    }
+    int mx = -INF, mn = INF;
+    rep1(i,1,r) rep1(j,1,c) {
+        mx = max(mx, a[i][j]);
+        if(a[i][j] != -1) mn = min(mn, a[i][j]);
+    }
+    cout << mn << '\n' << mx << '\n';
+}
+```
+
+## p3. 勇者修煉
+
+[題目連結](https://zerojudge.tw/ShowProblem?problemid=f314)
+
+### Solution
+
+如果只能往右下移動的話就變成簡單的 dp 了，只要從左邊跟上面選大的，再加上這格的經驗值就是這格的答案。利用這個想法，因為不能重複走，所以可以把往右下移動跟左下移動分開算，並在由上往下轉移的時候從這兩種選較大的就好。具體轉移式如下
+
+$$
+dpl[i][j] = \max\{dpl[i][j-1],\, dpl[i-1][j],\, dpr[i-1][j]\} + a[i][j]
+$$
+
+$dpr$ 同理，另外答案可能是負值，要注意邊界條件。時間複雜度 $O(mn)$ 。
+
+**AC code**
+
+```cpp
+int m, n, a[55][MN];
+int dpl[55][MN], dpr[55][MN];
+
+signed main() {
+    hyper;
+    cin >> m >> n;
+    rep1(i,1,m) rep1(j,1,n) cin >> a[i][j];
+    rep1(i,1,m) dpl[i][0] = dpr[i][n+1] = -INF;
+    rep1(i,1,m) {
+        rep1(j,1,n) dpl[i][j] = max(dpl[i][j-1], max(dpl[i-1][j], dpr[i-1][j])) + a[i][j];
+        for(int j=n; j>=1; --j) dpr[i][j] = max(dpr[i][j+1], max(dpl[i-1][j], dpr[i-1][j])) + a[i][j];
+    }
+    int ans = -INF;
+    rep1(j,1,n) ans = max(ans, max(dpl[m][j], dpr[m][j]));
+    cout << ans << '\n';
+}
+```
+
+## p4. 低地距離
+
+[題目連結](https://zerojudge.tw/ShowProblem?problemid=f315)
+
+### Solution 1
+
+把陣列的數字分成 $A = \{x \mid x \le \lfloor \frac{n}{2} \rfloor\} $ 與 $B = \{x \mid x > \lfloor \frac{n}{2} \rfloor\} $ 兩個部分分別下去做分治，合併時只需要計算每一對  $B$ 裡的數字中間夾了幾個 $A$ 裡的數字。要計算這個，我們只需要在掃過陣列時紀錄一個前綴和 $ps$ ，遇到 $x \in A$ 就把 $ps + 1$ ，第一次遇到 $x \in B$ 就把 $ans - ps$ ，第二次遇到就把 $ans + ps$ 。時間複雜度 $O(n \log n)$ 。
+
+**AC code**
+
+```cpp
+int solve(vector<int> a) {
+    int n = a.size() / 2;
+    if(n <= 1) return 0;
+    int m = n / 2;
+    vector<int> x, y;
+    int ans = 0, ps = 0;
+    bool vis[m+2] = {0};
+    for(int t: a) {
+        if(t <= m) {
+            x.push_back(t);
+            ps++;
+        } else {
+            y.push_back(t-m);
+            if(vis[t-m]) ans += ps;
+            else ans -= ps, vis[t-m] = 1;
+        }
+    }
+    return solve(x) + solve(y) + ans;
+}
+
+signed main() {
+    hyper;
+    int n, x;
+    vector<int> a;
+    cin >> n;
+    rep(i,0,n*2) {
+        cin >> x;
+        a.push_back(x);
+    }
+    cout << solve(a) << '\n';
+}
+```
+
+### Solution 2
+
+可以從小數字的開始往上算，並維護一個陣列 $A[2n]$ 紀錄目前處理完的數字，初始化為 $0$ 。每次算完某一對數字就把 $A$ 中相對應的兩個位置設成 $1$ ，這樣在算 $k$ 的時候可以確保 $A$ 中已經記錄了所有 $< k$ 的數字，數字 $k$ 夾住的那個區間和就是 $k$ 的低窪值。所以它其實是單點加值、區間和查詢，可以用線段樹或 BIT 實作。
+
+```cpp
+struct Fenwick {
+    vector<int> v;
+    int size;
+    Fenwick(int n) {
+        v.resize(n+2, 0);
+        size = n+1;
+    }
+    int lowbit(int x) { return x & (-x); }
+    void modify(int pos, int x) {
+        for(int i=pos; i<=size; i+=lowbit(i)) {
+            v[i] += x;
+        }
+    }
+    int query(int pos) {
+        int sum = 0;
+        for(int i=pos; i>0; i-=lowbit(i)) {
+            sum += v[i];
+        }
+        return sum;
+    }
+    int rsum(int l, int r) {
+        return query(r) - query(l-1);
+    }
+};
+
+signed main() {
+    hyper;
+    int n, l[MN], r[MN];
+    cin >> n;
+    Fenwick bit(n*2);
+    rep1(i,1,n*2) {
+        int x;
+        cin >> x;
+        if(l[x] == 0) l[x] = i;
+        else r[x] = i;
+    }
+    int ans = 0;
+    rep1(i,1,n) {
+        ans += bit.rsum(l[i], r[i]);
+        bit.modify(l[i], 1);
+        bit.modify(r[i], 1);
+    }
+    cout << ans << '\n';
+}
+```
