@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import { Github, Linkedin, Instagram, Mail } from "lucide-react";
-import { siteConfig } from "@/lib/config";
+"use client";
 
-export const metadata = {
-  title: "About Me | Terminal Reverie",
-};
+import { Github, Linkedin, Instagram, Mail, X } from "lucide-react";
+import { siteConfig } from "@/lib/config";
+import { useState } from "react";
 
 export default function AboutPage() {
   const { basePath } = siteConfig;
+  const [isZoomed, setIsZoomed] = useState(false);
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -17,17 +17,23 @@ export default function AboutPage() {
       </h1>
 
       {/* Full-width Featured Image at Top */}
-      <div className="mb-12 w-full h-48 md:h-100 overflow-hidden border border-border relative group bg-zinc-950">
+      <div
+        className="mb-12 w-full h-48 md:h-100 overflow-hidden border border-border relative group bg-zinc-950 cursor-zoom-in"
+        onClick={() => setIsZoomed(true)}
+      >
         <img
           src={`${basePath}/images/about/featured.jpg`}
           alt="Featured"
-          className="w-full h-full object-cover opacity-60 transition-opacity duration-700 group-hover:opacity-80"
+          className="w-full h-full object-cover opacity-80 transition-opacity duration-700 group-hover:opacity-100"
         />
         <div className="absolute inset-0 bg-linear-to-t from-[#0d1117] via-transparent to-transparent"></div>
         {/* Scanline overlay */}
         <div
-          className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{ backgroundImage: `url('${basePath}/scanline.png')` }}
+          className="absolute inset-0 pointer-events-none opacity-20"
+          style={{
+            backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.5) 50%)",
+            backgroundSize: "100% 4px",
+          }}
         ></div>
         <div className="absolute bottom-4 right-4 text-right">
           <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-[0.2em] bg-black/50 px-2 py-1 border border-border/50">
@@ -35,6 +41,27 @@ export default function AboutPage() {
           </span>
         </div>
       </div>
+
+      {/* Lightbox Overlay */}
+      {isZoomed && (
+        <div
+          className="fixed inset-0 z-100 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+          onClick={() => setIsZoomed(false)}
+        >
+          <button
+            className="absolute top-4 right-4 p-2 text-zinc-400 hover:text-white transition-colors"
+            onClick={() => setIsZoomed(false)}
+          >
+            <X size={32} />
+          </button>
+          <img
+            src={`${basePath}/images/about/featured.jpg`}
+            alt="Featured"
+            className="max-w-full max-h-full shadow-2xl object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
 
       <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
         {/* Sidebar / Profile Card */}
@@ -45,7 +72,7 @@ export default function AboutPage() {
               <img
                 src={`${basePath}/images/about/avatar.png`}
                 alt={siteConfig.profile.name}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
             </div>
 
@@ -108,7 +135,7 @@ export default function AboutPage() {
         </div>
 
         {/* Main Content */}
-        <div className="w-full md:w-3/4 space-y-8 font-mono leading-relaxed text-zinc-300 text-sm">
+        <div className="w-full md:w-3/4 space-y-8 font-mono leading-relaxed text-zinc-300 text-base">
           {/* Lead */}
           <div className="border-l-4 border-primary pl-6 py-2 bg-primary/5 text-md text-foreground">
             <p>Terminal Reverie: Even 1s and 0s crave dreams.</p>
