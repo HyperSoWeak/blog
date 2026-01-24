@@ -190,8 +190,12 @@ body {
   padding: 0;
 }
 
-/* Reduce default figure margin in prose */
-.prose figure {
-  margin-top: 1em;
-  margin-bottom: 1em;
+.prose :where(img):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.prose :where(figure):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin-top: 0;
+  margin-bottom: 0;
 }
