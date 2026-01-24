@@ -83,9 +83,39 @@ export async function getAllCategories(): Promise<string[]> {
   return Array.from(categories);
 }
 
+export async function getAllCategoriesWithCounts(): Promise<{ name: string; count: number }[]> {
+  const posts = await getAllPosts();
+  const counts: Record<string, number> = {};
+
+  posts.forEach((post) => {
+    post.categories.forEach((c) => {
+      counts[c] = (counts[c] || 0) + 1;
+    });
+  });
+
+  return Object.entries(counts)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
 export async function getAllTags(): Promise<string[]> {
   const posts = await getAllPosts();
   const tags = new Set<string>();
   posts.forEach((post) => post.tags.forEach((t) => tags.add(t)));
   return Array.from(tags);
+}
+
+export async function getAllTagsWithCounts(): Promise<{ name: string; count: number }[]> {
+  const posts = await getAllPosts();
+  const counts: Record<string, number> = {};
+
+  posts.forEach((post) => {
+    post.tags.forEach((t) => {
+      counts[t] = (counts[t] || 0) + 1;
+    });
+  });
+
+  return Object.entries(counts)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count);
 }
