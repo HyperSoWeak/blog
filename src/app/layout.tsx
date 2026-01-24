@@ -5,6 +5,7 @@ import "katex/dist/katex.min.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { HotReload } from "@/components/HotReload";
+import { siteConfig } from "@/lib/config";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const firaMono = Fira_Mono({
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
   title: "Terminal Reverie",
   description: "A personal blog for thoughts and code.",
   icons: {
-    icon: "/favicon.svg",
+    icon: `${siteConfig.basePath || ""}/favicon.svg`,
   },
 };
 
