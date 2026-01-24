@@ -35,12 +35,13 @@ const rehypeAddRaw = () => (tree: any) => {
 
 // Plugin to rewrite image src
 const rehypeImageRewrite = (options: { slug: string }) => (tree: any) => {
+  const BASE_PATH = process.env.NODE_ENV === "production" ? "/blog" : "";
   visit(tree, "element", (node: any) => {
     if (node.tagName === "img" && node.properties && node.properties.src) {
       const src = node.properties.src as string;
       if (!src.startsWith("http") && !src.startsWith("/") && !src.startsWith("data:")) {
         const cleanSrc = src.replace(/^\.\//, "");
-        node.properties.src = `/images/${options.slug}/${cleanSrc}`;
+        node.properties.src = `${BASE_PATH}/images/${options.slug}/${cleanSrc}`;
       }
     }
   });

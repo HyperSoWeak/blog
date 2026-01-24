@@ -7,6 +7,8 @@ export const metadata = {
 };
 
 export default function AboutPage() {
+  const { basePath } = siteConfig;
+
   return (
     <div className="max-w-5xl mx-auto">
       <h1 className="text-3xl font-bold mb-8 font-mono border-b border-border pb-4 text-white">
@@ -17,13 +19,16 @@ export default function AboutPage() {
       {/* Full-width Featured Image at Top */}
       <div className="mb-12 w-full h-48 md:h-100 overflow-hidden border border-border relative group bg-zinc-950">
         <img
-          src="/images/about/featured.jpg"
+          src={`${basePath}/images/about/featured.jpg`}
           alt="Featured"
           className="w-full h-full object-cover opacity-60 transition-opacity duration-700 group-hover:opacity-80"
         />
         <div className="absolute inset-0 bg-linear-to-t from-[#0d1117] via-transparent to-transparent"></div>
         {/* Scanline overlay */}
-        <div className="absolute inset-0 bg-[url('/scanline.png')] opacity-10 pointer-events-none"></div>
+        <div 
+          className="absolute inset-0 opacity-10 pointer-events-none"
+          style={{ backgroundImage: `url('${basePath}/scanline.png')` }}
+        ></div>
         <div className="absolute bottom-4 right-4 text-right">
           <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-[0.2em] bg-black/50 px-2 py-1 border border-border/50">
             system_snapshot_v1.0.jpg
@@ -38,7 +43,7 @@ export default function AboutPage() {
             {/* Avatar - Smaller on mobile and side-by-side with info if possible, or just centered */}
             <div className="group relative flex w-32 md:w-full aspect-square items-center justify-center overflow-hidden border border-border bg-zinc-950 shrink-0">
               <img
-                src="/images/about/avatar.png"
+                src={`${basePath}/images/about/avatar.png`}
                 alt={siteConfig.profile.name}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
@@ -63,7 +68,7 @@ export default function AboutPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-zinc-500">STATUS:</span>
-                <span className="text-success">ONLINE</span>
+                <span className="text-success">{siteConfig.profile.status}</span>
               </div>
             </div>
           </div>
@@ -105,7 +110,7 @@ export default function AboutPage() {
         {/* Main Content */}
         <div className="w-full md:w-3/4 space-y-8 font-mono leading-relaxed text-zinc-300 text-sm">
           {/* Lead */}
-          <div className="border-l-4 border-primary pl-4 py-2 bg-primary/5 text-md text-foreground">
+          <div className="border-l-4 border-primary pl-6 py-2 bg-primary/5 text-md text-foreground">
             <p>Terminal Reverie: Even 1s and 0s crave dreams.</p>
           </div>
 
@@ -119,9 +124,7 @@ export default function AboutPage() {
               <code className="bg-zinc-800 px-1 py-0.5 rounded text-primary">
                 HyperSoWeak
               </code> 或{" "}
-              <code className="bg-zinc-800 px-1 py-0.5 rounded text-primary">
-                {siteConfig.profile.alias}
-              </code>
+              <code className="bg-zinc-800 px-1 py-0.5 rounded text-primary">{siteConfig.profile.alias}</code>
               ，一點自嘲，也是一種提醒，別忘了保持謙遜與幽默。
             </p>
             <p>

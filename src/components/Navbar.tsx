@@ -18,7 +18,7 @@ export function Navbar() {
             className="group z-50 flex items-center gap-2 text-primary transition-colors hover:text-white"
           >
             {/* Use the favicon as the logo */}
-            <img src="/favicon.svg" alt="Terminal Reverie Logo" className="h-6 w-6" />
+            <img src={`${siteConfig.basePath}/favicon.svg`} alt="Terminal Reverie Logo" className="h-6 w-6" />
             <span className="text-lg font-bold tracking-tight">TERM_REVERIE</span>
           </Link>
 

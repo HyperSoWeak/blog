@@ -17,6 +17,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      EXPORT_MODE: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -44,8 +46,7 @@ jobs:
         run: |
           rm -rf src/app/api
           rm -rf src/app/images
-          node scripts/copy-assets.js
-          sed -i 's/\/\* config options here \*\//output: "export",/' next.config.ts
+          npm run copy-assets
 
       - name: Build
         run: pnpm build

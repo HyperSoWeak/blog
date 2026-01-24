@@ -1,8 +1,10 @@
 export const siteConfig = {
+  basePath: process.env.NODE_ENV === "production" ? "/blog" : "",
   profile: {
     name: "Hyper Hu",
     alias: "hypersoweak",
     location: "Taiwan, NTU",
+    status: "ONLINE",
     email: "hyperhu@example.com",
   },
   social: {

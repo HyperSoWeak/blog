@@ -37,11 +37,13 @@ export function formatDate(dateString: string) {
  * If the image is a URL (http/https), returns it as is.
  * If it's a relative path (./image.png or image.png), converts it to /images/[slug]/[filename].
  */
+const BASE_PATH = process.env.NODE_ENV === "production" ? "/blog" : "";
+
 export function resolvePostImage(postSlug: string, imagePath?: string): string | null {
   if (!imagePath) return null;
   if (imagePath.startsWith("http")) return imagePath;
 
   // Remove leading ./ or /
   const cleanPath = imagePath.replace(/^(\.\/|\/)/, "");
-  return `/images/${postSlug}/${cleanPath}`;
+  return `${BASE_PATH}/images/${postSlug}/${cleanPath}`;
 }
