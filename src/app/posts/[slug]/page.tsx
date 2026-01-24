@@ -64,8 +64,6 @@ export default async function PostPage({ params }: PageProps) {
               className="w-full h-full object-cover opacity-60"
             />
             <div className="absolute inset-0 bg-linear-to-t from-panel via-transparent to-transparent"></div>
-            {/* Scanline overlay on image */}
-            <div className="absolute inset-0 bg-[url('/scanline.png')] opacity-20 pointer-events-none"></div>
           </div>
         )}
 
