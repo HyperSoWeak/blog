@@ -159,7 +159,16 @@ body {
   padding: 0.2em 0.4em;
   border-radius: 6px;
   font-size: 0.85em;
+  font-weight: 400;
 }
+
+.prose code::before {
+  content: "" !important;
+}
+.prose code::after {
+  content: "" !important;
+}
+
 .prose pre {
   background-color: transparent;
   border: none;

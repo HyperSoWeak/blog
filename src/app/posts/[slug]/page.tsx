@@ -55,7 +55,7 @@ export default async function PostPage({ params }: PageProps) {
         <span className="text-zinc-300 truncate max-w-50">{post.slug}</span>
       </div>
 
-      <header className="mb-8 border border-border bg-zinc-950 relative overflow-hidden">
+      <header className="mb-8 border border-border bg-panel relative overflow-hidden">
         {featuredImageUrl && (
           <div className="w-full h-64 md:h-80 relative border-b border-border">
             <img
@@ -63,7 +63,7 @@ export default async function PostPage({ params }: PageProps) {
               alt={post.title}
               className="w-full h-full object-cover opacity-60"
             />
-            <div className="absolute inset-0 bg-linear-to-t from-[#080808] via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-linear-to-t from-panel via-transparent to-transparent"></div>
             {/* Scanline overlay on image */}
             <div className="absolute inset-0 bg-[url('/scanline.png')] opacity-20 pointer-events-none"></div>
           </div>
@@ -75,7 +75,7 @@ export default async function PostPage({ params }: PageProps) {
               <Link
                 key={cat}
                 href={`/categories/${cat}`}
-                className="flex items-center gap-1 text-xs font-mono bg-(--primary-dim)/10 text-primary border border-primary-dim px-2 py-1 uppercase hover:bg-primary hover:text-black transition-colors"
+                className="flex items-center gap-1 text-xs font-mono bg-primary/10 text-primary border border-primary-dim px-2 py-1 uppercase hover:bg-primary hover:text-black transition-colors"
               >
                 <Folder size={12} />
                 {cat}
@@ -83,11 +83,11 @@ export default async function PostPage({ params }: PageProps) {
             ))}
           </div>
 
-          <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white tracking-tight">
+          <h1 className="text-3xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
             {post.title}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-6 text-sm text-zinc-400 font-mono border-t border-zinc-800 pt-4">
+          <div className="flex flex-wrap items-center gap-6 text-sm text-zinc-400 font-mono border-t border-border pt-4">
             <div className="flex items-center gap-2">
               <Calendar size={16} className="text-primary" />
               <time>{formatDate(post.date)}</time>
@@ -102,7 +102,7 @@ export default async function PostPage({ params }: PageProps) {
                 <Link
                   key={tag}
                   href={`/tags/${tag}`}
-                  className="flex items-center gap-1 text-xs font-mono bg-zinc-900 hover:bg-primary hover:text-black border border-zinc-800 px-2 py-1 transition-colors uppercase"
+                  className="flex items-center gap-1 text-xs font-mono bg-background hover:bg-primary hover:text-black border border-border px-2 py-1 transition-colors uppercase"
                 >
                   <Tag size={12} />
                   {tag}
@@ -114,30 +114,31 @@ export default async function PostPage({ params }: PageProps) {
       </header>
 
       {/* Mobile ToC */}
-      <div className="lg:hidden mb-8">
-        <details className="border border-border bg-zinc-950 group">
-          <summary className="flex items-center justify-between p-4 cursor-pointer list-none text-primary font-mono font-bold uppercase hover:bg-primary/10 transition-colors">
-            <div className="flex items-center gap-2">
-              <List size={16} />
-              <span>Table of Contents</span>
+      {toc.length > 0 && (
+        <div className="lg:hidden mb-8">
+          <details className="border border-border bg-panel group">
+            <summary className="flex items-center justify-between p-4 cursor-pointer list-none text-primary font-mono font-bold uppercase hover:bg-primary/10 transition-colors">
+              <div className="flex items-center gap-2">
+                <List size={16} />
+                <span>Table of Contents</span>
+              </div>
+              <span className="group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div className="p-4 border-t border-border">
+              <TableOfContents toc={toc} />
             </div>
-            <span className="group-open:rotate-180 transition-transform">▼</span>
-          </summary>
-          <div className="p-4 border-t border-border">
-            <TableOfContents toc={toc} />
-          </div>
-        </details>
-      </div>
+          </details>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
-        <div className="lg:col-span-3">
+        <div className={toc.length > 0 ? "lg:col-span-3" : "lg:col-span-4"}>
           <div
             className="prose prose-invert prose-zinc max-w-none
-                prose-headings:font-mono prose-headings:text-white prose-headings:font-bold
-                prose-h1:text-primary prose-h1:border-b prose-h1:border-border prose-h1:pb-3
+                prose-headings:font-mono prose-headings:text-foreground prose-headings:font-bold
+                prose-h1:text-foreground prose-h1:border-b prose-h1:border-border prose-h1:pb-3
                 prose-a:text-primary prose-a:no-underline hover:prose-a:underline
                 prose-code:text-primary prose-code:bg-zinc-900 prose-code:px-1 prose-code:rounded
-                prose-pre:bg-[#050505] prose-pre:border prose-pre:border-border
                 prose-img:rounded prose-img:border prose-img:border-border
                 "
           >
@@ -145,9 +146,11 @@ export default async function PostPage({ params }: PageProps) {
           </div>
         </div>
 
-        <aside className="hidden lg:block lg:col-span-1">
-          <TableOfContents toc={toc} />
-        </aside>
+        {toc.length > 0 && (
+          <aside className="hidden lg:block lg:col-span-1">
+            <TableOfContents toc={toc} />
+          </aside>
+        )}
       </div>
     </article>
   );

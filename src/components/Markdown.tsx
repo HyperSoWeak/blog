@@ -11,7 +11,6 @@ import { visit } from "unist-util-visit";
 import { CodeBlock } from "./CodeBlock";
 import { CustomImage } from "./CustomImage";
 import { Grid } from "./Grid";
-import React from "react";
 
 // Plugin to add raw code to pre tag
 const rehypeAddRaw = () => (tree: any) => {
