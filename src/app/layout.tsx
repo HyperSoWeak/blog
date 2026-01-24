@@ -16,6 +16,9 @@ const firaMono = Fira_Mono({
 export const metadata: Metadata = {
   title: "Terminal Reverie",
   description: "A personal blog for thoughts and code.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({

@@ -15,7 +15,7 @@ export default async function Home() {
 
         <div className="space-y-2 text-zinc-400">
           <p>
-            <span className="text-primary">sysadmin@terminal-reverie</span>:
+            <span className="text-primary">hyper@terminal-reverie</span>:
             <span className="text-blue-500">~</span>$ ./init_sequence.sh
           </p>
           <p className="pl-4 text-zinc-500">Loading modules...</p>
@@ -26,8 +26,7 @@ export default async function Home() {
             TERMINAL REVERIE
           </h1>
           <p className="max-w-2xl text-zinc-300 leading-relaxed">
-            Welcome to the digital archive. This is a personal exploration of software engineering,
-            distributed systems, and the ghost in the machine.
+            Writing between the ticks of a dying clock.
           </p>
         </div>
       </section>
