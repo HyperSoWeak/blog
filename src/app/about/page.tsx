@@ -7,63 +7,83 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-5xl mx-auto">
       <h1 className="text-3xl font-bold mb-8 font-mono border-b border-border pb-4 text-white">
         <span className="text-primary">/</span>root<span className="text-zinc-500">/</span>
         about_me
       </h1>
 
-      <div className="flex flex-col md:flex-row gap-12 items-start">
+      {/* Full-width Featured Image at Top */}
+      <div className="mb-12 w-full h-48 md:h-100 overflow-hidden border border-border relative group bg-zinc-950">
+        <img
+          src="/images/about/featured.jpg"
+          alt="Featured"
+          className="w-full h-full object-cover opacity-60 transition-opacity duration-700 group-hover:opacity-80"
+        />
+        <div className="absolute inset-0 bg-linear-to-t from-[#0d1117] via-transparent to-transparent"></div>
+        {/* Scanline overlay */}
+        <div className="absolute inset-0 bg-[url('/scanline.png')] opacity-10 pointer-events-none"></div>
+        <div className="absolute bottom-4 right-4 text-right">
+          <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-[0.2em] bg-black/50 px-2 py-1 border border-border/50">
+            system_snapshot_v1.0.jpg
+          </span>
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
         {/* Sidebar / Profile Card */}
-        <div className="w-full md:w-1/3 flex flex-col gap-6">
-          <div className="group relative flex aspect-square items-center justify-center overflow-hidden border border-border bg-[#080808]">
-            {/* Use avatar.png if available, else fallback */}
-            <img
-              src="/images/about/avatar.png"
-              alt="Hyper Hu"
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-90 group-hover:opacity-100"
-            />
-            <div className="absolute inset-0 bg-primary mix-blend-overlay opacity-0 group-hover:opacity-20 transition-opacity pointer-events-none"></div>
+        <div className="w-full md:w-1/4 flex flex-col gap-6 md:sticky md:top-24">
+          <div className="flex md:flex-col gap-6 items-center md:items-stretch">
+            {/* Avatar - Smaller on mobile and side-by-side with info if possible, or just centered */}
+            <div className="group relative flex w-32 md:w-full aspect-square items-center justify-center overflow-hidden border border-border bg-zinc-950 shrink-0">
+              <img
+                src="/images/about/avatar.png"
+                alt="Hyper Hu"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+              />
+              <div className="absolute inset-0 bg-primary mix-blend-overlay opacity-0 group-hover:opacity-20 transition-opacity pointer-events-none"></div>
+            </div>
+
+            {/* Info Card */}
+            <div className="grow md:grow-0 border border-border bg-zinc-950 p-4 font-mono text-xs space-y-3 shadow-sm w-full">
+              <div className="flex justify-between border-b border-border pb-2 mb-2">
+                <span className="text-primary font-bold">USER_PROFILE</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-500">ID:</span>
+                <span className="text-foreground">Hyper Hu</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-500">ALIAS:</span>
+                <span className="text-zinc-300">HyperSoWeak</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-500">LOC:</span>
+                <span className="text-zinc-300">Taiwan, NTU</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-500">STATUS:</span>
+                <span className="text-success">ONLINE</span>
+              </div>
+            </div>
           </div>
 
-          <div className="border border-border bg-[#080808] p-4 font-mono text-xs space-y-3 shadow-sm">
-            <div className="flex justify-between border-b border-border pb-2 mb-2">
-              <span className="text-primary font-bold">USER_PROFILE</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-zinc-500">ID:</span>
-              <span className="text-foreground">Hyper Hu</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-zinc-500">ALIAS:</span>
-              <span className="text-zinc-300">HyperSoWeak</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-zinc-500">LOC:</span>
-              <span className="text-zinc-300">Taiwan, NTU CSIE</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-zinc-500">STATUS:</span>
-              <span className="text-success">ONLINE</span>
-            </div>
-          </div>
-
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center md:justify-start gap-4">
             <a
               href="https://github.com/HyperSoWeak"
-              className="border border-border bg-[#080808] p-2 transition-all hover:border-primary hover:bg-primary hover:text-black rounded-sm"
+              className="flex-1 md:flex-none flex justify-center border border-border bg-zinc-950 p-2 transition-all hover:border-primary hover:bg-primary hover:text-black rounded-sm"
             >
               <Github size={20} />
             </a>
             <a
               href="https://linkedin.com"
-              className="border border-border bg-[#080808] p-2 transition-all hover:border-primary hover:bg-primary hover:text-black rounded-sm"
+              className="flex-1 md:flex-none flex justify-center border border-border bg-zinc-950 p-2 transition-all hover:border-primary hover:bg-primary hover:text-black rounded-sm"
             >
               <Linkedin size={20} />
             </a>
             <a
               href="mailto:hyperhu@example.com"
-              className="border border-border bg-[#080808] p-2 transition-all hover:border-primary hover:bg-primary hover:text-black rounded-sm"
+              className="flex-1 md:flex-none flex justify-center border border-border bg-zinc-950 p-2 transition-all hover:border-primary hover:bg-primary hover:text-black rounded-sm"
             >
               <Mail size={20} />
             </a>
@@ -71,7 +91,7 @@ export default function AboutPage() {
         </div>
 
         {/* Main Content */}
-        <div className="w-full md:w-2/3 space-y-8 font-mono leading-relaxed text-zinc-300 text-sm">
+        <div className="w-full md:w-3/4 space-y-8 font-mono leading-relaxed text-zinc-300 text-sm">
           {/* Lead */}
           <div className="border-l-4 border-primary pl-6 py-2 bg-primary/5 text-md text-foreground">
             <p>Terminal Reverie: Even 1s and 0s crave dreams.</p>
@@ -127,19 +147,6 @@ export default function AboutPage() {
               bug，也會寫些生活觀察、創作靈感、甚至哲學碎語。希望這裡能成為一個思想碰撞與靈感交織的空間，如果你也剛好停留在這裡，歡迎與我交流。也許在彼此的思緒交會之中，我們都能更接近那個還未定義的自己。
             </p>
           </section>
-
-          <div className="pt-8">
-            <div className="w-full h-48 overflow-hidden rounded border border-border relative group">
-              <img
-                src="/images/about/featured.jpg"
-                alt="Featured"
-                className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500"
-              />
-              <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent flex items-end p-4">
-                <span className="text-xs text-zinc-400 font-mono">system_snapshot_v1.0.jpg</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
