@@ -1,5 +1,5 @@
 export const siteConfig = {
-  basePath: process.env.EXPORT_MODE === "true" ? "/blog" : "",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
   profile: {
     name: "Hyper Hu",
     alias: "hypersoweak",
