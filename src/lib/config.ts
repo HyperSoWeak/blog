@@ -1,5 +1,7 @@
+export const repoName = "/blog";
+
 export const siteConfig = {
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
+  basePath: process.env.NODE_ENV === "production" ? repoName : "",
   profile: {
     name: "Hyper Hu",
     alias: "hypersoweak",
