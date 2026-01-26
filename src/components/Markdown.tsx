@@ -74,8 +74,27 @@ export async function Markdown({ source, slug }: MarkdownProps) {
             [
               rehypePrettyCode,
               {
-                theme: "one-dark-pro",
+                theme: "catppuccin-macchiato",
                 keepBackground: false,
+                transformers: [
+                  {
+                    pre(node: unknown) {
+                      // remove inline font-style on <span>
+                      const visit = (n: any) => {
+                        if (n.properties?.style) {
+                          n.properties.style = n.properties.style
+                            .split(";")
+                            .filter((s: string) => !s.includes("font-style"))
+                            .join(";");
+                        }
+                        if (n.children) {
+                          n.children.forEach(visit);
+                        }
+                      };
+                      visit(node);
+                    },
+                  },
+                ],
               },
             ],
             [rehypeImageRewrite, { slug }],
