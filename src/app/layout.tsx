@@ -7,10 +7,12 @@ import { Footer } from "@/components/Footer";
 import { HotReload } from "@/components/HotReload";
 import { siteConfig } from "@/lib/config";
 
-const notoEmoji = Noto_Sans_TC({
+const notoSansTC = Noto_Sans_TC({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
   variable: "--font-sans",
+  preload: false,
+  display: "swap",
 });
 const firaMono = Fira_Mono({
   subsets: ["latin"],
@@ -34,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="zh-Hant" className="dark">
       <body
-        className={`${notoEmoji.variable} ${firaMono.variable} antialiased bg-background text-foreground min-h-screen flex flex-col`}
+        className={`${notoSansTC.variable} ${firaMono.variable} antialiased bg-background text-foreground min-h-screen flex flex-col`}
       >
         <Navbar />
         <main className="grow container max-w-5xl mx-auto px-4 py-8">{children}</main>
