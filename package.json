@@ -6,7 +6,7 @@
     "dev": "next dev",
     "create-post": "node scripts/create-post.js",
     "copy-assets": "node scripts/copy-assets.js",
-    "build": "npm run copy-assets && next build",
+    "build": "npm run copy-assets && next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write --list-different . --ignore-path .gitignore"
