@@ -9,7 +9,7 @@ interface GridProps {
   className?: string;
 }
 
-export function Grid({ children, cols = 2, className }: GridProps) {
+export function Grid({ children, className }: GridProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const items = useMemo(
@@ -24,10 +24,11 @@ export function Grid({ children, cols = 2, className }: GridProps) {
     const container = containerRef.current;
     if (!container) return;
 
+    const mql = window.matchMedia("(min-width: 640px)"); // tailwind sm
     const itemNodes = Array.from(container.querySelectorAll<HTMLElement>("[data-jg-item]"));
     const cleanup: Array<() => void> = [];
 
-    const updateItem = (item: HTMLElement) => {
+    const applyWideLayout = (item: HTMLElement) => {
       const img = item.querySelector<HTMLImageElement>("img");
       if (!img || !img.naturalWidth || !img.naturalHeight) return;
       const ratio = img.naturalWidth / img.naturalHeight;
@@ -35,27 +36,43 @@ export function Grid({ children, cols = 2, className }: GridProps) {
       item.style.flexBasis = "0";
     };
 
+    const applyMobileLayout = (item: HTMLElement) => {
+      item.style.flexGrow = "";
+      item.style.flexBasis = "";
+    };
+
+    const updateAll = () => {
+      const wide = mql.matches;
+      for (const item of itemNodes) {
+        if (wide) applyWideLayout(item);
+        else applyMobileLayout(item);
+      }
+    };
+
     for (const item of itemNodes) {
       const img = item.querySelector<HTMLImageElement>("img");
       if (!img) continue;
-      if (img.complete) {
-        updateItem(item);
-      } else {
-        const handler = () => updateItem(item);
-        img.addEventListener("load", handler);
-        cleanup.push(() => img.removeEventListener("load", handler));
+
+      const onLoad = () => updateAll();
+      if (!img.complete) {
+        img.addEventListener("load", onLoad);
+        cleanup.push(() => img.removeEventListener("load", onLoad));
       }
     }
 
-    return () => {
-      cleanup.forEach((fn) => fn());
-    };
+    const onChange = () => updateAll();
+    mql.addEventListener("change", onChange);
+    cleanup.push(() => mql.removeEventListener("change", onChange));
+
+    updateAll();
+
+    return () => cleanup.forEach((fn) => fn());
   }, [items]);
 
   return (
     <div
       className={clsx(
-        "flex flex-wrap gap-4 items-start",
+        "my-4 flex flex-wrap gap-4 items-start",
         "[--jg-row-height:180px] sm:[--jg-row-height:210px] md:[--jg-row-height:240px]",
         "[&>.jg-item]:flex [&>.jg-item]:min-w-0",
         "[&>.jg-item>div]:w-full [&>.jg-item>figure>div]:w-full",
@@ -69,7 +86,11 @@ export function Grid({ children, cols = 2, className }: GridProps) {
       ref={containerRef}
     >
       {items.map((child, index) => (
-        <div data-jg-item key={index} className="jg-item">
+        <div
+          data-jg-item
+          key={index}
+          className="jg-item w-full basis-full flex-none sm:w-auto sm:basis-0 sm:flex-auto"
+        >
           {child}
         </div>
       ))}

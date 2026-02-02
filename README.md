@@ -64,7 +64,7 @@ Creating a new post is simple using the built-in CLI tool.
 - **Images**: Place images directly in the post folder (e.g., `content/posts/my-post/image.png`) and reference them normally: `![Alt Text](./image.png)`.
 - **Grid Layout**: Use the `<Grid>` component for side-by-side images.
   ```jsx
-  <Grid cols={2}>![Image 1](./img1.png) ![Image 2](./img2.png)</Grid>
+  <Grid>![Image 1](./img1.png) ![Image 2](./img2.png)</Grid>
   ```
 - **Details**: Use the `<Details>` component for collapsible sections.
   ```jsx
