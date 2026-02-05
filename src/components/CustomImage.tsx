@@ -17,10 +17,7 @@ export function CustomImage({ src, alt, title, className, ...props }: CustomImag
   const toggleZoom = () => setIsOpen(!isOpen);
 
   const imageElement = (
-    <div
-      className="relative group/image cursor-zoom-in overflow-hidden"
-      onClick={toggleZoom}
-    >
+    <div className="relative group/image cursor-zoom-in overflow-hidden" onClick={toggleZoom}>
       <img
         src={src}
         alt={alt || ""}
