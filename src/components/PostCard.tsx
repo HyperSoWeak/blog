@@ -1,9 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { formatDate, resolvePostImage } from "@/lib/utils";
 import { Post } from "@/lib/posts";
 import { Calendar, FileText } from "lucide-react";
 import { Terminal } from "lucide-react";
+import Image from "next/image";
 
 interface PostCardProps {
   post: Post;
@@ -31,10 +31,12 @@ export function PostCard({ post }: PostCardProps) {
       {/* Image Area */}
       {imageUrl ? (
         <div className="aspect-video w-full border-b border-border overflow-hidden bg-black relative">
-          <img
+          <Image
             src={imageUrl}
             alt={post.title}
-            className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
           />
           <div className="absolute inset-0 bg-primary mix-blend-overlay opacity-0 group-hover:opacity-10 pointer-events-none"></div>
         </div>

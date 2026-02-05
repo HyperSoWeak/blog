@@ -1,22 +1,36 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
+import Image, { type ImageProps } from "next/image";
 import { twMerge } from "tailwind-merge";
 import { X, ZoomIn } from "lucide-react";
 import { createPortal } from "react-dom";
 
-interface CustomImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+type CustomImageProps = Omit<ImageProps, "src" | "alt"> & {
+  src?: string;
+  alt?: string;
   title?: string;
-}
+  priority?: boolean;
+  sizes?: string;
+};
 
-export function CustomImage({ src, alt, title, className, ...props }: CustomImageProps) {
+export function CustomImage({
+  src,
+  alt,
+  title,
+  className,
+  width,
+  height,
+  sizes,
+  loading,
+  priority,
+  ...rest
+}: CustomImageProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const canPortal = typeof document !== "undefined";
+  const safeWidth = typeof width === "number" ? width : 1200;
+  const safeHeight = typeof height === "number" ? height : 800;
+  const safeSizes = sizes || "100vw";
 
   if (!src) return null;
 
@@ -24,12 +38,18 @@ export function CustomImage({ src, alt, title, className, ...props }: CustomImag
 
   const imageElement = (
     <div className="relative group/image cursor-zoom-in overflow-hidden" onClick={toggleZoom}>
-      <img
+      <Image
         src={src}
         alt={alt || ""}
         title={title}
+        width={safeWidth}
+        height={safeHeight}
+        sizes={safeSizes}
+        loading={loading}
+        priority={priority}
         className="max-w-full h-auto mx-auto border border-border"
-        {...props}
+        unoptimized
+        {...rest}
       />
       <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover/image:opacity-100">
         <ZoomIn className="text-white drop-shadow-md" size={32} />
@@ -51,7 +71,7 @@ export function CustomImage({ src, alt, title, className, ...props }: CustomImag
       )}
 
       {/* Lightbox Overlay */}
-      {mounted &&
+      {canPortal &&
         isOpen &&
         createPortal(
           <div
@@ -68,10 +88,16 @@ export function CustomImage({ src, alt, title, className, ...props }: CustomImag
               className="flex flex-col items-center gap-3 max-w-[min(92vw,80rem)]"
               onClick={(e) => e.stopPropagation()}
             >
-              <img
+              <Image
                 src={src}
                 alt={alt || ""}
                 className="max-w-full max-h-[calc(100vh-10rem)] shadow-2xl object-contain"
+                width={safeWidth}
+                height={safeHeight}
+                sizes="100vw"
+                priority
+                unoptimized
+                {...rest}
               />
               {title && (
                 <div className="text-center text-zinc-300 bg-black/50 px-3 py-2 font-mono text-sm w-full">

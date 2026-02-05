@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import { Markdown } from "@/components/Markdown";
 import { TableOfContents } from "@/components/TableOfContents";
@@ -7,6 +6,7 @@ import { notFound } from "next/navigation";
 import { Calendar, Tag, Clock, ChevronRight, Folder, List } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
+import Image from "next/image";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -59,10 +59,13 @@ export default async function PostPage({ params }: PageProps) {
       <header className="mb-8 border border-border bg-panel relative overflow-hidden">
         {featuredImageUrl && (
           <div className="w-full h-64 md:h-80 relative border-b border-border">
-            <img
+            <Image
               src={featuredImageUrl}
               alt={post.title}
-              className="w-full h-full object-cover opacity-60"
+              fill
+              sizes="100vw"
+              className="object-cover opacity-60"
+              priority
             />
             <div className="absolute inset-0 bg-linear-to-t from-panel via-transparent to-transparent"></div>
           </div>

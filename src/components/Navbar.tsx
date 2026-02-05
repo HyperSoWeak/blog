@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import Link from "next/link";
@@ -6,6 +5,7 @@ import { Github, Linkedin, Instagram, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { clsx } from "clsx";
 import { siteConfig } from "@/lib/config";
+import Image from "next/image";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,9 +27,11 @@ export function Navbar() {
             className="group z-50 flex items-center gap-2 text-primary transition-colors hover:text-white"
           >
             {/* Use the favicon as the logo */}
-            <img
+            <Image
               src={`${siteConfig.basePath}/favicon.svg`}
               alt="Terminal Reverie Logo"
+              width={24}
+              height={24}
               className="h-6 w-6"
             />
             <span className="text-lg font-bold tracking-tight">TERM_REVERIE</span>

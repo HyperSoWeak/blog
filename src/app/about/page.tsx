@@ -1,9 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { Github, Linkedin, Instagram, Mail, X } from "lucide-react";
 import { siteConfig } from "@/lib/config";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function AboutPage() {
   const { basePath } = siteConfig;
@@ -21,10 +21,13 @@ export default function AboutPage() {
         className="mb-12 w-full h-48 md:h-100 overflow-hidden border border-border relative group bg-zinc-950 cursor-zoom-in"
         onClick={() => setIsZoomed(true)}
       >
-        <img
+        <Image
           src={`${basePath}/images/about/featured.jpg`}
           alt="Featured"
-          className="w-full h-full object-cover opacity-80 transition-opacity duration-700 group-hover:opacity-100"
+          fill
+          sizes="100vw"
+          className="object-cover opacity-80 transition-opacity duration-700 group-hover:opacity-100"
+          priority
         />
         <div className="absolute inset-0 bg-linear-to-t from-[#0d1117] via-transparent to-transparent"></div>
         {/* Scanline overlay */}
@@ -54,10 +57,14 @@ export default function AboutPage() {
           >
             <X size={32} />
           </button>
-          <img
+          <Image
             src={`${basePath}/images/about/featured.jpg`}
             alt="Featured"
             className="max-w-full max-h-full shadow-2xl object-contain"
+            width={1600}
+            height={900}
+            sizes="100vw"
+            priority
             onClick={(e) => e.stopPropagation()}
           />
         </div>
@@ -69,10 +76,12 @@ export default function AboutPage() {
           <div className="flex md:flex-col gap-6 items-center md:items-stretch">
             {/* Avatar - Smaller on mobile and side-by-side with info if possible, or just centered */}
             <div className="group relative flex w-32 md:w-full aspect-square items-center justify-center overflow-hidden border border-border bg-zinc-950 shrink-0">
-              <img
+              <Image
                 src={`${basePath}/images/about/avatar.png`}
                 alt={siteConfig.profile.name}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                fill
+                sizes="(max-width: 768px) 128px, 256px"
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
               />
             </div>
 
