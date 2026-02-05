@@ -39,6 +39,7 @@ export default async function PostPage({ params }: PageProps) {
 
   const toc = extractTOC(post.content);
   const featuredImageUrl = resolvePostImage(post.slug, post.featuredImage);
+  const isDraft = post.draft && process.env.NODE_ENV !== "production";
 
   return (
     <article className="max-w-6xl mx-auto">
@@ -84,6 +85,13 @@ export default async function PostPage({ params }: PageProps) {
           <h1 className="text-3xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">
             {post.title}
           </h1>
+          {isDraft && (
+            <div className="mb-4">
+              <span className="inline-flex items-center text-xs font-mono text-primary border border-primary px-2 py-1 uppercase tracking-wider">
+                Draft
+              </span>
+            </div>
+          )}
 
           <div className="flex flex-wrap items-center gap-6 text-sm text-zinc-400 font-mono border-t border-border pt-4">
             <div className="flex items-center gap-2">

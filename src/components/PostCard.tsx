@@ -11,13 +11,19 @@ interface PostCardProps {
 
 export function PostCard({ post }: PostCardProps) {
   const imageUrl = resolvePostImage(post.slug, post.featuredImage);
+  const isDraft = post.draft && process.env.NODE_ENV !== "production";
 
   return (
     <div className="group border border-border bg-panel hover:border-primary transition-colors relative overflow-hidden flex flex-col h-full">
       {/* Header Bar */}
       <div className="flex items-center justify-between px-3 py-1 bg-background border-b border-border text-xs font-mono text-zinc-500">
         <span className="truncate">FILE: {post.slug}.mdx</span>
-        <div className="flex gap-1">
+        <div className="flex items-center gap-2">
+          {isDraft && (
+            <span className="text-[10px] px-1.5 py-0.5 border border-primary text-primary uppercase tracking-wider">
+              Draft
+            </span>
+          )}
           <div className="w-2 h-2 rounded-full bg-zinc-700 group-hover:bg-primary transition-colors"></div>
         </div>
       </div>
