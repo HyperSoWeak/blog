@@ -12,6 +12,7 @@ export type Post = {
   tags: string[];
   categories: string[];
   featuredImage?: string;
+  draft?: boolean;
   content: string;
   wordCount: number;
 };
@@ -48,6 +49,12 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
+  const isDraft = Boolean(data.draft);
+  const isProd = process.env.NODE_ENV === "production";
+
+  if (isProd && isDraft) {
+    return null;
+  }
 
   // Chinese word count approximation
   const wordCount =
@@ -61,6 +68,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     tags: data.tags || [],
     categories: data.categories || [],
     featuredImage: data.featuredImage || null,
+    draft: isDraft,
     content,
     wordCount,
   };
