@@ -22,7 +22,7 @@ export function Details({ summary, children, open, className }: DetailsProps) {
         <span className="mr-3 font-mono text-primary hidden group-open:inline">[-]</span>
         <span className="uppercase tracking-widest">{summary}</span>
       </summary>
-      <div className="bg-background/50 p-6 text-sm text-zinc-300 font-mono leading-relaxed prose-code:bg-panel prose-code:text-primary">
+      <div className="bg-background/50 p-6 leading-relaxed prose-code:bg-panel prose-code:text-primary">
         {children}
       </div>
     </details>

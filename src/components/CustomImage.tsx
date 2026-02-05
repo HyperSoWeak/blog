@@ -18,7 +18,7 @@ export function CustomImage({ src, alt, title, className, ...props }: CustomImag
 
   const imageElement = (
     <div
-      className={twMerge("relative group cursor-zoom-in overflow-hidden", className)}
+      className="relative group/image cursor-zoom-in overflow-hidden"
       onClick={toggleZoom}
     >
       <img
@@ -28,7 +28,7 @@ export function CustomImage({ src, alt, title, className, ...props }: CustomImag
         className="max-w-full h-auto mx-auto border border-border"
         {...props}
       />
-      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+      <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover/image:opacity-100">
         <ZoomIn className="text-white drop-shadow-md" size={32} />
       </div>
     </div>
@@ -37,14 +37,14 @@ export function CustomImage({ src, alt, title, className, ...props }: CustomImag
   return (
     <>
       {title ? (
-        <figure className={twMerge("flex flex-col items-center", className)}>
+        <figure className={twMerge("mdx-image flex flex-col items-center", className)}>
           {imageElement}
           <figcaption className="mt-2 text-sm text-zinc-500 font-mono text-center italic border-b border-primary-dim pb-1 inline-block">
             {title}
           </figcaption>
         </figure>
       ) : (
-        <div className={twMerge("flex justify-center", className)}>{imageElement}</div>
+        <div className={twMerge("mdx-image flex justify-center", className)}>{imageElement}</div>
       )}
 
       {/* Lightbox Overlay */}

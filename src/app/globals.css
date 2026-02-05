@@ -135,3 +135,8 @@ body {
   margin-top: 0;
   margin-bottom: 0;
 }
+
+.prose :where(.mdx-image):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
