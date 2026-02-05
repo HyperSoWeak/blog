@@ -182,3 +182,35 @@ picoCTF{sy5teM_b!n@riEs_4r3_5c@red_0f_yoU_ae1d8678}
 > **Flag**: `picoCTF{sy5teM_b!n@riEs_4r3_5c@red_0f_yoU_ae1d8678}`
 
 </Details>
+
+### PIE TIME 2
+
+[Problem Link](https://play.picoctf.org/practice/challenge/491?originalEvent=74&page=2&search=)
+
+<Details summary="Solution">
+
+首先他叫我們輸入名字然後 printf，接著可以輸入一個地址直接跳去那邊執行。
+
+```cpp
+char buffer[64];
+printf("Enter your name:");
+fgets(buffer, 64, stdin);
+printf(buffer);
+```
+
+因為他直接把 buffer 塞進 printf 的第一個參數，這裡有個 format string vulnerability，可以用 `%p` 來洩漏 stack 上的東西：
+
+![](pie2.png)
+
+用 pwndbg 可以看到在 `rbp+8` 的地方有一個 `main+65`，算一下我們用 `%19$p` 就可以 leak main address，然後就算一下跟 win 的距離跳過去就做完了。
+
+```sh
+pwndbg> distance main+65 win
+0x555555555441->0x55555555536a is -0xd7 bytes (-0x1b words)
+```
+
+![](pie2-flag.png)
+
+> **Flag**: `picoCTF{p13_5h0u1dn'7_134k_c9a04879}`
+
+</Details>
