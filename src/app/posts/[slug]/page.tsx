@@ -135,7 +135,7 @@ export default async function PostPage({ params }: PageProps) {
             className="prose prose-invert prose-zinc max-w-none
                 prose-headings:font-mono prose-headings:text-foreground prose-headings:font-bold
                 prose-h1:text-foreground prose-h1:border-b prose-h1:border-border prose-h1:pb-3
-                prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                prose-a:text-primary prose-a:no-underline prose-a:hover:underline
                 prose-code:text-primary prose-code:bg-zinc-900 prose-code:px-1
                 prose-img:border prose-img:border-border
                 "
