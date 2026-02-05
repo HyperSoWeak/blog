@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { X, ZoomIn } from "lucide-react";
+import { createPortal } from "react-dom";
 
 interface CustomImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   title?: string;
@@ -11,6 +12,11 @@ interface CustomImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 
 export function CustomImage({ src, alt, title, className, ...props }: CustomImageProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (!src) return null;
 
@@ -45,30 +51,37 @@ export function CustomImage({ src, alt, title, className, ...props }: CustomImag
       )}
 
       {/* Lightbox Overlay */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-100 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-in fade-in duration-200"
-          onClick={toggleZoom}
-        >
-          <button
-            className="absolute top-4 right-4 p-2 text-zinc-400 hover:text-white transition-colors"
+      {mounted &&
+        isOpen &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-100 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-in fade-in duration-200"
             onClick={toggleZoom}
           >
-            <X size={32} />
-          </button>
-          <img
-            src={src}
-            alt={alt || ""}
-            className="max-w-full max-h-full shadow-2xl object-contain"
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the image itself
-          />
-          {title && (
-            <div className="absolute bottom-4 left-0 right-0 text-center text-zinc-300 bg-black/50 p-2 font-mono text-sm">
-              {title}
+            <button
+              className="absolute top-4 right-4 p-2 text-zinc-400 hover:text-white transition-colors"
+              onClick={toggleZoom}
+            >
+              <X size={32} />
+            </button>
+            <div
+              className="flex flex-col items-center gap-3 max-w-[min(92vw,80rem)]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={src}
+                alt={alt || ""}
+                className="max-w-full max-h-[calc(100vh-10rem)] shadow-2xl object-contain"
+              />
+              {title && (
+                <div className="text-center text-zinc-300 bg-black/50 px-3 py-2 font-mono text-sm w-full">
+                  {title}
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </>
   );
 }
