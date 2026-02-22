@@ -6,8 +6,8 @@ import { Metadata } from "next";
 import { withBasePath } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Home",
-  description: "Terminal Reverie 的最新文章、技術筆記與個人思考。",
+  title: "Terminal Reverie",
+  description: "HyperSoWeak's personal blog for thoughts and code.",
   alternates: {
     canonical: withBasePath("/"),
   },
