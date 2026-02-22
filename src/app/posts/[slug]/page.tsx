@@ -2,6 +2,7 @@ import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import { Markdown } from "@/components/Markdown";
 import { TableOfContents } from "@/components/TableOfContents";
 import { extractTOC, formatDate, resolvePostImage } from "@/lib/utils";
+import { siteConfig } from "@/lib/config";
 import { notFound } from "next/navigation";
 import { Calendar, Tag, Clock, ChevronRight, Folder, List } from "lucide-react";
 import Link from "next/link";
@@ -10,6 +11,14 @@ import Image from "next/image";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+function toAbsoluteUrl(url: string): string {
+  if (/^https?:\/\//.test(url)) return url;
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "http://localhost:3000";
+  const normalizedPath = url.startsWith("/") ? url : `/${url}`;
+  return `${siteUrl}${normalizedPath}`;
 }
 
 export async function generateStaticParams() {
@@ -23,9 +32,40 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) return {};
+
+  const title = `${post.title} | Terminal Reverie`;
+  const description = post.description;
+  const postPath = `${siteConfig.basePath}/posts/${post.slug}`;
+  const postUrl = toAbsoluteUrl(postPath);
+  const featuredImageUrl = resolvePostImage(post.slug, post.featuredImage);
+  const featuredImageAbsoluteUrl = featuredImageUrl ? toAbsoluteUrl(featuredImageUrl) : undefined;
+
   return {
-    title: `${post.title} | Terminal Reverie`,
-    description: post.description,
+    title,
+    description,
+    alternates: {
+      canonical: postPath,
+    },
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      url: postUrl,
+      images: featuredImageAbsoluteUrl
+        ? [
+            {
+              url: featuredImageAbsoluteUrl,
+              alt: post.title,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: featuredImageAbsoluteUrl ? "summary_large_image" : "summary",
+      title,
+      description,
+      images: featuredImageAbsoluteUrl ? [featuredImageAbsoluteUrl] : undefined,
+    },
   };
 }
 
