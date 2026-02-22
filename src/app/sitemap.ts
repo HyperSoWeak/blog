@@ -2,6 +2,8 @@ import { MetadataRoute } from "next";
 import { getAllCategories, getAllPosts, getAllTags } from "@/lib/posts";
 import { absoluteUrl } from "@/lib/seo";
 
+export const dynamic = "force-static";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [posts, categories, tags] = await Promise.all([
     getAllPosts(),
@@ -58,4 +60,3 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [...staticPages, ...postPages, ...categoryPages, ...tagPages];
 }
-
