@@ -2,7 +2,7 @@ import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import { Markdown } from "@/components/Markdown";
 import { TableOfContents } from "@/components/TableOfContents";
 import { extractTOC, formatDate, resolvePostImage } from "@/lib/utils";
-import { siteConfig } from "@/lib/config";
+import { absoluteUrl, seoConfig, withBasePath } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import { Calendar, Tag, Clock, ChevronRight, Folder, List } from "lucide-react";
 import Link from "next/link";
@@ -11,14 +11,6 @@ import Image from "next/image";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
-}
-
-function toAbsoluteUrl(url: string): string {
-  if (/^https?:\/\//.test(url)) return url;
-
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "http://localhost:3000";
-  const normalizedPath = url.startsWith("/") ? url : `/${url}`;
-  return `${siteUrl}${normalizedPath}`;
 }
 
 export async function generateStaticParams() {
@@ -33,12 +25,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const post = await getPostBySlug(slug);
   if (!post) return {};
 
-  const title = `${post.title} | Terminal Reverie`;
+  const title = post.title;
   const description = post.description;
-  const postPath = `${siteConfig.basePath}/posts/${post.slug}`;
-  const postUrl = toAbsoluteUrl(postPath);
+  const postPath = withBasePath(`/posts/${post.slug}`);
+  const postUrl = absoluteUrl(`/posts/${post.slug}`);
   const featuredImageUrl = resolvePostImage(post.slug, post.featuredImage);
-  const featuredImageAbsoluteUrl = featuredImageUrl ? toAbsoluteUrl(featuredImageUrl) : undefined;
+  const featuredImageAbsoluteUrl = featuredImageUrl ? absoluteUrl(featuredImageUrl) : undefined;
 
   return {
     title,
@@ -51,6 +43,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       type: "article",
       url: postUrl,
+      siteName: seoConfig.siteName,
+      publishedTime: post.date,
       images: featuredImageAbsoluteUrl
         ? [
             {
@@ -79,10 +73,35 @@ export default async function PostPage({ params }: PageProps) {
 
   const toc = extractTOC(post.content);
   const featuredImageUrl = resolvePostImage(post.slug, post.featuredImage);
+  const featuredImageAbsoluteUrl = featuredImageUrl ? absoluteUrl(featuredImageUrl) : undefined;
   const isDraft = post.draft && process.env.NODE_ENV !== "production";
+  const postAbsoluteUrl = absoluteUrl(`/posts/${post.slug}`);
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    url: postAbsoluteUrl,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: {
+      "@type": "Person",
+      name: "Hyper Hu",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: seoConfig.siteName,
+    },
+    image: featuredImageAbsoluteUrl ? [featuredImageAbsoluteUrl] : undefined,
+    keywords: post.tags.length > 0 ? post.tags.join(", ") : undefined,
+  };
 
   return (
     <article className="max-w-6xl mx-auto">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* Navigation Breadcrumb */}
       <div className="flex items-center gap-2 text-xs font-mono text-zinc-500 mb-6 uppercase">
         <Link href="/" className="hover:text-primary">

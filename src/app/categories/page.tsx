@@ -2,9 +2,14 @@ import { getAllCategoriesWithCounts } from "@/lib/posts";
 import Link from "next/link";
 import { Folder } from "lucide-react";
 import { Metadata } from "next";
+import { withBasePath } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Categories | Terminal Reverie",
+  title: "Categories",
+  description: "依分類瀏覽 Terminal Reverie 的文章內容。",
+  alternates: {
+    canonical: withBasePath("/categories"),
+  },
 };
 
 export default async function CategoriesPage() {

@@ -2,9 +2,14 @@ import { getAllTagsWithCounts } from "@/lib/posts";
 import Link from "next/link";
 import { Tag } from "lucide-react";
 import { Metadata } from "next";
+import { withBasePath } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Tags | Terminal Reverie",
+  title: "Tags",
+  description: "依標籤探索 Terminal Reverie 的文章主題。",
+  alternates: {
+    canonical: withBasePath("/tags"),
+  },
 };
 
 function scale(value: number, min: number, max: number, outMin: number, outMax: number) {

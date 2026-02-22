@@ -2,6 +2,16 @@ import { getAllPosts } from "@/lib/posts";
 import { PostCard } from "@/components/PostCard";
 import Link from "next/link";
 import { ArrowRight, Terminal } from "lucide-react";
+import { Metadata } from "next";
+import { withBasePath } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description: "Terminal Reverie 的最新文章、技術筆記與個人思考。",
+  alternates: {
+    canonical: withBasePath("/"),
+  },
+};
 
 export default async function Home() {
   const posts = await getAllPosts();

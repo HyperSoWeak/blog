@@ -3,7 +3,12 @@ import { AlertTriangle } from "lucide-react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "404 - Not Found | Terminal Reverie",
+  title: "404 - Not Found",
+  description: "找不到你要的頁面。",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function NotFound() {

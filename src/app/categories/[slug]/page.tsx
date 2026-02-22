@@ -1,6 +1,8 @@
 import { getAllPosts, getAllCategories } from "@/lib/posts";
 import { PostCard } from "@/components/PostCard";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+import { withBasePath } from "@/lib/seo";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -13,11 +15,15 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const category = decodeURIComponent(slug);
   return {
-    title: `${category} | Terminal Reverie`,
+    title: `Category: ${category}`,
+    description: `瀏覽分類「${category}」的所有文章。`,
+    alternates: {
+      canonical: withBasePath(`/categories/${encodeURIComponent(category)}`),
+    },
   };
 }
 

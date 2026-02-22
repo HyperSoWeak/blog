@@ -1,6 +1,8 @@
 import { getAllPosts, getAllTags } from "@/lib/posts";
 import { PostCard } from "@/components/PostCard";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+import { withBasePath } from "@/lib/seo";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -13,11 +15,15 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const tag = decodeURIComponent(slug);
   return {
-    title: `${tag} | Terminal Reverie`,
+    title: `Tag: ${tag}`,
+    description: `瀏覽標籤 #${tag} 的所有文章。`,
+    alternates: {
+      canonical: withBasePath(`/tags/${encodeURIComponent(tag)}`),
+    },
   };
 }
 

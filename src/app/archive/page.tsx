@@ -2,9 +2,14 @@ import { getAllPosts } from "@/lib/posts";
 import { PostCard } from "@/components/PostCard";
 import { Archive } from "lucide-react";
 import { Metadata } from "next";
+import { withBasePath } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Archive | Terminal Reverie",
+  title: "Archive",
+  description: "瀏覽 Terminal Reverie 的全部文章存檔。",
+  alternates: {
+    canonical: withBasePath("/archive"),
+  },
 };
 
 export default async function ArchivePage() {
